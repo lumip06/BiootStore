@@ -1,0 +1,54 @@
+.headerAreas{
+    display: grid;
+    gap: 50px;
+    grid-template-columns:  auto auto auto;
+    padding: 10px;
+    background-color: #8FB8DE;
+}
+.productsArea {
+    display: grid;
+    gap: 100px;
+    grid-template-areas:'filter books books books books';
+    padding: 150px;
+    background-color: #CDF7F6;
+
+}
+.footerAreas{
+    display: grid;
+    gap: 50px;
+    grid-template-columns:  auto auto auto;
+    padding: 100px;
+    background-color: #6A605C;
+}
+#userSpace {
+    background-color: #8FB8DE;
+
+}
+#searchSpace {
+    background-color: #8FB8DE;
+
+}
+#menuSpace {
+    background-color: #8FB8DE;
+
+}
+#addsArea {
+    background-color: #6A605C;
+    padding: 150px;
+}
+
+#filterArea {
+    background-color: #ffd4d4;
+    grid-area: filter;
+
+
+}
+#booksArea{
+    background-color: #ff858d;
+    grid-area: books;
+
+
+}
+#book {
+    background-color: #9999ef;
+}
