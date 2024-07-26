@@ -4,15 +4,35 @@
     gap: 50px;
     grid-template-areas:
             'blankarea blankarea blankarea'
-            'blankarea form blankarea'
+            'blankarea container blankarea'
             'blankarea blankarea blankarea';
     padding: 10px;
     background-color: #F1E0C5;
 
 }
+.container {
+
+    grid-area: container;
+    position: relative;
+    /*transform: translate(-50%,-50%);*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    width: 700px;
+}
 form {
 
-    grid-area: form;
+    background: #C9B79C;
+    padding: 3em;
+    width: 700px;
+    border-radius: 20px;
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    backdrop-filter: blur(10px);
+    box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 60px;
+
 }
 label {
     font-size: 30px;
@@ -41,8 +61,10 @@ input {
 }
 .button-area {
     display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 80px;
-    grid-gap: 10px;
-    padding: 20px;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+    grid-gap: 20px;
+
+}
+.content {
+    grid-column: col-start 4 / span 7;
 }
