@@ -59,3 +59,21 @@ form {
     margin: 0 auto;
     width:250px;
 }
+label {
+    font-size: 30px;
+    color: #2c5f95;
+}
+input {
+    padding: 5px;
+    margin-bottom:5px;
+}
+.submit {
+    padding: 20px;
+    margin-top: 50px;
+    width:250px;
+}
+.existingUser {
+    padding: 20px;
+    margin-top: 50px;
+    width:250px;
+}
