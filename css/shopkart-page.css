@@ -1,5 +1,5 @@
 
-#loginArea {
+#shopkartArea {
     display: grid;
     gap: 50px;
     grid-template-areas:
@@ -8,10 +8,8 @@
             'blankarea blankarea blankarea';
     padding: 10px;
     background-color: #CDF7F6;
-
 }
 form {
-
     grid-area: form;
 }
 label {
@@ -20,25 +18,16 @@ label {
     color: #2c5f95;
 }
 input {
-    padding: 10px;
+    padding: 5px;
     margin-bottom:5px;
 }
-#submit {
-    padding: 30px;
-    margin-top: 50px;
-    width:250px;
 
-}
 button{
-    padding: 20px;
+    padding: 30px;
     margin-top: 50px;
     width:100px;
 }
-#newUserButton {
-    padding: 20px;
-    margin-top: 50px;
-    width:250px;
-}
+
 .blankarea {
     grid-area: blankarea;
 }
