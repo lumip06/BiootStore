@@ -1,24 +1,24 @@
 
-#productsArea {
+#products-area {
     display: grid;
     gap: 100px;
     grid-template-areas:'filter books books books books';
     padding: 150px;
-    background-color: #CDF7F6;
+    background-color: #F1E0C5;
 
 }
-#addsArea {
-    background-color: #6A605C;
+#adds-area {
+    background-color: #C9B79C;
     padding: 150px;
 }
 
-#filterArea {
+#filter-area {
     background-color: #ffd4d4;
     grid-area: filter;
 
 
 }
-#booksArea{
+#books-area{
     background-color: #ff858d;
     grid-area: books;
 

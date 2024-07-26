@@ -1,5 +1,5 @@
 
-#shopkartArea {
+#shopkart-area {
     display: grid;
     gap: 50px;
     grid-template-areas:
@@ -7,7 +7,7 @@
             'blankarea form blankarea'
             'blankarea blankarea blankarea';
     padding: 10px;
-    background-color: #CDF7F6;
+    background-color: #F1E0C5;
 }
 form {
     grid-area: form;
@@ -22,16 +22,11 @@ input {
     margin-bottom:5px;
 }
 
-button{
-    padding: 30px;
-    margin-top: 50px;
-    width:100px;
-}
 
 .blankarea {
     grid-area: blankarea;
 }
-.buttonArea {
+.button-area {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 80px;
