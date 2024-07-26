@@ -33,6 +33,7 @@
 </header>
 
 <div id="login-area">
+<div class="container">
    <form id="login-form" autocomplete="on">
 
        <label for="username">Username:</label>
@@ -41,14 +42,18 @@
 
        <label for="password">Password:</label>
        <input type="password" id="password" name="password"><br>
-
+       <a href="https://www.w3schools.com">Forgot password?</a>
        <div class="buttonArea">
-           <input type="submit" value="Submit" id="submit">
-           <button id="new-user-button">New User?</button>
+           <div class="content"><input  type="checkbox" value="1" name="remember_me" id="rememberMeSwitch">
+           <label  for="rememberMeSwitch"> Remember me</label>
+
+           </div>
+           <div class="content"><input type="submit" value="Submit" id="submit"></div>
+           <div class="content"><button  id="new-user-button">New User?</button></div>
        </div>
 
    </form>
-
+</div>
 
 </div>
 
