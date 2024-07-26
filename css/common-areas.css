@@ -1,0 +1,51 @@
+#headerAreas{
+    display: grid;
+    gap: 50px;
+    grid-template-columns:  auto auto auto;
+    padding: 10px;
+    background-color: #8FB8DE;
+}
+
+#footerAreas{
+    display: grid;
+    gap: 50px;
+    grid-template-columns:  auto auto auto;
+    padding: 100px;
+    background-color: #6A605C;
+}
+#userSpace {
+    background-color: #8FB8DE;
+
+}
+#searchSpace {
+    background-color: #8FB8DE;
+
+}
+#menuSpace {
+    background-color: #8FB8DE;
+    position: relative;
+    display: inline-block;
+}
+#menuButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+#menuArea {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+}
+#menuSpace:hover #menuArea{
+    display: block;
+}
+#menuSpace:hover #menuButton{
+    background-color: #3e8e41;
+}
