@@ -1,21 +1,19 @@
-.headerAreas{
+#headerAreas{
     display: grid;
     gap: 50px;
     grid-template-columns:  auto auto auto;
     padding: 10px;
     background-color: #8FB8DE;
 }
-.registerArea {
+#productsArea {
     display: grid;
-    gap: 50px;
-    grid-template-areas:
-            'blankarea blankarea blankarea'
-            'blankarea form blankarea'
-            'blankarea blankarea blankarea';
-    padding: 10px;
+    gap: 100px;
+    grid-template-areas:'filter books books books books';
+    padding: 150px;
     background-color: #CDF7F6;
+
 }
-.footerAreas{
+#footerAreas{
     display: grid;
     gap: 50px;
     grid-template-columns:  auto auto auto;
@@ -35,7 +33,7 @@
     position: relative;
     display: inline-block;
 }
-.menuButton {
+#menuButton {
     background-color: #4CAF50;
     color: white;
     padding: 16px;
@@ -43,7 +41,7 @@
     border: none;
     cursor: pointer;
 }
-.menuArea {
+#menuArea {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -52,49 +50,29 @@
     padding: 12px 16px;
     z-index: 1;
 }
-#menuSpace:hover .menuArea{
+#menuSpace:hover #menuArea{
     display: block;
 }
-#menuSpace:hover .menuButton{
+#menuSpace:hover #menuButton{
     background-color: #3e8e41;
 }
-
-form {
-    grid-area: form;
-}
-label {
-    font-size: 30px;
-    padding: 30px;
-    color: #2c5f95;
-}
-input {
-    padding: 5px;
-    margin-bottom:5px;
+#addsArea {
+    background-color: #6A605C;
+    padding: 150px;
 }
 
+#filterArea {
+    background-color: #ffd4d4;
+    grid-area: filter;
 
-.submit {
-    padding: 30px;
-    margin-top: 50px;
-    width:250px;
+
 }
-button{
-    padding: 30px;
-    margin-top: 50px;
-    width:100px;
+#booksArea{
+    background-color: #ff858d;
+    grid-area: books;
+
+
 }
-.existingUser {
-    padding: 20px;
-    margin-top: 50px;
-    width:250px;
-}
-.blankarea {
-    grid-area: blankarea;
-}
-.buttonArea {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 80px;
-    grid-gap: 10px;
-    padding: 20px;
+.book {
+    background-color: #9999ef;
 }

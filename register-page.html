@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="css/registerPage.css">
+    <link rel="stylesheet" href="css/register-page.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 
-<header class="headerAreas">
+<header id="headerAreas">
     <div id="menuSpace">
-        <button class="menuButton">Menu</button>
-        <div class="menuArea"><ul>
+        <button id="menuButton">Menu</button>
+        <div id="menuArea"><ul>
             <li>Book 1</li>
             <li>Book 2</li>
             <li>Book 3</li>
@@ -29,8 +29,8 @@
 
     </div>
 </header>
-<div class="registerArea">
-    <form class="registerForm" autocomplete="on">
+<div id="registerArea">
+    <form id="registerForm" autocomplete="on">
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="username"><br>
@@ -51,14 +51,16 @@
         <input type="checkbox" id="agreement" name="agreement" value="Agreed">
         <label for="agreement"> I Agree to the terms.</label><br>
 
-        <input type="submit" value="Submit" class="submit">
+        <div class="buttonArea">
+            <input type="submit" value="Submit" id="submit">
+            <button id="existingUser">Already an user?</button>
+        </div>
 
-        <button class="existingUser">Already an user?</button>
 
     </form>
 </div>
 
-<footer class="footerAreas">
+<footer id="footerAreas">
     <div>
         scris1
     </div>
