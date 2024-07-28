@@ -1,10 +1,10 @@
-#header-areas{
-    display: grid;
-    gap: 50px;
-    grid-template-columns:  auto auto auto;
-    padding: 10px;
-    background-color: #493843;
-}
+/*#header-areas{*/
+/*    display: grid;*/
+/*    gap: 50px;*/
+/*    grid-template-columns:  auto auto auto;*/
+/*    padding: 10px;*/
+/*    background-color: #493843;*/
+/*}*/
 
 #footer-areas{
     display: grid;
@@ -14,7 +14,7 @@
     background-color: #493843;
 }
 #user-space {
-    background-color: #493843;
+    /*background-color: #493843;*/
 
 }
 #search-space {
@@ -49,15 +49,16 @@
 #menu-space:hover #menu-button{
     background-color: #71816D;
 }
-button{
-    padding: 20px;
-    margin-top: 50px;
-    width:100px;
-    background-color: #DA667B;
-}
+/*button{*/
+/*    padding: 20px;*/
+/*    margin-top: 50px;*/
+/*    width:100px;*/
+/*    !*background-color: #DA667B;*!*/
+/*}*/
 .searchbar {
     padding: 20px;
     width:500px;
     background-color: #86a37d;
 
 }
+

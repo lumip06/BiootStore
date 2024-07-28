@@ -8,8 +8,8 @@
 
 }
 #adds-area {
-    background-color: #C9B79C;
-    padding: 150px;
+    width: 80%; /* for example */
+    margin: auto;
 }
 
 #filter-area {
