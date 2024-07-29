@@ -4,7 +4,7 @@
     gap: 100px;
     grid-template-areas:'filter books books books books';
     padding: 150px;
-    background-color: #a7d6fb;
+    background-color: #C0C0C0;
 
 }
 #adds-area {
@@ -18,14 +18,14 @@
     padding:35px;
     border-radius: 25px;
     border: 5px solid #99efdf;
-    color: #86a37d;
+    color: #333333;
     font-style: italic;
 }
 #books-area{
-    background-color: #ff858d;
+    background-color: #97a3d6;
     grid-area: books;
-
-
+    padding:35px;
+    border-radius: 25px;
 }
 .book {
     background-color: #9999ef;
