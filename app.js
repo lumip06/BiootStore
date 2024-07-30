@@ -16,12 +16,13 @@ const path = require('path');
 const bookController = require("./controllers/bookController");
 const userController = require("./controllers/userController"); // Add path module to work with file paths
 
-
+// Load environment variables from .env file
+require('dotenv').config();
 
 
 async function main() {
-    const port = 3000;
-    const uri = "mongodb://localhost:27017/";
+    const port = process.env.PORT;
+    const uri = process.env.MONGO_URI;
     //controller modules
     const bookController = require("../BiootStore/controllers/bookController");
     const userController=require("../BiootStore/controllers/userController");
