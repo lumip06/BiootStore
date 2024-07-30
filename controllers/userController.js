@@ -1,12 +1,12 @@
-const User = require("../models/userModel");
+const user = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const Book = require("../models/bookModel");
 
 
 // Retrieve All Users (GET /users)
-exports.user_list = asyncHandler(async (req, res, next) => {
+exports.userList = asyncHandler(async (req, res, next) => {
     try {
-        const users = await User.find();
+        const users = await user.find();
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -14,11 +14,11 @@ exports.user_list = asyncHandler(async (req, res, next) => {
 });
 
 // Retrieve a Single User by id (GET /users/)
-exports.user_get_one = asyncHandler(async (req, res, next) => {
+exports.userGetOne = asyncHandler(async (req, res, next) => {
     const { id } = req.params; // Extracting ID from the request parameters
 
     try {
-        const user = await User.findById(id);
+        const user = await user.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -28,11 +28,11 @@ exports.user_get_one = asyncHandler(async (req, res, next) => {
     }
 });
 // Retrieve a Single User by username (GET /users/)
-exports.user_get_username = asyncHandler(async (req, res, next) => {
+exports.userGetUsername = asyncHandler(async (req, res, next) => {
     const { username } = req.params; // Extracting ID from the request parameters
 
     try {
-        const user = await User.findById(username); ///DE FACUT PT USERNAME
+        const user = await user.findById(username); ///DE FACUT PT USERNAME
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -42,10 +42,10 @@ exports.user_get_username = asyncHandler(async (req, res, next) => {
     }
 });
 // Create a New User (POST /users)
-exports.user_create_post = asyncHandler(async (req, res, next) => {
+exports.userCreatePost = asyncHandler(async (req, res, next) => {
     const { username ,email ,password } = req.body;
 
-    const newUser = new User({
+    const newUser = new user({
         username,
         email,
         password
@@ -63,11 +63,11 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
 
 
 // Delete a User by ID (DELETE /users/)
-exports.user_delete = asyncHandler(async (req, res, next) => {
+exports.userDelete = asyncHandler(async (req, res, next) => {
     const  id  = req.params.id;
 
     try {
-        const user = await User.findById(id);
+        const user = await user.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
