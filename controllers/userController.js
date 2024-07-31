@@ -1,6 +1,5 @@
 const user = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-const Book = require("../models/bookModel");
 
 
 // Retrieve All Users (GET /users)
