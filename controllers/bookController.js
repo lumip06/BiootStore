@@ -1,10 +1,10 @@
-const Book =require('../models/bookModel')
+const book =require('../models/bookModel')
 const asyncHandler = require("express-async-handler");
 
 // Display list of all books.
-exports.book_list = asyncHandler(async (req, res, next) => {
+exports.bookList = asyncHandler(async (req, res, next) => {
     try {
-        const books = await Book.find();
+        const books = await book.find();
         res.json(books);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -12,11 +12,11 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 });
 
 // GET one book
-exports.book_get_one = asyncHandler(async (req, res, next) => {
+exports.bookGetOne = asyncHandler(async (req, res, next) => {
     const { id } = req.params; // Extracting ID from the request parameters
 
     try {
-        const book = await Book.findById(id);
+        const book = await book.findById(id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
@@ -29,10 +29,10 @@ exports.book_get_one = asyncHandler(async (req, res, next) => {
 
 
 // Handle book create on POST.
-exports.book_create_post = asyncHandler(async (req, res, next) => {
+exports.bookCreatePost = asyncHandler(async (req, res, next) => {
     const { title, author, publishedYear, genre, publisher, cover } = req.body;
 
-    const newBook = new Book({
+    const newBook = new book({
         title,
         author,
         publishedYear,
@@ -50,12 +50,12 @@ exports.book_create_post = asyncHandler(async (req, res, next) => {
 });
 
 // Display book delete form .
-exports.book_delete = asyncHandler(async (req, res, next) => {
+exports.bookDelete = asyncHandler(async (req, res, next) => {
 
     const  id  = req.params.id;
 
     try {
-        const book = await Book.findById(id);
+        const book = await book.findById(id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
