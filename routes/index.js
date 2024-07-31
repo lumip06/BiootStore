@@ -31,8 +31,6 @@ router.delete("/users/:id", userController.userDelete);
 // GET request for list of all Book items.
 router.get("/books", bookController.bookList);
 
-//GET SORTED
-router.get("/books/sorted", bookController.bookSorted);
 
 //GET books by title and author (search)
 router.get("/books/search",bookController.bookSearch);

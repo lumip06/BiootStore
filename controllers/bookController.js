@@ -52,14 +52,15 @@ exports.bookGetOne = asyncHandler(async (req, res, next) => {
 exports.bookSearch = asyncHandler(async (req, res, next) => {
 
     try {
-        let queries=parseQueryString(req.query);
-        let {sorts,limit,offset}=separateFilters(queries);
-        // console.log(queries);
-        // console.log(sorts);
-        // console.log(limit);
-        // console.log(offset);
+        const {filters, sortBy, sortOrder, offset, limit}=parseQueryString(req.query);
+        console.log(filters);
+        console.log(sortBy);
+        console.log(sortOrder);
+        console.log(limit);
+        console.log(offset);
+        const query=buildQuery(filters)
 
-        let books =  await book.find(queries).sort(sorts).limit(limit);
+        let books =  await book.find(query).sort({ [sortBy]: sortOrder }).limit(limit);
 
     res.json(books);
     } catch (err) {
@@ -69,7 +70,7 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
 
 // Handle book create on POST.
 exports.bookCreatePost = asyncHandler(async (req, res, next) => {
-    const { title, author, publishedYear, genre, publisher, cover } = req.body;
+    const { title, author, publishedYear, genre, publisher, cover ,price } = req.body;
 
     const newBook = new book({
         title,
@@ -77,7 +78,8 @@ exports.bookCreatePost = asyncHandler(async (req, res, next) => {
         publishedYear,
         genre,
         publisher,
-        cover
+        cover,
+        price
     });
 
     try {
@@ -111,75 +113,79 @@ function parseQueryString(queryString) {
     const params = new URLSearchParams(queryString);
     const filters = {};
 
+    let sortBy = '_id';
+    let sortOrder = 'asc';
+    let offset = 0;
+    let limit = 5;
+
     for (const [key, value] of params) {
-        switch (key) {
-            case 'title':
-                filters.title = value.split(',').map(genre => genre.trim());
-                break;
-            case 'author':
-                filters.author = value.split(',').map(genre => genre.trim());
-                break;
-            case 'publishedYear':
-                if (value.includes('-')) {
-                    const [minYear, maxYear] = value.split('-').map(Number);
-                    filters.publishedYear = {min: minYear, max: maxYear};
-                } else {
-                    filters.key = {operator:'-',min: Number(value), max: Number(value)};
-                }
-                break;
-            case 'genre':
-                filters.genre = value.split(',').map(genre => genre.trim());
-                break;
-            case 'publisher':
-                filters.genre = value.split(',').map(genre => genre.trim());
-                break;
-            case 'cover':
-                filters[key] = value;
-                break;
-                //TODO DE ADAUGAT PRICE
-            case 'limit':
-                filters[key] = value;
-                break;
-            case 'offset':
-                filters[key] = value;
-                break;
-            case 'sort':
-                filters.sort = value.split(',').map(genre => genre.trim());
-                break;
-            case 'order':
-                filters.order = value.split(',').map(genre => genre.trim());
-                break;
-            default:
-                filters[key] = value;
-                break;
+        if (key === 'sort') {
+            sortBy = value;
+        } else if (key === 'order') {
+            sortOrder = value === 'desc' ? 'desc' : 'asc';
+        } else if (key === 'offset') {
+            offset = parseInt(value, 10) || 1;
+        } else if (key === 'limit') {
+            limit = parseInt(value, 10) || 10;
+        } else {
+            filters[key] = parseFilter(value);
         }
     }
 
-    return filters;
+
+    return {filters, sortBy, sortOrder, offset, limit};
 }
-
-function separateFilters(queries){
-
-    if(queries.limit)
-        limit=queries.limit;
-    else limit=2;
-    if(queries.offset)
-        offset=queries.offset;
-    else offset=0;
-
-
-    let sorts=[];
-    for(par in queries.sort){
-        //console.log(queries.sort[par]);
-        if(queries.order[par])
-            sorts.push([queries.sort[par],queries.order[par]]);
-        else sorts.push([queries.sort[par],"asc"]);
+function parseFilter(value) {
+    const match = value.match(/(<=|>=|<|>)(\d+)/);
+    if (match) {
+        const [, operator, number] = match;
+        return {[operator]: Number(number)};
+    } else if (value.includes('-')) {
+        const [min, max] = value.split('-').map(Number);
+        return {min, max};
+    } else if(!isNaN(parseInt(value))) {
+        const number = Number(value);
+        return {min: number, max: number};
     }
-    delete queries.limit;
-    delete queries.offset;
-    delete queries.sort;
-    delete queries.order;
+    else return value;
 
-    return {sorts,limit,offset};
 }
-
+function buildQuery(filters) {
+    const query = {};
+    for (const [key, value] of Object.entries(filters)) {
+        if (typeof value === 'object' && value !== null) {
+            query[key] = buildComparisonQuery(value);
+        } else {
+            query[key] = value;
+        }
+    }
+    return query;
+}
+function buildComparisonQuery(filter) {
+    const comparisonQuery = {};
+    for (const [operator, value] of Object.entries(filter)) {
+        switch (operator) {
+            case 'min':
+                comparisonQuery['$gte'] = value;
+                break;
+            case 'max':
+                comparisonQuery['$lte'] = value;
+                break;
+            case '<':
+                comparisonQuery['$lt'] = value;
+                break;
+            case '<=':
+                comparisonQuery['$lte'] = value;
+                break;
+            case '>':
+                comparisonQuery['$gt'] = value;
+                break;
+            case '>=':
+                comparisonQuery['$gte'] = value;
+                break;
+            default:
+                throw new Error(`Unknown comparison operator: ${operator}`);
+        }
+    }
+    return comparisonQuery;
+}
