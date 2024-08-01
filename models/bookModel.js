@@ -29,6 +29,10 @@ const bookSchema = new Schema({
     cover: {
         type: String,
         required: true
+    },
+    price:{
+        type: Number,
+        required: true
     }
 });
 
