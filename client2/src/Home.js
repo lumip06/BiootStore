@@ -1,35 +1,61 @@
 
 import './App.css';
-import BiootNavbar from "./components/BiootNavbar";
-import Footer from "./components/Footer";
 
-import BookFilter from "./components/BookFilter";
-import BooksArea from "./components/BooksArea";
+
+import BookFilter from "./components/books/BookFilter";
+
 import './styles/MainPage.css'
-function Home() {
-    return (
-        <div className="Home">
+import BookList from "./components/books/BookList";
+import React from "react";
+class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filters: []
+        };
+    }
+    handleFilterChange = (name, value, checked) => {
+        this.setState((prevState) => {
+            let filters = { ...prevState.filters };
+            if (!filters[name]) {
+                filters[name] = [];
+            }
+            if(checked){
 
-            <div class=" row row  ">
-                <BiootNavbar/>
+                filters[name].push("&"+name+"="+value);
+            }
+         else {
+                filters[name] = filters[name].filter(item => item !== "&"+name+"="+value);
+            }
+
+
+            return {filters} ;
+        });
+    };
+    render() {
+
+       return <div className="Home">
+
+            <div className=" row row  ">
+
                 <div><h1 style={{padding:"100px"}}>Welcome to BiootStore!</h1></div>
 
                 <div  id="content-area" >
 
-                    <div class="col">
-                        <BookFilter/>
+                    <div className="col">
+                        <BookFilter onFilterChange={this.handleFilterChange}/>
                     </div>
-                    <div class="col">
-                        <BooksArea/>
+                    <div id="books-area">
+                        <BookList filters={this.state.filters}/>
                     </div>
                 </div></div>
 
 
 
-            <Footer/>
+
 
         </div>
-    );
+    }
 }
 
 

@@ -1,18 +1,17 @@
 
 import './App.css';
-import BiootNavbar from "./components/BiootNavbar";
-import Footer from "./components/Footer";
-import LoginForm from "./components/LoginForm";
+
+import LoginForm from "./components/users/LoginForm";
 
 import './styles/LoginPage.css'
 
 function Login() {
     return (
-        <div className="login">
+        <div className="Login">
 
 
-            <div className=" row row  ">
-                <BiootNavbar/>
+            <div className=" row  ">
+
                 <div id="login-area">
                     <div class="container">
                        <LoginForm/>
@@ -21,7 +20,6 @@ function Login() {
             </div>
 
 
-            <Footer/>
         </div>
     );
 }
