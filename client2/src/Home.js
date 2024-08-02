@@ -22,10 +22,10 @@ class Home extends React.Component {
             }
             if(checked){
 
-                filters[name].push("&"+name+"="+value);
+                filters[name].push(value);
             }
          else {
-                filters[name] = filters[name].filter(item => item !== "&"+name+"="+value);
+                filters[name] = filters[name].filter(item => item !== value);
             }
 
 
