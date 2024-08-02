@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import BookItem from "./BookItem";
 
-function BooksContainer() {
+function BookList() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -34,35 +35,13 @@ function BooksContainer() {
             <div className="row">
                 {data.map((book, index) => (
                     <div className="col-md-4 mb-4" key={index}>
-
-                        <div class="card" style={{width: '18rem'}}>
-                            <a >
-                                <img className="card-img-top" src={book.img} alt="Card image cap"/>
-                                <div class="card-body">
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item"> {book.id}</li>
-                                        <li className="list-group-item">{book.title}</li>
-                                        <li className="list-group-item"> {book.author}</li>
-                                        <li className="list-group-item">    {book.genre}</li>
-                                        <li className="list-group-item">   {book.price}</li>
-                                    </ul>
-
-
-                                    {/*{book.publishedYear}*/}
-
-                                    {/*{book.publisher}*/}
-                                    {/*{book.cover}*/}
-
-
-                                </div>
-                            </a>
-
-                        </div>
+                        <BookItem book={book} index={index}/>
                     </div>
-                                    ))}
-                            </div>
-                        </div>
+
+                ))}
+            </div>
+        </div>
                         )
                         }
 
-export default BooksContainer;
+export default BookList;

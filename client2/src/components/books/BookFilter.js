@@ -1,9 +1,5 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from "react-bootstrap/Form";
-import InputGroup from 'react-bootstrap/InputGroup';
-import Container from "react-bootstrap/Container";
-import {Row} from "react-bootstrap";
 
 function BookFilter() {
     return (

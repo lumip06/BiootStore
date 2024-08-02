@@ -1,4 +1,4 @@
-const book =require('../models/bookModel')
+const Book =require('../models/bookModel')
 const asyncHandler = require("express-async-handler");
 var qs = require('qs');
 
@@ -8,7 +8,7 @@ var qs = require('qs');
 // Display list of all books.
 exports.bookList = asyncHandler(async (req, res, next) => {
     try {
-        const books = await book.find();
+        const books = await Book.find();
         res.json(books);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -19,7 +19,7 @@ exports.bookList = asyncHandler(async (req, res, next) => {
 exports.bookSorted = asyncHandler(async (req, res, next) => {
     try {
 
-        const books = await book.find();
+        const books = await Book.find();
         books.sort((a,b)=>{
 
             if (a.title > b.title)
@@ -38,7 +38,7 @@ exports.bookGetOne = asyncHandler(async (req, res, next) => {
     const { id } = req.params; // Extracting ID from the request parameters
 
     try {
-        const book = await book.findById(id);
+        const book = await Book.findById(id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
@@ -60,7 +60,7 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
         console.log(offset);
         const query=buildQuery(filters)
 
-        let books =  await book.find(query).sort({ [sortBy]: sortOrder }).limit(limit);
+        let books =  await Book.find(query).sort({ [sortBy]: sortOrder }).limit(limit);
 
     res.json(books);
     } catch (err) {
@@ -72,7 +72,7 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
 exports.bookCreatePost = asyncHandler(async (req, res, next) => {
     const { title, author, publishedYear, genre, publisher, cover ,price ,img } = req.body;
 
-    const newBook = new book({
+    const newBook = new Book({
         title,
         author,
         publishedYear,
@@ -97,7 +97,7 @@ exports.bookDelete = asyncHandler(async (req, res, next) => {
     const  id  = req.params.id;
 
     try {
-        const book = await book.findById(id);
+        const book = await Book.findById(id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
