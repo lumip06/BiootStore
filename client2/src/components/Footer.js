@@ -1,6 +1,7 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CommonComponents.css"
+import {Link} from "react-router-dom";
 
 function Footer() {
     return (
@@ -11,9 +12,7 @@ function Footer() {
                 <section className="">
                     <p className="d-flex justify-content-center align-items-center">
                         <span className="me-3">Register for free</span>
-                        <button data-mdb-ripple-init type="button" className="btn btn-outline-light btn-rounded">
-                            Sign up!
-                        </button>
+                        <Link data-mdb-ripple-init to="/register" className="btn btn-outline-light btn-rounded"> Sign up!</Link>
                     </p>
                 </section>
                 © 2020 Copyright:

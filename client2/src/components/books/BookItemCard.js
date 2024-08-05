@@ -1,12 +1,12 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-function BookItem({book,index}) {
+function BookItemCard({book,index}) {
     console.log(book._id)
     return (
                         <div className="card" style={{width: '18rem'}}>
                             <Link to={`/books/${book._id}`}>
-                                <img className="card-img-top" src={book.img} alt="Card image cap"/>
+                                <img className="card-img-top" src={book.img} alt="Card "/>
                                 <div className="card-body">
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item"> {book.id}</li>
@@ -31,4 +31,4 @@ function BookItem({book,index}) {
     )
 }
 
-export default BookItem;
+export default BookItemCard;
