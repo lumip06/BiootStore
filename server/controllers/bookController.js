@@ -60,7 +60,7 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
         console.log(offset);
         const query=buildQuery(filters)
 
-        let books =  await Book.find(query).sort({ [sortBy]: sortOrder }).limit(limit);
+        let books =  await Book.find(query).sort({ [sortBy]: sortOrder }).limit(limit).skip(offset);
 
     res.json(books);
     } catch (err) {

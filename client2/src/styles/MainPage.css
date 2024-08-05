@@ -24,3 +24,10 @@
     border-radius: 25px;
     border: 5px solid #99efdf;
 }
+#filter-counter{
+    padding:35px;
+    border-radius: 25px;
+    border: 5px solid #99efdf;
+    color: #333333;
+    font-style: italic;
+}

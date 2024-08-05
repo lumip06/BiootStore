@@ -1,4 +1,3 @@
-
 import './App.css';
 
 
@@ -6,52 +5,37 @@ import BookFilter from "./components/books/BookFilter";
 
 import './styles/MainPage.css'
 import BookList from "./components/books/BookList";
+import FilterCounter from "./components/books/FilterCounter"
 import React from "react";
+import BookPagination from "./components/books/BookPagination";
+import ViewChanger from "./components/books/ViewChanger";
+
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            filters: []
-        };
-    }
-    handleFilterChange = (name, value, checked) => {
-        this.setState((prevState) => {
-            let filters = { ...prevState.filters };
-            if (!filters[name]) {
-                filters[name] = [];
-            }
-            if(checked){
-
-                filters[name].push(value);
-            }
-         else {
-                filters[name] = filters[name].filter(item => item !== value);
-            }
 
 
-            return {filters} ;
-        });
-    };
     render() {
 
-       return <div className="Home">
+        return <div className="Home">
 
             <div className=" row row  ">
 
-                <div><h1 style={{padding:"100px"}}>Welcome to BiootStore!</h1></div>
+                <div><h1 style={{padding: "100px"}}>Welcome to BiootStore!</h1></div>
 
-                <div  id="content-area" >
+                <div id="content-area">
 
                     <div className="col">
-                        <BookFilter onFilterChange={this.handleFilterChange}/>
+                        <BookFilter/>
+
                     </div>
                     <div id="books-area">
-                        <BookList filters={this.state.filters}/>
+                        <ViewChanger/>
+                        <BookList />
+                        <BookPagination/>
+
                     </div>
-                </div></div>
-
-
-
+                    <FilterCounter />
+                </div>
+            </div>
 
 
         </div>
