@@ -1,16 +1,23 @@
+import React, {useState, useEffect} from 'react';
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import BookItemCard from './BookItemCard';
+import BookItem from './BookItem';
 import {useBoundStore} from "../../BoundStore";
+import {filterBooks} from "../../ServerCalls";
 
 
 function BookList() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const filters=useBoundStore((state)=>state.filters);
+    const filters = useBoundStore((state) => state.filters);
 
+    const [isButtonCardDisabled, setIsButtonCardDisabled] = useState(true);
+    const [isButtonListDisabled, setIsButtonListDisabled] = useState(false);
+
+    const handleClick = () => {
+        setIsButtonCardDisabled(!isButtonCardDisabled);
+        setIsButtonListDisabled(!isButtonListDisabled);
+    };
 
     useEffect(() => {
         // Define the fetch function
@@ -20,17 +27,11 @@ function BookList() {
             try {
 
 
-                // filters["offset"]=page*6;
-                filters["limit"]=6;
-                const jsonString = JSON.stringify(filters);
-                console.log(filters)
-                console.log(jsonString)
-                const response = await axios.get('http://127.0.0.1:3000/books/search?',{
-                    params:filters
-                }
-                );
+
+                const response= await filterBooks(filters)
 
                 setData(response.data);
+
             } catch (error) {
                 setError(error);
             } finally {
@@ -49,14 +50,31 @@ function BookList() {
 
     return (
         <div className="container-fluid">
-            <div className="row">
-                {data.map((book, index) => (
-                    <div className="col-md-4 mb-4" key={index}>
-                        <BookItemCard book={book} index={index} />
-                    </div>
-                ))}
+            <div id="viewChanger">
+                <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px'}}>
+                    <button id="buttonCard" className="btn btn-outline-dark" disabled={isButtonCardDisabled}
+                            onClick={handleClick}>CardView
+                    </button>
+                    <button id="buttonList" className="btn btn-outline-dark" disabled={isButtonListDisabled}
+                            onClick={handleClick}>ListView
+                    </button>
+                </div>
             </div>
-            <div className="row"></div>
+
+
+            <div className={`${(isButtonCardDisabled ? "cardView" : "listView ")}Container`}>
+                {data && data.length > 0 ? (
+                    data.map((book, index) => (
+                        <div key={index}>
+                            <BookItem book={book} index={index} view={isButtonCardDisabled ? "cardView" : "listView"} />
+                        </div>
+                    ))
+                ) : (
+                    <p>No books available.</p>
+                )}
+
+            </div>
+
         </div>
     );
 }

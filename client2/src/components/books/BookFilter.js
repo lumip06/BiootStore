@@ -5,8 +5,8 @@ import {useBoundStore} from "../../BoundStore";
 // Wrapper to use Zustand inside a class component
 function withCheckboxStore(Component) {
     return function WrappedComponent(props) {
-        const store = useBoundStore();
-        return <Component {...props} store={store} />;
+        const {toggleFilter,checkboxes} = useBoundStore();
+        return <Component {...props} toggleFilter={toggleFilter} checkboxes={checkboxes} />;
     };
 }
 
@@ -34,7 +34,7 @@ class BookFilter extends React.Component {
 
 
     render() {
-        const {store} =this.props;
+        const {toggleFilter,checkboxes} =this.props;
 
         return <div id="filter-area">
             <div className="form-check">
@@ -46,8 +46,9 @@ class BookFilter extends React.Component {
                                 type="checkbox"
                                 id={checkbox.id}
                                 name={checkbox.name}
-                                checked={store.checkboxes[checkbox.id] || false}
-                                onChange={() => store.toggleFilter(checkbox.id,checkbox.name)}/>
+                                checked={checkboxes[checkbox.id] || false}
+                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}
+                           />
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </div>
                     ))}
@@ -58,8 +59,8 @@ class BookFilter extends React.Component {
                                 type="checkbox"
                                 id={checkbox.id}
                                 name={checkbox.name}
-                                checked={store.checkboxes[checkbox.id] || false}
-                                onChange={() => store.toggleFilter(checkbox.id,checkbox.name)}/>
+                                checked={checkboxes[checkbox.id] || false}
+                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </div>
                     ))}
@@ -71,8 +72,8 @@ class BookFilter extends React.Component {
                                 type="checkbox"
                                 id={checkbox.id}
                                 name={checkbox.name}
-                                checked={store.checkboxes[checkbox.id] || false}
-                                onChange={() => store.toggleFilter(checkbox.id,checkbox.name)}/>
+                                checked={checkboxes[checkbox.id] || false}
+                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </div>
                     ))}
@@ -83,8 +84,8 @@ class BookFilter extends React.Component {
                                 type="checkbox"
                                 id={checkbox.id}
                                 name={checkbox.name}
-                                checked={store.checkboxes[checkbox.id] || false}
-                                onChange={() => store.toggleFilter(checkbox.id,checkbox.name)}/>
+                                checked={checkboxes[checkbox.id] || false}
+                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </div>
                     ))}
