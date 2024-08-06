@@ -3,10 +3,11 @@ import {filterBooks} from "./ServerCalls";
 
 export const createBookStore = ((set, get) => ({
     books: [],
-    booksCount: 0,
+    booksTotal: 0,
     page: 0,
     checkboxes: {},
     filters: {},
+    limit:6,
 
 
     toggleFilter: (checkboxId, checkboxName, isTrue) => {
@@ -75,11 +76,11 @@ export const createBookStore = ((set, get) => ({
 
             // Log the fetched books
             console.log("Fetched books:", newBooks);
-            set({ books: newBooks, booksCount: booksTotal});
-            // Correctly update the state with the new books and booksCount
+            set({ books: newBooks, booksTotal: booksTotal});
+            // Correctly update the state with the new books and booksTotal
             return {
                 books: newBooks,
-                booksCount: booksTotal,
+                booksTotal: booksTotal,
             };
         } catch (error) {
             console.error('Failed to fetch books:', error);
