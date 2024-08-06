@@ -1,9 +1,9 @@
 
-import './App.css';
+import '../App.css';
 
-import LoginForm from "./components/users/LoginForm";
+import LoginForm from "../components/users/LoginForm";
 
-import './styles/LoginPage.css'
+import '../styles/LoginPage.css'
 
 function Login() {
     return (

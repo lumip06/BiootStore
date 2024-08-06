@@ -60,6 +60,9 @@ export const createBookStore = ((set, get) => ({
             },
         };
     }),
+    // getBooksNumber:()=>set((state)=>{
+    //
+    // })
 
 }));
 

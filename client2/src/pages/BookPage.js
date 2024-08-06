@@ -1,11 +1,11 @@
 
-import './App.css';
+import '../App.css';
 
-import './styles/BookPage.css'
+import '../styles/BookPage.css'
 
 import React from "react";
 
-import BookInfo from "./components/books/BookInfo";
+import BookInfo from "../components/books/BookInfo";
 function BookPage() {
     return (
         <div className="BookPage">

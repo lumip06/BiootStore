@@ -1,8 +1,8 @@
 
-import './App.css';
+import '../App.css';
 
-import RegisterForm from "./components/users/RegisterForm";
-import './styles/RegisterPage.css'
+import RegisterForm from "../components/users/RegisterForm";
+import '../styles/RegisterPage.css'
 function Register() {
     return (
         <div className="register">

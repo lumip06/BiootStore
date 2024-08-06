@@ -7,7 +7,6 @@ function FilterCounter(){
 
                 <h2>{filterCount} filters used</h2>
 
-
         </div>
     )
 

@@ -4,16 +4,16 @@ import './App.css';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Login from "../src/Login"
+import Login from "./pages/Login"
 
-import Register from "./Register";
+import Register from "./pages/Register";
 import BiootNavbar from "./components/BiootNavbar";
 
 import React from "react";
 import Footer from "./components/Footer";
-import BookPage from "./BookPage";
+import BookPage from "./pages/BookPage";
 
-import Home from "./Home";
+import Home from "./pages/Home";
 function App() {
   return (
 
