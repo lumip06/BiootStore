@@ -1,106 +1,97 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useBoundStore} from "../../BoundStore";
+import {getBookFilters} from "../../ServerCalls";
 
 
-// Wrapper to use Zustand inside a class component
-function withCheckboxStore(Component) {
-    return function WrappedComponent(props) {
-        const {toggleFilter,checkboxes} = useBoundStore();
-        return <Component {...props} toggleFilter={toggleFilter} checkboxes={checkboxes} />;
-    };
-}
+const BookFilter = () => {
+    const { toggleFilter, checkboxes } = useBoundStore();
+    const [properties, setProperties] = useState({ genres: [], prices: [], publishers: [], covers: [] });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-class BookFilter extends React.Component {
+    useEffect(() => {
+        const fetchBookFilters = async () => {
+            try {
+                const data = await getBookFilters();
+                setProperties(data);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    constructor(props) {
-        super(props);
-        this.filterListGenre=[
-            {id:'Fantasy',label:'Fantasy',name:'genre'},
-            {id:'Romance',label:'Romance',name:'genre'},
-            {id:'Aventure',label:'Aventure',name:'genre'}
-        ];
-        this.filterListPrice=[
-            {id:'10',label:'10',name:'price'}
-        ];
-        this.filterListCover=[
-            {id:'Soft',label:'Soft',name:'cover'},
-            {id:'Hard',label:'Hard',name:'cover'}
-        ];
-        this.filterListPublisher=[
-            {id:'RAO',label:'Rao',name:'publisher'}
-        ];
+        fetchBookFilters();
+    }, []); // Empty dependency array to run only on mount
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
-
-    render() {
-        const {toggleFilter,checkboxes} =this.props;
-
-        return <div id="filter-area">
+    return (
+        <div id="filter-area">
             <div className="form-check">
-                <div className="form-check">
-                    <p className="fs-1">Subcategorii</p>
-                    {this.filterListGenre.map((checkbox) => (
-                        <div key={checkbox.id}>
-                            <input
-                                type="checkbox"
-                                id={checkbox.id}
-                                name={checkbox.name}
-                                checked={checkboxes[checkbox.id] || false}
-                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}
-                            />
-                            <label htmlFor={checkbox.id}>{checkbox.label}</label>
-                        </div>
-                    ))}
-                    <p className="fs-1">Pret</p>
-                    {this.filterListPrice.map((checkbox) => (
-                        <div key={checkbox.id}>
-                            <input
-                                type="checkbox"
-                                id={checkbox.id}
-                                name={checkbox.name}
-                                checked={checkboxes[checkbox.id] || false}
-                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
-                            <label htmlFor={checkbox.id}>{checkbox.label}</label>
-                        </div>
-                    ))}
-
-                    <p className="fs-1">Editura</p>
-                    {this.filterListPublisher.map((checkbox) => (
-                        <div key={checkbox.id}>
-                            <input
-                                type="checkbox"
-                                id={checkbox.id}
-                                name={checkbox.name}
-                                checked={checkboxes[checkbox.id] || false}
-                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
-                            <label htmlFor={checkbox.id}>{checkbox.label}</label>
-                        </div>
-                    ))}
-                    <p className="fs-1">Tip coperta</p>
-                    {this.filterListCover.map((checkbox) => (
-                        <div key={checkbox.id}>
-                            <input
-                                type="checkbox"
-                                id={checkbox.id}
-                                name={checkbox.name}
-                                checked={checkboxes[checkbox.id] || false}
-                                onChange={() => toggleFilter(checkbox.id,checkbox.name)}/>
-                            <label htmlFor={checkbox.id}>{checkbox.label}</label>
-                        </div>
-                    ))}
-                    <p className="fs-1">Data publicarii</p>
-
-
-                </div>
-
-
+                <p className="fs-1">Subcategorii</p>
+                {properties.genres.map((checkbox) => (
+                    <div key={checkbox}>
+                        <input
+                            type="checkbox"
+                            id={checkbox}
+                            name={checkbox}
+                            checked={checkboxes[checkbox] || false}
+                            onChange={() => toggleFilter(checkbox, "genre")}
+                        />
+                        <label htmlFor={checkbox}>{checkbox}</label>
+                    </div>
+                ))}
+                <p className="fs-1">Pret</p>
+                {properties.prices.map((checkbox) => (
+                    <div key={checkbox}>
+                        <input
+                            type="checkbox"
+                            id={checkbox}
+                            name={checkbox}
+                            checked={checkboxes[checkbox] || false}
+                            onChange={() => toggleFilter(checkbox, "price")}
+                        />
+                        <label htmlFor={checkbox}>{checkbox}</label>
+                    </div>
+                ))}
+                <p className="fs-1">Editura</p>
+                {properties.publishers.map((checkbox) => (
+                    <div key={checkbox}>
+                        <input
+                            type="checkbox"
+                            id={checkbox}
+                            name={checkbox}
+                            checked={checkboxes[checkbox] || false}
+                            onChange={() => toggleFilter(checkbox, "publisher")}
+                        />
+                        <label htmlFor={checkbox}>{checkbox}</label>
+                    </div>
+                ))}
+                <p className="fs-1">Tip coperta</p>
+                {properties.covers.map((checkbox) => (
+                    <div key={checkbox}>
+                        <input
+                            type="checkbox"
+                            id={checkbox}
+                            name={checkbox}
+                            checked={checkboxes[checkbox] || false}
+                            onChange={() => toggleFilter(checkbox, "cover")}
+                        />
+                        <label htmlFor={checkbox}>{checkbox}</label>
+                    </div>
+                ))}
+                <p className="fs-1">Data publicarii</p>
             </div>
-
         </div>
-    }
-}
+    );
+};
 
-
-export default withCheckboxStore(BookFilter)
+export default BookFilter;
