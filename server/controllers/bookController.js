@@ -61,8 +61,9 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
         const query=buildQuery(filters)
 
         let books =  await Book.find(query).sort({ [sortBy]: sortOrder }).limit(limit).skip(offset);
-
-    res.json(books);
+        const booksTotal = await Book.countDocuments(query);
+        // console.log({ books, booksTotal })
+        res.json({ books, booksTotal });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -109,6 +110,26 @@ exports.bookDelete = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+
+// GET one book
+exports.getBookProperties = asyncHandler(async (req, res, next) => {
+
+    try {
+        // Get distinct genres, authors, and publishers from the database
+        const genres = await Book.distinct('genre');
+        const prices = await Book.distinct('price');
+        const publishers = await Book.distinct('publisher');
+        const covers = await Book.distinct('cover');
+
+
+        // Send response with properties
+        res.status(200).json({  genres, prices, publishers, covers });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 
 function parseQueryString(queryString) {
     const params = new URLSearchParams(queryString);

@@ -1,16 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import BookItem from './BookItem';
 import {useBoundStore} from "../../BoundStore";
-import {filterBooks} from "../../ServerCalls";
 
 
 function BookList() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const filters = useBoundStore((state) => state.filters);
+    
 
+    const {filters,books,fetchBooks}=useBoundStore();
     const [isButtonCardDisabled, setIsButtonCardDisabled] = useState(true);
     const [isButtonListDisabled, setIsButtonListDisabled] = useState(false);
 
@@ -19,34 +16,18 @@ function BookList() {
         setIsButtonListDisabled(!isButtonListDisabled);
     };
 
+    // Fetch books whenever the filters change
     useEffect(() => {
-        // Define the fetch function
+        console.log("Filters changed, fetching books:", filters);
 
-        const fetchData = async () => {
-            setLoading(true);
-            try {
+        fetchBooks();
+    }, [filters]); // Fetch books whenever filters change
 
-
-
-                const response= await filterBooks(filters)
-
-                setData(response.data);
-
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        // Call the fetch function
-        fetchData();
-    }, [filters]); // Empty dependency array means this effect runs once when the component mounts
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-
-    console.log(data);
+    useEffect(() => {
+        console.log("Books updated:", books);
+        fetchBooks();
+    }, []);
+    // console.log(books);
 
     return (
         <div className="container-fluid">
@@ -63,8 +44,8 @@ function BookList() {
 
 
             <div className={`${(isButtonCardDisabled ? "cardView" : "listView ")}Container`}>
-                {data && data.length > 0 ? (
-                    data.map((book, index) => (
+                {books && books.length > 0 ? (
+                    books.map((book, index) => (
                         <div key={index}>
                             <BookItem book={book} index={index} view={isButtonCardDisabled ? "cardView" : "listView"} />
                         </div>

@@ -1,38 +1,38 @@
 import {create} from 'zustand'
+import {filterBooks} from "./ServerCalls";
 
 export const createBookStore = ((set, get) => ({
-    books: 0,
+    books: [],
+    booksCount: 0,
     page: 0,
     checkboxes: {},
     filters: {},
 
 
-    toggleFilter: (checkboxId, checkboxName) => set((state) => {
-        const newCheckboxState = !state.checkboxes[checkboxId];
-        const newFilter = {...state.filters};
+    toggleFilter: (checkboxId, checkboxName, isTrue) => {
+        set((state) => {
+            const newCheckboxState = !state.checkboxes[checkboxId];
+            const newFilter = { ...state.filters };
 
-        if (newCheckboxState) {
-            newFilter[checkboxName] = checkboxId;
+            if (newCheckboxState) {
+                newFilter[checkboxName] = checkboxId;
+                state.page = 0;
+                delete newFilter["offset"];
+            } else {
+                delete newFilter[checkboxName];
+            }
 
-            state.page = 0;
-            delete newFilter["offset"];
-        } else {
-            delete newFilter[checkboxName];
-
-        }
-
-        return {
-            checkboxes: {
-                ...state.checkboxes,
-                [checkboxId]: newCheckboxState,
-
-            },
-            filters: newFilter,
-
-        };
+            return {
+                checkboxes: {
+                    ...state.checkboxes,
+                    [checkboxId]: newCheckboxState,
+                },
+                filters: newFilter,
+            };
+        });
 
 
-    }),
+    },
     filterCount: () => {
         const {checkboxes} = get();
         return Object.values(checkboxes).filter(Boolean).length;
@@ -60,9 +60,32 @@ export const createBookStore = ((set, get) => ({
             },
         };
     }),
-    // getBooksNumber:()=>set((state)=>{
-    //
-    // })
+    // Action to fetch books from the database
+    fetchBooks: () => set(async (state) => {
+        try {
+            const filters = { ...state.filters };
+            delete filters["offset"];
+
+            // Assuming filterBooks is an async function that makes an API call
+            const response = await filterBooks(filters);
+
+            // Extract books and booksTotal from the response
+            const newBooks = response.data.books || [];
+            const booksTotal = response.data.booksTotal;
+
+            // Log the fetched books
+            console.log("Fetched books:", newBooks);
+            set({ books: newBooks, booksCount: booksTotal});
+            // Correctly update the state with the new books and booksCount
+            return {
+                books: newBooks,
+                booksCount: booksTotal,
+            };
+        } catch (error) {
+            console.error('Failed to fetch books:', error);
+        }
+    }),
+    // Trigger fetchBooks after the state has been updated
 
 }));
 
