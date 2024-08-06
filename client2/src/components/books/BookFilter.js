@@ -2,6 +2,7 @@ import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useBoundStore} from "../../BoundStore";
 
+
 // Wrapper to use Zustand inside a class component
 function withCheckboxStore(Component) {
     return function WrappedComponent(props) {
@@ -48,7 +49,7 @@ class BookFilter extends React.Component {
                                 name={checkbox.name}
                                 checked={checkboxes[checkbox.id] || false}
                                 onChange={() => toggleFilter(checkbox.id,checkbox.name)}
-                           />
+                            />
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </div>
                     ))}

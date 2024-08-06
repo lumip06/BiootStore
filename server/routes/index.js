@@ -35,6 +35,8 @@ router.get("/books", bookController.bookList);
 //GET books by title and author (search)
 router.get("/books/search",bookController.bookSearch);
 
+// GET request for book properties
+router.get("/books/properties", bookController.getBookProperties);
 
 
 // GET request for one Book.
@@ -45,7 +47,6 @@ router.post("/books", bookController.bookCreatePost);
 
 // DELETE request to delete Book.
 router.delete("/books/:id", bookController.bookDelete);
-
 
 
 
