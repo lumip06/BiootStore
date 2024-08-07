@@ -71,25 +71,46 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
 
 // Handle book create on POST.
 exports.bookCreatePost = asyncHandler(async (req, res, next) => {
-    const { title, author, publishedYear, genre, publisher, cover ,price ,img } = req.body;
-
-    const newBook = new Book({
-        title,
-        author,
-        publishedYear,
-        genre,
-        publisher,
-        cover,
-        price,
-        img
-    });
-
     try {
-        const savedBook = await newBook.save();
-        res.status(201).json(savedBook);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+        // Ensure req.body is an array
+        if (!Array.isArray(req.body)) {
+            return res.status(400).send({ message: "Request body must be an array" });
+        }
+
+        // Validate each book object in the array
+        const books = req.body.map(book => {
+            const { title, author, publishedYear, genre, publisher, cover, price, img } = book;
+            if (!title || !author || !publishedYear || !publisher || !cover || !price || !img) {
+                throw new Error("All fields are required");
+            }
+            return new Book(book);
+        });
+
+        // Save all books to the database
+        const savedBooks = await Book.insertMany(books);
+        res.status(201).send(savedBooks);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
     }
+    // const { title, author, publishedYear, genre, publisher, cover ,price ,img } = req.body;
+    //
+    // const newBook = new Book({
+    //     title,
+    //     author,
+    //     publishedYear,
+    //     genre,
+    //     publisher,
+    //     cover,
+    //     price,
+    //     img
+    // });
+    //
+    // try {
+    //     const savedBook = await newBook.save();
+    //     res.status(201).json(savedBook);
+    // } catch (err) {
+    //     res.status(400).json({ message: err.message });
+    // }
 });
 
 // Display book delete form .
