@@ -8,7 +8,7 @@ function Register() {
         <div className="register">
 
             <div id="register-area">
-                <div class="container">
+                <div className="container">
             <div className=" row row  ">
 
                 <RegisterForm/>

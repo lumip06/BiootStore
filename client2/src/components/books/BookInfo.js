@@ -1,44 +1,74 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
+import {getOneBook} from "../../ServerCalls";
 
 function BookInfo() {
-    const { id } = useParams(); // Get the book ID from the URL
-    const [book, setBook] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
-    console.log("ID FOUND"+id)
-    React.useEffect(() => {
-        const fetchBookInfo = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:3000/books/${id}`); // Fetch specific book data
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+    const {id} = useParams(); // Get the book ID from the URL
+    const [book, setBook] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const bookCache = {};
+
+    useEffect(() => {
+        const fetchBook = async () => {
+            if (bookCache[id]) {
+                setBook(bookCache[id]);
+            } else {
+                try {
+                    setLoading(true);
+                    const response = await getOneBook(id);
+
+                    // Assuming the response contains the JSON data of the book
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    bookCache[id] = data; // Store in cache
+
+                    setBook(data); // Set the book data to state
+                } catch (error) {
+                    console.error('Error fetching book properties:', error);
+                    setError('Failed to fetch book data'); // Set error message to state
+                } finally {
+                    setLoading(false);
                 }
-                const result = await response.json();
-                setBook(result);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
             }
         };
 
-        fetchBookInfo();
-    }, [id]);
+        if (id) {
+            fetchBook(); // Fetch the book data only if bookId is provided
+        }
+    }, [id]); // Dependency array - fetch book when bookId changes
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    // Render loading state
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
+    // Render error state
+    if (error) {
+        return <div>{error}</div>;
+    }
     return (
-        <div className="card" style={{ width: '18rem' }}>
-            <div className="card-body">
-                <h2>{book.title}</h2>
-                <h4>Author: {book.author}</h4>
+        <div className="bookDetails">
+            <div className="col1">
+                <img className="card-img-top" src={book.img} alt="Book cover"/>
+                <h1>{book?.title || 'No title available'}</h1>
+                <h2>Author: {book.author}</h2>
                 <p>Genre: {book.genre}</p>
-                <p>Price: {book.price}</p>
-                <img className="card-img-top" src={book.img} alt="Book cover" />
-                {/* Add more details as needed */}
+                <p>Year of release: {book.publishedYear}</p>
+                <p>Publisher: {book.publisher}</p>
+                <p>Cover type: {book.cover}</p>
             </div>
+            <div className="col2">
+                <p>Price: {book.price}</p>
+                <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
+                    <button  className="btn btn-outline-dark btn-lg"> ADD to Cart</button>
+                </div>
+            </div>
+            {/* Add more details as needed */}
+
         </div>
     )
 }
