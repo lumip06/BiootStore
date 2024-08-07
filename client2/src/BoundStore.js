@@ -10,12 +10,12 @@ export const createBookStore = ((set, get) => ({
     limit:12,
 
 
-    toggleFilter: (checkboxId, checkboxName, isTrue) => {
+    toggleFilter: (checkboxId, checkboxName, isChecked) => {
         set((state) => {
-            const newCheckboxState = !state.checkboxes[checkboxId];
+            // const newCheckboxState = !state.checkboxes[checkboxId];
             const newFilter = { ...state.filters };
 
-            if (newCheckboxState) {
+            if (isChecked) {
                 newFilter[checkboxName] = checkboxId;
                 state.page = 0;
                 delete newFilter["skip"];
@@ -26,7 +26,7 @@ export const createBookStore = ((set, get) => ({
             return {
                 checkboxes: {
                     ...state.checkboxes,
-                    [checkboxId]: newCheckboxState,
+                    [checkboxId]:isChecked,
                 },
                 filters: newFilter,
             };

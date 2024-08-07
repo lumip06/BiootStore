@@ -1,25 +1,37 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {useBoundStore} from "../../BoundStore";
 import {getBookFilters} from "../../ServerCalls";
 
 
 const BookFilter = () => {
-    const { toggleFilter, checkboxes } = useBoundStore();
-    const [properties, setProperties] = useState({ genres: [], prices: [], publishers: [], covers: [] });
+    const {toggleFilter} = useBoundStore();
+    const [properties, setProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const {  checkboxes } = useBoundStore(state => ({
+        checkboxes: state. checkboxes,
+    }));
 
     useEffect(() => {
+
+
         const fetchBookFilters = async () => {
             try {
                 const data = await getBookFilters();
-                setProperties(data);
+
+                    setProperties(data);
+
             } catch (err) {
-                setError(err);
+
+                    setError(err);
+
             } finally {
-                setLoading(false);
+
+                    setLoading(false);
+
             }
+
         };
 
         fetchBookFilters();
@@ -44,7 +56,7 @@ const BookFilter = () => {
                             id={checkbox}
                             name={checkbox}
                             checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "genre")}
+                            onChange={() => toggleFilter(checkbox, "genre", !checkboxes[checkbox])}
                         />
                         <label htmlFor={checkbox}>{checkbox}</label>
                     </div>
@@ -57,7 +69,7 @@ const BookFilter = () => {
                             id={checkbox}
                             name={checkbox}
                             checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "price")}
+                            onChange={() => toggleFilter(checkbox, "price", !checkboxes[checkbox])}
                         />
                         <label htmlFor={checkbox}>{checkbox}</label>
                     </div>
@@ -70,7 +82,7 @@ const BookFilter = () => {
                             id={checkbox}
                             name={checkbox}
                             checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "publisher")}
+                            onChange={() => toggleFilter(checkbox, "publisher", !checkboxes[checkbox])}
                         />
                         <label htmlFor={checkbox}>{checkbox}</label>
                     </div>
@@ -83,12 +95,12 @@ const BookFilter = () => {
                             id={checkbox}
                             name={checkbox}
                             checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "cover")}
+                            onChange={() => toggleFilter(checkbox, "cover", !checkboxes[checkbox])}
                         />
                         <label htmlFor={checkbox}>{checkbox}</label>
                     </div>
                 ))}
-                <p className="fs-1">Data publicarii</p>
+
             </div>
         </div>
     );

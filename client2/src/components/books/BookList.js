@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import BookItem from './BookItem';
 import {useBoundStore} from "../../BoundStore";
+import Counters from "./Counters";
 
 
 function BookList() {
@@ -26,10 +27,13 @@ function BookList() {
 
     return (
         <div className="container-fluid">
-            <div id="viewChanger">
-                <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px'}}>
-                    <label htmlFor="pagelimit">Books per page:</label>
-                    <input type="number" id="pagelimit" name="pagelimit" className="btn btn-outline-dark"
+            <div id="viewChanger" style={{display: 'flex'}}>
+                <div style={{ justifyContent: 'flex-start', padding: '15px',marginRight:'120px'}}>
+                    <Counters /></div>
+                <div style={{justifyContent: 'flex-end', padding: '15px'}}>
+
+                    <label htmlFor="pagelimit" style={{padding: '15px'}}>Books per page:</label>
+                    <input type="number" id="pagelimit" name="pagelimit" className="btn btn-outline-dark"  style={{marginRight:'10px'}}
                            onChange={(e) => updateLimit(e.currentTarget.value)}
                            min="6" max="36" step="6" />
                     <button id="buttonCard" className="btn btn-outline-dark" disabled={isButtonCardDisabled}
@@ -43,7 +47,7 @@ function BookList() {
 
 
             <div className={`${(isButtonCardDisabled ? "cardView" : "listView ")}Container`}>
-                {books && books.length > 0 ? (
+                { books?.length > 0 ? (
                     books.map((book, index) => (
                         <div key={index}>
                             <BookItem book={book} index={index} view={isButtonCardDisabled ? "cardView" : "listView"} />

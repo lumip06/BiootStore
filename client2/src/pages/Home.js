@@ -5,7 +5,7 @@ import BookFilter from "../components/books/BookFilter";
 
 import '../styles/MainPage.css'
 import BookList from "../components/books/BookList";
-import FilterCounter from "../components/books/FilterCounter"
+import Counters from "../components/books/Counters"
 import React from "react";
 import BookPagination from "../components/books/BookPagination";
 
@@ -17,7 +17,7 @@ class Home extends React.Component {
 
         return <div className="Home">
 
-            <div className=" row row  ">
+            <div className=" row  ">
 
                 <div><h1 style={{padding: "100px"}}>Welcome to BiootStore!</h1></div>
 
@@ -29,11 +29,11 @@ class Home extends React.Component {
                     </div>
                     <div id="books-area">
 
-                        <BookList />
+                        <BookList/>
                         <BookPagination/>
 
                     </div>
-                    <FilterCounter />
+
                 </div>
             </div>
 

@@ -1,8 +1,7 @@
-
 import './App.css';
 
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import Login from "./pages/Login"
 
@@ -17,27 +16,27 @@ import Home from "./pages/Home";
 
 function App() {
 
-  return (
+    return (
 
-    <div className="App">
-
-
-        <Router>
-            <BiootNavbar/>
-            <Routes>
-
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/books/:id" element={<BookPage />} />
-
-            </Routes>
-            <Footer/>
-        </Router>
+        <div className="App">
 
 
-    </div>
-  );
+            <Router>
+                <BiootNavbar/>
+                <Routes>
+
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/books/:id" element={<BookPage/>}/>
+
+                </Routes>
+                <Footer/>
+            </Router>
+
+
+        </div>
+    );
 }
 
 

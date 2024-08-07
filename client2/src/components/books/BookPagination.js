@@ -12,7 +12,7 @@ function BookPagination(){
             <button className="btn btn-outline-dark" onClick={previousPage}
                     disabled={page === 0}>Previous Page
             </button>
-            <p className="btn btn-outline-dark" style={{margin: '15px'}}>{page + 1}</p>
+            <p className="btn btn-outline-dark" style={{margin: '15px'}}>{page + 1} out of {totalPages }</p>
             <button className="btn btn-outline-dark" onClick={nextPage}
                     disabled={page >= totalPages - 1}>Next Page</button>
         </div>
