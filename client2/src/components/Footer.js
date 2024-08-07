@@ -16,7 +16,7 @@ function Footer() {
                     </p>
                 </section>
                 © 2020 Copyright:
-                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                <a className="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
             </div>
 
         </footer>
