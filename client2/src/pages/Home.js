@@ -19,7 +19,7 @@ class Home extends React.Component {
 
             <div className=" row  ">
 
-                <div><h1 style={{padding: "100px"}}>Welcome to BiootStore!</h1></div>
+                <div><h1 style={{paddingTop: "150px"}}>Welcome to BiootStore!</h1></div>
 
                 <div id="content-area">
 

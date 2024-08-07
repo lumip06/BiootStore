@@ -5,14 +5,15 @@ import {Link} from "react-router-dom";
 
 function Footer() {
     return (
-        <footer id="footer-areas " class="text-center text-white" style={{backgroundColor: "#0a4275"}}>
+        <footer id="footer-areas " className="text-center text-white" style={{backgroundColor: "#0a4275"}}>
 
 
-            <div class="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
+            <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
                 <section className="">
                     <p className="d-flex justify-content-center align-items-center">
                         <span className="me-3">Register for free</span>
-                        <Link data-mdb-ripple-init to="/register" className="btn btn-outline-light btn-rounded"> Sign up!</Link>
+                        <Link data-mdb-ripple-init to="/register" className="btn btn-outline-light btn-rounded"> Sign
+                            up!</Link>
                     </p>
                 </section>
                 © 2020 Copyright:

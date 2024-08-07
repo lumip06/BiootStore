@@ -8,7 +8,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {Link} from "react-router-dom";
-function BiootNavbar() {
+
+function AppNavbar() {
     return (
         <header id="header-areas">
             <nav className="navbar navbar-dark bg-dark fixed-top">
@@ -79,4 +80,4 @@ function BiootNavbar() {
     );
 }
 
-export default BiootNavbar
+export default AppNavbar
