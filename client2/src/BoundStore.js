@@ -3,10 +3,11 @@ import {filterBooks} from "./ServerCalls";
 
 export const createBookStore = ((set, get) => ({
     books: [],
-    booksCount: 0,
+    booksTotal: 0,
     page: 0,
     checkboxes: {},
     filters: {},
+    limit:12,
 
 
     toggleFilter: (checkboxId, checkboxName, isTrue) => {
@@ -17,7 +18,7 @@ export const createBookStore = ((set, get) => ({
             if (newCheckboxState) {
                 newFilter[checkboxName] = checkboxId;
                 state.page = 0;
-                delete newFilter["offset"];
+                delete newFilter["skip"];
             } else {
                 delete newFilter[checkboxName];
             }
@@ -44,7 +45,7 @@ export const createBookStore = ((set, get) => ({
             page: newPage,
             filters: {
                 ...state.filters,
-                offset: newPage * 6,
+                offset: newPage * state.limit,
 
             },
         };
@@ -55,7 +56,7 @@ export const createBookStore = ((set, get) => ({
             page: newPage,
             filters: {
                 ...state.filters,
-                offset: newPage * 6,
+                offset: newPage * state.limit,
 
             },
         };
@@ -64,28 +65,33 @@ export const createBookStore = ((set, get) => ({
     fetchBooks: () => set(async (state) => {
         try {
             const filters = { ...state.filters };
-            delete filters["offset"];
+            delete filters["skip"];
 
             // Assuming filterBooks is an async function that makes an API call
-            const response = await filterBooks(filters);
+            const response = await filterBooks(filters,state.limit,state.page);
 
             // Extract books and booksTotal from the response
             const newBooks = response.data.books || [];
             const booksTotal = response.data.booksTotal;
 
             // Log the fetched books
-            console.log("Fetched books:", newBooks);
-            set({ books: newBooks, booksCount: booksTotal});
-            // Correctly update the state with the new books and booksCount
+            // console.log("Fetched books:", newBooks);
+            set({ books: newBooks, booksTotal: booksTotal});
+            // Correctly update the state with the new books and booksTotal
             return {
                 books: newBooks,
-                booksCount: booksTotal,
+                booksTotal: booksTotal,
             };
         } catch (error) {
             console.error('Failed to fetch books:', error);
         }
     }),
-    // Trigger fetchBooks after the state has been updated
+    updateLimit:(newLimit) => set((state) => {
+        // console.log(newLimit)
+        set({ limit:newLimit});
+        return {limit:newLimit}
+
+    }),
 
 }));
 

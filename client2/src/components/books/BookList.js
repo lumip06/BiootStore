@@ -7,7 +7,7 @@ import {useBoundStore} from "../../BoundStore";
 function BookList() {
     
 
-    const {filters,books,fetchBooks}=useBoundStore();
+    const {filters,books,fetchBooks,updateLimit,limit,page}=useBoundStore();
     const [isButtonCardDisabled, setIsButtonCardDisabled] = useState(true);
     const [isButtonListDisabled, setIsButtonListDisabled] = useState(false);
 
@@ -18,21 +18,20 @@ function BookList() {
 
     // Fetch books whenever the filters change
     useEffect(() => {
-        console.log("Filters changed, fetching books:", filters);
+        // console.log("Filters changed, fetching books:", filters);
 
         fetchBooks();
-    }, [filters]); // Fetch books whenever filters change
+    }, [filters,limit,page]); // Fetch books whenever filters change
 
-    useEffect(() => {
-        console.log("Books updated:", books);
-        fetchBooks();
-    }, []);
-    // console.log(books);
 
     return (
         <div className="container-fluid">
             <div id="viewChanger">
                 <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px'}}>
+                    <label htmlFor="pagelimit">Books per page:</label>
+                    <input type="number" id="pagelimit" name="pagelimit" className="btn btn-outline-dark"
+                           onChange={(e) => updateLimit(e.currentTarget.value)}
+                           min="6" max="36" step="6" />
                     <button id="buttonCard" className="btn btn-outline-dark" disabled={isButtonCardDisabled}
                             onClick={handleClick}>CardView
                     </button>

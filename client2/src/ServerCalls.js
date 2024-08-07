@@ -2,9 +2,9 @@ import axios from "axios";
 
 // const uri = process.env.SERVER_URL;
 
-export const filterBooks = async (filters) => {
+export const filterBooks = async (filters,limit,page) => {
 
-    filters["limit"]=6;
+    filters["limit"]=limit;
 
     return await axios.get('http://127.0.0.1:3000/books/search?', {
             params: filters
