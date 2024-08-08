@@ -1,41 +1,40 @@
 import React, {useEffect, useRef, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {useBoundStore} from "../../BoundStore";
-import {getBookFilters} from "../../ServerCalls";
+
+import {getBookFilters} from "../../API";
+import BookFilterOption from "./BookFilterOption";
 
 
 const BookFilter = () => {
-    const {toggleFilter} = useBoundStore();
-    const [properties, setProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const {  checkboxes } = useBoundStore(state => ({
-        checkboxes: state. checkboxes,
-    }));
 
+    const [bookProperties, setBookProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const bookAttributes = ["genres", "prices", "publishers", "covers"];
     useEffect(() => {
 
 
         const fetchBookFilters = async () => {
+            setLoading(true);
             try {
                 const data = await getBookFilters();
 
-                    setProperties(data);
+                setBookProperties(data);
 
             } catch (err) {
 
-                    setError(err);
+                setError(err);
 
             } finally {
 
-                    setLoading(false);
+                setLoading(false);
 
             }
 
         };
 
         fetchBookFilters();
-    }, []); // Empty dependency array to run only on mount
+    }, []);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -48,58 +47,31 @@ const BookFilter = () => {
     return (
         <div id="filter-area">
             <div className="form-check">
-                <p className="fs-1">Subcategorii</p>
-                {properties.genres.map((checkbox) => (
-                    <div key={checkbox}>
-                        <input
-                            type="checkbox"
-                            id={checkbox}
-                            name={checkbox}
-                            checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "genre", !checkboxes[checkbox])}
-                        />
-                        <label htmlFor={checkbox}>{checkbox}</label>
-                    </div>
-                ))}
-                <p className="fs-1">Pret</p>
-                {properties.prices.map((checkbox) => (
-                    <div key={checkbox}>
-                        <input
-                            type="checkbox"
-                            id={checkbox}
-                            name={checkbox}
-                            checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "price", !checkboxes[checkbox])}
-                        />
-                        <label htmlFor={checkbox}>{checkbox}</label>
-                    </div>
-                ))}
-                <p className="fs-1">Editura</p>
-                {properties.publishers.map((checkbox) => (
-                    <div key={checkbox}>
-                        <input
-                            type="checkbox"
-                            id={checkbox}
-                            name={checkbox}
-                            checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "publisher", !checkboxes[checkbox])}
-                        />
-                        <label htmlFor={checkbox}>{checkbox}</label>
-                    </div>
-                ))}
-                <p className="fs-1">Tip coperta</p>
-                {properties.covers.map((checkbox) => (
-                    <div key={checkbox}>
-                        <input
-                            type="checkbox"
-                            id={checkbox}
-                            name={checkbox}
-                            checked={checkboxes[checkbox] || false}
-                            onChange={() => toggleFilter(checkbox, "cover", !checkboxes[checkbox])}
-                        />
-                        <label htmlFor={checkbox}>{checkbox}</label>
-                    </div>
-                ))}
+
+                {bookAttributes.map((bookAttribute) => {
+                        const category = bookAttribute.charAt(0).toUpperCase() + bookAttribute.slice(1);
+
+                        return <div key={bookAttribute}>
+
+                            <p className="fs-1">{category}</p>
+
+                            {Array.isArray(bookProperties[bookAttribute]) &&
+                                bookProperties[bookAttribute].map((filterOptionValue, index) => {
+                                        const trimmedBookAttribute = bookAttribute.slice(0, -1);
+
+                                        return <BookFilterOption
+                                            key={index}
+                                            bookAttribute={trimmedBookAttribute}
+                                            filterOptionValue={filterOptionValue}
+                                        />;
+                                    }
+                                )}
+                        </div>
+                    }
+                )
+
+                }
+
 
             </div>
         </div>

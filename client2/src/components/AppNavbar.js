@@ -69,7 +69,7 @@ function AppNavbar() {
                          aria-label="Large button group">
                         <Link to="/register" className="btn btn-outline-light btn-lg">Register</Link>
                         <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
-
+                        <Link to="#" className="btn btn-outline-light btn-lg">Cart</Link>
 
                     </div>
                 </div>

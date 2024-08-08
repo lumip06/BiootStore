@@ -1,59 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getOneBook} from "../../ServerCalls";
+import {getOneBook} from "../../API";
+import {useBoundStore} from "../../BoundStore";
 
 function BookInfo() {
     const {id} = useParams(); // Get the book ID from the URL
     const [book, setBook] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const bookCache = {};
 
+    const {selectedBook,selectBook}=useBoundStore()
     useEffect(() => {
         const fetchBook = async () => {
-            if (bookCache[id]) {
-                setBook(bookCache[id]);
+            console.log("IDUL MEU" + id)
+            if (selectedBook[id]) {
+                setBook(selectedBook[id]);
             } else {
-                try {
-                    setLoading(true);
-                    const response = await getOneBook(id);
-
-                    // Assuming the response contains the JSON data of the book
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    const data = await response.json();
-                    bookCache[id] = data; // Store in cache
-
-                    setBook(data); // Set the book data to state
-                } catch (error) {
-                    console.error('Error fetching book properties:', error);
-                    setError('Failed to fetch book data'); // Set error message to state
-                } finally {
-                    setLoading(false);
+                if (!selectedBook[id]) {
+                    await selectBook(id); // Wait for the book to be fetched
                 }
+                setBook(selectedBook[id]);
             }
         };
 
         if (id) {
             fetchBook(); // Fetch the book data only if bookId is provided
         }
-    }, [id]); // Dependency array - fetch book when bookId changes
+    }, [id, selectBook, selectedBook]); // Dependency array - fetch book when bookId changes
+// Handle case where book is not found
 
-    // Render loading state
-    if (loading) {
-        return <div>Loading...</div>;
+    if (!book) {
+        return <div>No book found.</div>;
     }
 
-    // Render error state
-    if (error) {
-        return <div>{error}</div>;
-    }
     return (
         <div className="bookDetails">
             <div className="col1">
-                <img className="card-img-top" src={book.img} alt="Book cover"/>
+                <img className="card-img-top" src={book.img} alt={book.title}/>
                 <h1>{book?.title || 'No title available'}</h1>
                 <h2>Author: {book.author}</h2>
                 <p>Genre: {book.genre}</p>

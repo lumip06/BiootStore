@@ -1,5 +1,4 @@
 import axios from "axios";
-import data from "bootstrap/js/src/dom/data";
 
 // const uri = process.env.SERVER_URL;
 
@@ -27,8 +26,8 @@ export const getBookFilters = async () => {
 
 export const getOneBook = async (id) => {
     try {
-        const response = await fetch(`http://127.0.0.1:3000/books/${id}`); // Fetch specific book data
-        return response;
+         // Fetch specific book data
+        return await fetch(`http://127.0.0.1:3000/books/${id}`);
 
     } catch (error) {
         console.error('Error fetching book properties:', error); // Log the error object

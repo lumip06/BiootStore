@@ -15,9 +15,6 @@ function BookItem({book, index, view}) {
                     <p className={`text${view}`}>{book.author}</p>
                     <p className={`text${view}`}>{book.genre}</p>
                     <p className={`text${view}`}>{book.price}</p>
-                    <p className={`text${view}`}>{book.publishedYear}</p>
-                    <p className={`text${view}`}>{book.publisher}</p>
-                    <p className={`text${view}`}>{book.cover}</p>
 
                 </div>
             </Link>

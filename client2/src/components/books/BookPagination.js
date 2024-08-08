@@ -2,7 +2,7 @@ import React from 'react';
 import {useBoundStore} from "../../BoundStore";
 
 function BookPagination() {
-    const {page, limit, booksTotal, nextPage, previousPage, updateLimit} = useBoundStore();
+    const {page, limit, booksTotal, nextPage, previousPage, setLimit} = useBoundStore();
     // Calculate the total number of pages
     const totalPages = Math.ceil(booksTotal / limit);
     console.log("book" + booksTotal)
@@ -25,7 +25,7 @@ function BookPagination() {
                 id="pagelimit"
                 className="btn btn-outline-dark"
                 style={{marginRight: '10px'}}
-                onChange={(e) => updateLimit(e.target.value)}>
+                onChange={(e) => setLimit(e.target.value)}>
                 <option value="6">6</option>
                 <option value="9">9</option>
                 <option value="12" selected="selected">12</option>
