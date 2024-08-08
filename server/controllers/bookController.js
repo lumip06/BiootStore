@@ -92,25 +92,7 @@ exports.bookCreatePost = asyncHandler(async (req, res, next) => {
     } catch (error) {
         res.status(400).send({ message: error.message });
     }
-    // const { title, author, publishedYear, genre, publisher, cover ,price ,img } = req.body;
-    //
-    // const newBook = new Book({
-    //     title,
-    //     author,
-    //     publishedYear,
-    //     genre,
-    //     publisher,
-    //     cover,
-    //     price,
-    //     img
-    // });
-    //
-    // try {
-    //     const savedBook = await newBook.save();
-    //     res.status(201).json(savedBook);
-    // } catch (err) {
-    //     res.status(400).json({ message: err.message });
-    // }
+
 });
 
 // Display book delete form .
