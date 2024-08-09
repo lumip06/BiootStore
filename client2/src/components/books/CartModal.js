@@ -11,30 +11,29 @@ function CartModal({ onCloseModal }) {
     const {cartBooks,removeBookFromCart,getCartBookIds}=useBoundStore()
     const [bookInfos, setBookInfos] = useState({});
 
-    // console.log(cartBookIds)
-    // console.log(getCartBooksInfos(cartBookIds))
+
     useEffect(() => {
-        // Fetch book info when the component mounts
+
         const fetchBookInfos = async () => {
             const cartBookIds = getCartBookIds();
 
-            // Check if there are valid book IDs before making the fetch call
+
             if (cartBookIds.length > 0) {
                 try {
                     const booksData = await getCartBooksInfos(cartBookIds);
 
-                    // Convert array to an object where keys are book IDs for easier access
+
                     const booksObject = booksData.reduce((acc, book) => {
                         acc[book._id] = book;
                         return acc;
                     }, {});
 
-                    setBookInfos(booksObject); // Store the booksObject in state
+                    setBookInfos(booksObject);
                 } catch (error) {
                     console.error('Failed to fetch book infos:', error);
                 }
             } else {
-                // Optionally, you can reset the bookInfos or handle the case where there are no books
+
                 setBookInfos({});
             }
         };
@@ -42,7 +41,7 @@ function CartModal({ onCloseModal }) {
         fetchBookInfos();
     }, []);
 
-    // Calculate the total price
+
     const calculateTotalPrice = () => {
         return Object.entries(cartBooks).reduce((total, [bookId, quantity]) => {
             const bookInfo = bookInfos[bookId];
@@ -92,7 +91,7 @@ function CartModal({ onCloseModal }) {
                     <p style={{fontSize:"50px"}}>No books available</p>
                 )}
                 <hr className="solid"/>
-                <h1>TOTAL: {totalPrice} </h1> {/* Display the total price */}
+                <h1>TOTAL: {totalPrice} </h1>
 
                 <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-dark btn-lg">Finalize Order</Link>
             </div>

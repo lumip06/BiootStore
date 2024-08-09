@@ -7,13 +7,11 @@ function OrderInfo() {
     const {cartBooks,removeBookFromCart, getCartBookIds,updateBookQuantityInCart}=useBoundStore()
     const [bookInfos, setBookInfos] = useState({});
 
-    // console.log(cartBookIds)
-    // console.log(getCartBooksInfos(cartBookIds))
     useEffect(() => {
         const fetchBookInfos = async () => {
-            const cartBookIds = getCartBookIds(); // Get current cart IDs
+            const cartBookIds = getCartBookIds();
 
-            // Only fetch if there are valid IDs
+
             if (cartBookIds.length > 0) {
                 try {
                     const booksData = await getCartBooksInfos(cartBookIds);
@@ -21,20 +19,19 @@ function OrderInfo() {
                         acc[book._id] = book;
                         return acc;
                     }, {});
-                    setBookInfos(booksObject); // Store the books in state
+                    setBookInfos(booksObject);
                 } catch (error) {
                     console.error('Failed to fetch book infos:', error);
                 }
             } else {
-                // Optionally, you can set an empty bookInfos or handle the case where there are no books
                 setBookInfos({});
             }
         };
 
         fetchBookInfos();
-    }, [cartBooks]); // Trigger effect when cartBooks changes
+    }, [cartBooks]);
 
-    // Calculate the total price
+
     const calculateTotalPrice = () => {
         return Object.entries(cartBooks).reduce((total, [bookId, quantity]) => {
             const bookInfo = bookInfos[bookId];
@@ -122,7 +119,7 @@ function OrderInfo() {
                     </tbody>
                 </table>
                 <div style={{ marginTop: "20px", textAlign: "right" ,padding:"50px"}}>
-                    <h1>TOTAL: {totalPrice} </h1> {/* Display the total price */}
+                    <h1>TOTAL: {totalPrice} </h1>
                     <button className="btn btn-outline-dark btn-lg"> ORDER</button>
                 </div>
 

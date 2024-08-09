@@ -34,10 +34,10 @@ export const createBookStore = ((set, get) => ({
             return {limit: newLimit}
 
         }),
-        // Add this method to get the list of book IDs
+
         getCartBookIds: () => {
             const {cartBooks} = get();
-            return Object.keys(cartBooks); // This will return an array of book IDs
+            return Object.keys(cartBooks);
         },
         nextPage: () => set((state) => {
             const newPage = state.page + 1;
@@ -112,7 +112,7 @@ export const createBookStore = ((set, get) => ({
                 newBookCart[bookId] = 1;
             }
 
-            // Save the updated cart to localStorage
+
             saveCartToLocalStorage(newBookCart);
 
             set({cartBooks: newBookCart});
@@ -126,7 +126,7 @@ export const createBookStore = ((set, get) => ({
 
             delete newBookCart[bookId];
 
-            // Save the updated cart to localStorage
+
             saveCartToLocalStorage(newBookCart);
 
             set({cartBooks: newBookCart});
@@ -143,7 +143,7 @@ export const createBookStore = ((set, get) => ({
                 newBookCart[bookId] = newQuantity;
             }
 
-            // Save the updated cart to localStorage
+
             saveCartToLocalStorage(newBookCart);
 
             set({cartBooks: newBookCart});
