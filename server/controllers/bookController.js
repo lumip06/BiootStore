@@ -1,6 +1,7 @@
 const Book =require('../models/bookModel')
 const asyncHandler = require("express-async-handler");
 var qs = require('qs');
+const mongoose = require("mongoose");
 
 
 
@@ -47,7 +48,29 @@ exports.bookGetOne = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: err.message });
     }
 });
+//GET BOOK INFOS FOR CART
+exports.bookGetInfosByIds = asyncHandler(async (req, res, next) => {
+    const { ids } = req.query;
 
+    if (!ids) {
+        return res.status(400).json({ error: 'No IDs provided' });
+    }
+
+    try {
+        const idsArray = ids.split(',').map(id => new mongoose.Types.ObjectId(id.trim())); // Use 'new' keyword here
+
+        const books = await Book.find({ _id: { $in: idsArray } }).select('title author price');
+
+        if (!books.length) {
+            return res.status(404).json({ error: 'No books found for the provided IDs' });
+        }
+
+        res.json(books);
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 // GET SEARCH BOOK
 exports.bookSearch = asyncHandler(async (req, res, next) => {
 

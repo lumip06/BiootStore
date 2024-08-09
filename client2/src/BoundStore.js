@@ -1,6 +1,19 @@
 import {create} from 'zustand'
 import {filterBooks, getOneBook} from "./API";
 
+
+// Helper function to load cart from localStorage
+const loadCartFromLocalStorage = () => {
+    const cartData = localStorage.getItem('cartBooks');
+    return cartData ? JSON.parse(cartData) : {};
+}
+
+// Helper function to save cart to localStorage
+const saveCartToLocalStorage = (cartBooks) => {
+    localStorage.setItem('cartBooks', JSON.stringify(cartBooks));
+}
+
+
 export const createBookStore = ((set, get) => ({
         books: [],
         booksTotal: 0,
@@ -9,7 +22,7 @@ export const createBookStore = ((set, get) => ({
         filters: {},
         limit: 12,
         selectedBook: {},
-        cartBooks:{},   ///pairs of {idBook ,quantity}
+        cartBooks: loadCartFromLocalStorage(),   ///pairs of {idBook ,quantity}
 
         filterCount: () => {
             const {filterOptions: filterOptions} = get();
@@ -21,7 +34,11 @@ export const createBookStore = ((set, get) => ({
             return {limit: newLimit}
 
         }),
-
+        // Add this method to get the list of book IDs
+        getCartBookIds: () => {
+            const {cartBooks} = get();
+            return Object.keys(cartBooks); // This will return an array of book IDs
+        },
         nextPage: () => set((state) => {
             const newPage = state.page + 1;
             return {
@@ -70,10 +87,9 @@ export const createBookStore = ((set, get) => ({
             try {
 
 
-
                 const response = await getOneBook(id);
                 const newBook = await response.json() || [];
-                console.log("new book selected " +newBook);
+                console.log("new book selected " + newBook);
 
 
                 set((prevState) => ({
@@ -92,11 +108,13 @@ export const createBookStore = ((set, get) => ({
 
             if (newBookCart[bookId]) {
                 newBookCart[bookId] += 1;
-            }
-            else{
+            } else {
                 newBookCart[bookId] = 1;
             }
-            // console.log(newBookCart)
+
+            // Save the updated cart to localStorage
+            saveCartToLocalStorage(newBookCart);
+
             set({cartBooks: newBookCart});
             return {
                 cartBooks: newBookCart,
@@ -107,22 +125,27 @@ export const createBookStore = ((set, get) => ({
             const newBookCart = {...state.cartBooks};
 
             delete newBookCart[bookId];
-            // console.log(newBookCart)
+
+            // Save the updated cart to localStorage
+            saveCartToLocalStorage(newBookCart);
+
             set({cartBooks: newBookCart});
             return {
                 cartBooks: newBookCart,
             };
         }),
-       updateBookQuantityInCart: (bookId,newQuantity) => set(state => {
+        updateBookQuantityInCart: (bookId, newQuantity) => set(state => {
 
             const newBookCart = {...state.cartBooks};
-            if(newQuantity==="0"){
+            if (newQuantity === "0") {
                 delete newBookCart[bookId];
-            }
-            else{
+            } else {
                 newBookCart[bookId] = newQuantity;
             }
-            // console.log(newBookCart)
+
+            // Save the updated cart to localStorage
+            saveCartToLocalStorage(newBookCart);
+
             set({cartBooks: newBookCart});
             return {
                 cartBooks: newBookCart,

@@ -37,7 +37,8 @@ router.get("/books/search",bookController.bookSearch);
 
 // GET request for book properties
 router.get("/books/properties", bookController.getBookProperties);
-
+// GET request for book infos by ids
+router.get("/books/infos/", bookController.bookGetInfosByIds);
 
 // GET request for one Book.
 router.get("/books/:id", bookController.bookGetOne);
