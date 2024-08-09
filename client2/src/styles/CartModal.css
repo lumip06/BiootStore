@@ -8,3 +8,13 @@ hr.solid {
     justify-content: center;
     align-items: center;
 }
+
+.bookDetails {
+    width: 100%; /* Ensure the container takes full width */
+    padding: 20px; /* Optional padding */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
