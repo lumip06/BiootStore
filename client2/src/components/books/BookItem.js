@@ -1,9 +1,10 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import "./../../styles/BookItem.css"
+import {useBoundStore} from "../../BoundStore";
 
 function BookItem({book, index, view}) {
-    console.log(book._id)
+    const {addBookToCart}=useBoundStore();
     return (
 
         <div className={view}>
@@ -18,6 +19,7 @@ function BookItem({book, index, view}) {
 
                 </div>
             </Link>
+            <button className="btn btn-outline-dark btn-lg" onClick={ () => addBookToCart(book._id)}> ADD to Cart</button>
         </div>
 
 

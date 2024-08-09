@@ -1,15 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+
 import {Link} from "react-router-dom";
 
+import ReactDOM from 'react-dom';
+
+import {Modal} from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
+import CartModal from "./books/CartModal";
+import {useBoundStore} from "../BoundStore";
+
 function AppNavbar() {
+
+    // const {cartBooks}=useBoundStore()
+    // console.log(cartBooks)
+
+    const [open, setOpen] = useState(false);
+    const onOpenModal = () => setOpen(true);
+    const onCloseModal = () => setOpen(false);
     return (
         <header id="header-areas">
             <nav className="navbar navbar-dark bg-dark fixed-top">
@@ -65,11 +74,21 @@ function AppNavbar() {
                                style={{width: '500px'}}/>
                         <button className="btn btn-outline-light" type="submit">Search</button>
                     </form>
+
                     <div id="user-space" className="btn-group btn-group-lg" role="group"
                          aria-label="Large button group">
+
                         <Link to="/register" className="btn btn-outline-light btn-lg">Register</Link>
                         <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
-                        <Link to="#" className="btn btn-outline-light btn-lg">Cart</Link>
+
+                        <div>
+                            <button onClick={onOpenModal} className="btn btn-outline-light btn-lg">Cart</button>
+                            <Modal open={open} onClose={onCloseModal} center>
+
+                                <CartModal onCloseModal={onCloseModal}/>
+                            </Modal>
+                        </div>
+
 
                     </div>
                 </div>

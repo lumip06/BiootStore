@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {getOneBook} from "../../API";
+import React from 'react';
+
 import {useBoundStore} from "../../BoundStore";
 
 function BookFilterOption({bookAttribute,filterOptionValue}) {

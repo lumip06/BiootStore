@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import BookPage from "./pages/BookPage";
 
 import Home from "./pages/Home";
+import CartPage from "./pages/CartPage";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/books/:id" element={<BookPage/>}/>
+                    <Route path="/orders" element={<CartPage/>}/>
 
                 </Routes>
                 <Footer/>

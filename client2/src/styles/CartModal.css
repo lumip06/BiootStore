@@ -1,0 +1,10 @@
+/* Solid border */
+hr.solid {
+    border-top: 3px solid #bbb;
+}
+
+.cartItem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,6 +1,5 @@
 import {create} from 'zustand'
 import {filterBooks, getOneBook} from "./API";
-import {createJSONStorage, persist} from "zustand/middleware";
 
 export const createBookStore = ((set, get) => ({
         books: [],
@@ -10,7 +9,7 @@ export const createBookStore = ((set, get) => ({
         filters: {},
         limit: 12,
         selectedBook: {},
-        cartBooks:{},
+        cartBooks:{},   ///pairs of {idBook ,quantity}
 
         filterCount: () => {
             const {filterOptions: filterOptions} = get();
@@ -87,17 +86,47 @@ export const createBookStore = ((set, get) => ({
                 console.error('Failed to fetch books:', error);
             }
         }),
-        addBooktoCart: (book) => set(async (state) => {
-            try {
-                const newCartBook = {...state.cartBooks};
-                newCartBook[book.id]=book;
+        addBookToCart: (bookId) => set(state => {
 
-                return {
-                    cartBooks: newCartBook
-                };
-            } catch (error) {
-                console.error('Failed to fetch books:', error);
+            const newBookCart = {...state.cartBooks};
+
+            if (newBookCart[bookId]) {
+                newBookCart[bookId] += 1;
             }
+            else{
+                newBookCart[bookId] = 1;
+            }
+            // console.log(newBookCart)
+            set({cartBooks: newBookCart});
+            return {
+                cartBooks: newBookCart,
+            };
+        }),
+        removeBookFromCart: (bookId) => set(state => {
+
+            const newBookCart = {...state.cartBooks};
+
+            delete newBookCart[bookId];
+            // console.log(newBookCart)
+            set({cartBooks: newBookCart});
+            return {
+                cartBooks: newBookCart,
+            };
+        }),
+       updateBookQuantityInCart: (bookId,newQuantity) => set(state => {
+
+            const newBookCart = {...state.cartBooks};
+            if(newQuantity==="0"){
+                delete newBookCart[bookId];
+            }
+            else{
+                newBookCart[bookId] = newQuantity;
+            }
+            // console.log(newBookCart)
+            set({cartBooks: newBookCart});
+            return {
+                cartBooks: newBookCart,
+            };
         }),
         toggleFilter: (checkboxId, checkboxName, isChecked) => {
             set((state) => {
