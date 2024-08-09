@@ -5,7 +5,7 @@ const router = express.Router();
 //controller modules
 const bookController = require("../controllers/bookController");
 const userController=require("../controllers/userController");
-
+const orderController=require("../controllers/orderController");
 
 //USER ROUTES
 // GET request for list of all user items.
@@ -50,5 +50,14 @@ router.post("/books", bookController.bookCreatePost);
 router.delete("/books/:id", bookController.bookDelete);
 
 
+//ORDER ROUTES
+// GET request for list of all order items.
+router.get("/orders", orderController.orderList);
+
+// GET request for one order
+router.get("/orders/:id", orderController.orderGetOne);
+
+// POST request for creating order.
+router.post("/orders", orderController.orderCreatePost);
 
 module.exports = router
