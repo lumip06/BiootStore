@@ -4,16 +4,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import {Link} from "react-router-dom";
 
-import ReactDOM from 'react-dom';
+import "./../styles/CommonComponents.css"
 
 import {Modal} from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import CartModal from "./books/CartModal";
 import {useBoundStore} from "../BoundStore";
+import {Badge} from "react-bootstrap";
+
 
 function AppNavbar() {
 
-    // const {cartBooks}=useBoundStore()
+    const {cartBooks}=useBoundStore()
+    const numberOfCartBooks = Object.keys(cartBooks).length;
+
     // console.log(cartBooks)
 
     const [open, setOpen] = useState(false);
@@ -82,7 +86,13 @@ function AppNavbar() {
                         <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
 
                         <div>
-                            <button onClick={onOpenModal} className="btn btn-outline-light btn-lg">Cart</button>
+                            <div className="button-container">
+                                <button onClick={onOpenModal} className="btn btn-outline-light btn-lg">
+                                    Cart
+                                </button>
+                                {numberOfCartBooks > 0 && <span className="badge">{numberOfCartBooks}</span>}
+                            </div>
+
                             <Modal open={open} onClose={onCloseModal} center>
 
                                 <CartModal onCloseModal={onCloseModal}/>

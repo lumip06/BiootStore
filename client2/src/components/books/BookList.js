@@ -9,7 +9,7 @@ function BookList() {
 
 
     const {filters, books, fetchBooks, limit, page} = useBoundStore();
-    const [viewType, setViewType] = useState('Card');
+    const [viewType, setViewType] = useState('card');
 
 
 
@@ -26,17 +26,17 @@ function BookList() {
                 <div style={{justifyContent: 'flex-start', padding: '15px', marginRight: '450px'}}>
                     <Counters/></div>
                 <div style={{justifyContent: 'flex-end', padding: '15px'}}>
-                    <button id="buttonCard" className="btn btn-outline-dark" disabled={viewType === "Card"}
-                            onClick={() => setViewType("Card")}>CardView
+                    <button id="buttoncard" className="btn btn-outline-dark" disabled={viewType === "card"}
+                            onClick={() => setViewType("card")}>CardView
                     </button>
-                    <button id="buttonList" className="btn btn-outline-dark"   disabled={viewType === "List"}
-                            onClick={() => setViewType("List")}>ListView
+                    <button id="buttonlist" className="btn btn-outline-dark"   disabled={viewType === "list"}
+                            onClick={() => setViewType("list")}>ListView
                     </button>
                 </div>
             </div>
 
 
-            <div className={`${(viewType.toLowerCase() + "View")}Container`}>
+            <div className={`${(viewType + "View")}Container`}>
                 {books?.length > 0 ? (
                     books.map((book, index) => (
                         <div key={index}>

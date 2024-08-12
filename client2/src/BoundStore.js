@@ -17,7 +17,7 @@ const saveCartToLocalStorage = (cartBooks) => {
 export const createBookStore = ((set, get) => ({
         books: [],
         booksTotal: 0,
-        page: 0,
+        page: 1,
         filterOptions: {},
         filters: {},
         limit: 12,
@@ -45,7 +45,7 @@ export const createBookStore = ((set, get) => ({
                 page: newPage,
                 filters: {
                     ...state.filters,
-                    offset: newPage * state.limit,
+                    offset: (newPage - 1 ) * state.limit,
 
                 },
             };
@@ -56,7 +56,7 @@ export const createBookStore = ((set, get) => ({
                 page: newPage,
                 filters: {
                     ...state.filters,
-                    offset: newPage * state.limit,
+                    offset: (newPage - 1 ) * state.limit,
 
                 },
             };
@@ -120,28 +120,17 @@ export const createBookStore = ((set, get) => ({
                 cartBooks: newBookCart,
             };
         }),
+        emptyBookCart:()=>set(state=>{
+            set({cartBooks: {}});
+            return {
+                cartBooks: {},
+            };
+        }),
         removeBookFromCart: (bookId) => set(state => {
 
             const newBookCart = {...state.cartBooks};
 
             delete newBookCart[bookId];
-
-
-            saveCartToLocalStorage(newBookCart);
-
-            set({cartBooks: newBookCart});
-            return {
-                cartBooks: newBookCart,
-            };
-        }),
-        updateBookQuantityInCart: (bookId, newQuantity) => set(state => {
-
-            const newBookCart = {...state.cartBooks};
-            if (newQuantity === "0") {
-                delete newBookCart[bookId];
-            } else {
-                newBookCart[bookId] = newQuantity;
-            }
 
 
             saveCartToLocalStorage(newBookCart);
@@ -157,7 +146,7 @@ export const createBookStore = ((set, get) => ({
 
                 if (isChecked) {
                     newFilter[checkboxName] = checkboxId;
-                    state.page = 0;
+                    state.page = 1;
                     delete newFilter["skip"];
                 } else {
                     delete newFilter[checkboxName];

@@ -18,3 +18,34 @@ hr.solid {
     width: 100%;
     border-collapse: collapse;
 }
+
+
+span {cursor:pointer; }
+.number {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center vertically */
+    margin: 0; /* Remove margin to prevent spacing issues */
+}
+
+.minus, .plus {
+    width: 40px; /* Increase width for better touch area */
+    height: 40px; /* Increase height for better touch area */
+    background: #f2f2f2;
+    border-radius: 4px;
+    padding: 8px; /* Keep padding consistent */
+    border: 1px solid #ddd;
+    display: flex; /* Center text inside button */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Pointer cursor for better UX */
+}
+
+input {
+    height: 40px; /* Match input height with buttons */
+    width: 60px; /* Adjust width for better alignment */
+    text-align: center;
+    font-size: 18px; /* Adjust font size for better readability */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px; /* Add margin to create space between elements */
+}
