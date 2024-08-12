@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {useBoundStore} from "../../BoundStore";
-import {getCartBooksInfos} from "../../API";
+import {getCartBooksInfos, placeOrder} from "../../API";
 import "./../../styles/CartModal.css"
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 function OrderInfo() {
     let heading = ["Produs","Disponibilitate","Buc.","Pret","Total"];
     const {cartBooks,removeBookFromCart, getCartBookIds,updateBookQuantityInCart}=useBoundStore()
     const [bookInfos, setBookInfos] = useState({});
+    const [isOpen, setIsOpen] = useState(false);
 
+    const openPopup = () => setIsOpen(true);
+    const closePopup = () => setIsOpen(false);
     useEffect(() => {
         const fetchBookInfos = async () => {
             const cartBookIds = getCartBookIds();
@@ -120,7 +126,17 @@ function OrderInfo() {
                 </table>
                 <div style={{ marginTop: "20px", textAlign: "right" ,padding:"50px"}}>
                     <h1>TOTAL: {totalPrice} </h1>
-                    <button className="btn btn-outline-dark btn-lg"> ORDER</button>
+                    {/*<button className="btn btn-outline-dark btn-lg"> </button>*/}
+                    <button onClick={() => {
+                        openPopup();
+                        placeOrder(cartBooks,bookInfos);
+                    }} className="btn btn-outline-dark btn-lg">Order books</button>
+                    {isOpen && (
+                        <div className="dynamic-popup">
+                            {/*<button onClick={closePopup}>Close</button>*/}
+                            <h2>Your order has been placed!</h2>
+                        </div>
+                    )}
                 </div>
 
             </div>
