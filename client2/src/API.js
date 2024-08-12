@@ -57,3 +57,48 @@ export const getCartBooksInfos = async (ids) => {
         throw error; // Rethrow error if needed
     }
 };
+
+export const placeOrder = async (cartBooks,booksInfos) => {
+    const { items } = createOrderItems(cartBooks, booksInfos); // Destructure to get the items array
+
+
+    try {
+        // Log the payload to ensure it is correct
+        console.log('Sending order items:', items); // No need to wrap in an object
+        const response = await fetch('http://127.0.0.1:3000/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ items }), // Correctly sending the items array
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to create order: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error; // Rethrow error if needed
+    }
+
+};
+
+export const createOrderItems =  (cartBooks,booksInfos) => {
+    let items = [];
+
+    if (Object.keys(cartBooks).length > 0) {
+        Object.entries(cartBooks).forEach(([bookId, quantity]) => {
+            const item = {
+                bookId: bookId,
+                quantity: quantity,
+                price: booksInfos[bookId].price
+            };
+            items.push(item);
+        });
+        return { items };  // Return an object with the items array
+    } else {
+        return { items: [] };  // Return an empty items array if there are no items
+    }
+};
