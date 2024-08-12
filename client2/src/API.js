@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// const uri = process.env.SERVER_URL;
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export const filterBooks = async (filters, limit, page) => {
 
     filters["limit"] = limit;
 
-    return await axios.get('http://127.0.0.1:3000/books/search?', {
+    return await axios.get(`${serverUrl}books/search?`, {
             params: filters
         }
     )
@@ -14,7 +14,7 @@ export const filterBooks = async (filters, limit, page) => {
 
 export const getBookFilters = async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:3000/books/properties');
+        const response = await axios.get(`${serverUrl}books/properties`);
         return response.data; // Return the data from the response
     } catch (error) {
         console.error('Error fetching book properties:', error); // Log the error object
@@ -27,7 +27,7 @@ export const getBookFilters = async () => {
 export const getOneBook = async (id) => {
     try {
          // Fetch specific book data
-        return await fetch(`http://127.0.0.1:3000/books/${id}`);
+        return await fetch(`${serverUrl}books/${id}`);
 
     } catch (error) {
         console.error('Error fetching book properties:', error); // Log the error object
@@ -43,7 +43,7 @@ export const getCartBooksInfos = async (ids) => {
 
 
         // Fetch book data by passing ids in the query parameter
-        const response = await fetch(`http://127.0.0.1:3000/books/infos?ids=${ids.join(',')}`);
+        const response = await fetch(`${serverUrl}books/infos?ids=${ids.join(',')}`);
 
         // Check if the response is successful
         if (!response.ok) {
@@ -65,7 +65,7 @@ export const placeOrder = async (cartBooks,booksInfos) => {
     try {
         // Log the payload to ensure it is correct
         console.log('Sending order items:', items); // No need to wrap in an object
-        const response = await fetch('http://127.0.0.1:3000/orders', {
+        const response = await fetch(`${serverUrl}orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

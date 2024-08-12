@@ -10,7 +10,7 @@ function BookItem({book, index, view}) {
         <div className={view}>
             <Link to={`/books/${book._id}`} style={{textDecoration: 'none'}}>
                 <div className={`wrapper${view}`}>
-                    <img className="card-img-top" src={book.img} alt="Card "/>
+                    <img className="card-img-top" src={book.img} alt="card "/>
                     <p className={`text${view}`}>{book.id}</p>
                     <p className={`text${view}`}>{book.title}</p>
                     <p className={`text${view}`}>{book.author}</p>
