@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
@@ -10,14 +10,17 @@ import {Modal} from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import CartModal from "../orders/CartModal";
 import {useBoundStore} from "../../stores/BoundStore";
-import {Badge} from "react-bootstrap";
+import {countBooksInCart} from "../orders/CartUtils";
 
 
 function AppNavbar() {
 
     const {cartBooks}=useBoundStore()
-    const numberOfCartBooks = Object.keys(cartBooks).length;
-
+    const [numberOfCartBooks, setNumberOfCartBooks] = useState(0);
+    useEffect(() => {
+       setNumberOfCartBooks( countBooksInCart(cartBooks));
+    }, [cartBooks]);
+    console.log(numberOfCartBooks);
     // console.log(cartBooks)
 
     const [open, setOpen] = useState(false);
