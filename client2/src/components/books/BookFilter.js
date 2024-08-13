@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import {getBookFilters} from "../../API";
+import {getBookFilters} from "../../api/BookAPI";
 import BookFilterOption from "./BookFilterOption";
 
 

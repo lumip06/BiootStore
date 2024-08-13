@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 
 // Helper function to load cart from localStorage
-import {filterBooks, getOneBook} from "../API";
+import {filterBooks, getOneBook} from "../api/BookAPI";
 
 
 export const createBookStore = ((set, get) => ({

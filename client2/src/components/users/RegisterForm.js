@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link} from "react-router-dom";
-import {registerUser} from "../../API";
+import {registerUser} from "../../api/UserAPI";
 
 function RegisterForm() {
     const [formData, setFormData] = useState({

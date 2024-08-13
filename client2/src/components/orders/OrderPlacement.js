@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useBoundStore} from "../../stores/BoundStore";
-import {placeOrder} from "../../API";
+import {placeOrder} from "../../api/OrderAPI";
 import {Modal} from "react-responsive-modal";
 import {Navigate} from "react-router-dom";
 import {calculateTotalPrice} from './CartUtils.js';

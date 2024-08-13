@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link} from "react-router-dom";
-import {loginUser, registerUser} from "../../API";
+import {loginUser} from "../../api/UserAPI";
 
 function LoginForm() {
     const [formData, setFormData] = useState({

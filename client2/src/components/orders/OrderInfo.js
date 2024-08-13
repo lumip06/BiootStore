@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useBoundStore} from "../../stores/BoundStore";
-import {getCartBooksInfos, placeOrder} from "../../API";
+import {getCartBooksInfos} from "../../api/OrderAPI";
 import "../../styles/CartModal.css"
-import  { Navigate } from 'react-router-dom'
 
 import 'reactjs-popup/dist/index.css';
-import {Modal} from "react-responsive-modal";
+
 import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
 
