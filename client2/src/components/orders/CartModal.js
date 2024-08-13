@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
-import {getCartBooksInfos} from "../../API";
+import {getCartBooksInfos} from "../../api/OrderAPI";
 import {calculateTotalPrice} from "./CartUtils";
 
 

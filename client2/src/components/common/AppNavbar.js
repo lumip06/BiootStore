@@ -35,7 +35,7 @@ function AppNavbar() {
                             aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <a className="navbar-brand mr-auto" href="/client2/public" style={{fontSize: '50px'}}>BiootStore</a>
+                    <a className="navbar-brand mr-auto" href="/" style={{fontSize: '50px'}}>BiootStore</a>
 
                     <div className="offcanvas offcanvas-end text-bg-dark" tabIndex="-1" id="offcanvasDarkNavbar"
                          aria-labelledby="offcanvasDarkNavbarLabel">

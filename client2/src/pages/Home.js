@@ -5,7 +5,7 @@ import BookFilter from "../components/books/BookFilter";
 
 import '../styles/MainPage.css'
 import BookList from "../components/books/BookList";
-import Counters from "../components/books/Counters"
+
 import React from "react";
 import BookPagination from "../components/books/BookPagination";
 

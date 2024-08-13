@@ -19,7 +19,6 @@ function BookInfo() {
                 await selectBook(id);
             }
 
-            // Check if the book is in the cart
             if (checkBookInCart(cartBooks,id)) {
                 setInCart(true);
             } else {
