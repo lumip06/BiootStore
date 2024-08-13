@@ -32,11 +32,22 @@ export const registerUser = async (formData) => {
 
 export const loginUser = async (username,password) => {
     try {
-        // Fetch specific book data
-        return await fetch(`${serverUrl}users/username/${username}`);
+        // Fetch user data
+        const response = await fetch(`${serverUrl}users/username/${username}`);
+
+        // Check if the response is successful (status code 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON data from the response
+        const data = await response.json();
+
+        // Return the parsed data
+        return data;
 
     } catch (error) {
-        console.error('Error fetching book properties:', error); // Log the error object
+        console.error('Error fetching user data:', error); // Log the error object
         console.error('Error details:', error.response ? error.response.data : error.message);
         throw error; // Rethrow error if needed
     }

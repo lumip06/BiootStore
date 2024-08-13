@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {loginUser} from "../../api/UserAPI";
-
+import {useBoundStore} from "../../stores/BoundStore";
+import { useNavigate } from 'react-router-dom';
 function LoginForm() {
+    const {setLoggedInUser}=useBoundStore();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         remember: false,
     });
+    const navigate = useNavigate();
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
         setFormData({
@@ -16,14 +19,17 @@ function LoginForm() {
             [name]: type === 'checkbox' ? checked : value,
         });
     };
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
+        //TODO check if user already logged in?
         e.preventDefault();
         console.log("entering submit")
 
         console.log(formData);
-        //console.log(loginUser(formData));
+        const loggedUser = await loginUser(formData.username, formData.password);
 
-
+        console.log("user:" + loggedUser.username)
+        setLoggedInUser({username: loggedUser.username, email:loggedUser.email,password: loggedUser.password});
+        navigate("/"); // This will programmatically navigate to the main page
 
     };
     return (

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import "../../styles/CommonComponents.css"
 
@@ -15,13 +15,18 @@ import {countBooksInCart} from "../orders/CartUtils";
 
 function AppNavbar() {
 
-    const {cartBooks}=useBoundStore()
+    const {cartBooks, loggedInUser, logoutUser} = useBoundStore()
     const [numberOfCartBooks, setNumberOfCartBooks] = useState(0);
+    const navigate = useNavigate();
     useEffect(() => {
-       setNumberOfCartBooks( countBooksInCart(cartBooks));
+        setNumberOfCartBooks(countBooksInCart(cartBooks));
     }, [cartBooks]);
     console.log(numberOfCartBooks);
     // console.log(cartBooks)
+    const handleLogout = () => {
+        logoutUser(); // Call your logout function
+        navigate("/"); // Redirect to home page after logout
+    };
 
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
@@ -81,14 +86,27 @@ function AppNavbar() {
                                style={{width: '500px'}}/>
                         <button className="btn btn-outline-light" type="submit">Search</button>
                     </form>
-
+                    //todo de creat componenta noua cu user buttons
                     <div id="user-space" className="btn-group btn-group-lg" role="group"
                          aria-label="Large button group">
 
                         <Link to="/register" className="btn btn-outline-light btn-lg">Register</Link>
-                        <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
+                        {!loggedInUser && (
+                            <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
+                        )}
 
-                        <div>
+                        {loggedInUser && (
+                            <Link to="/" className="btn btn-outline-light btn-lg" onClick={handleLogout}>
+                                Logout
+                            </Link>
+                        )}
+                        {loggedInUser && (
+                            <Link to="/user" className="btn btn-outline-light btn-lg">
+                                Profile
+                            </Link>
+                        )}
+                        {/*<Link to="/user" className="btn btn-outline-light btn-lg">Profile</Link>*/}
+                        <div style={{marginLeft: "20px"}}>
                             <div className="button-container">
                                 <button onClick={onOpenModal} className="btn btn-outline-light btn-lg">
                                     Cart

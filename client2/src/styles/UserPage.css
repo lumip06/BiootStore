@@ -1,0 +1,77 @@
+
+.userPage {
+    display: grid;
+    gap: 50px;
+    grid-template-areas:
+            'blankarea blankarea blankarea'
+            'blankarea container blankarea'
+            'blankarea blankarea blankarea';
+    padding-top: 200px;
+    padding-bottom: 100px;
+    background-color: #CDE6F5;
+    overflow: auto;
+}
+
+
+.blankarea {
+    grid-area: blankarea;
+}
+
+
+.userDetails {
+    background-color: #f9f9f9;
+    margin: 125px;
+    padding-top: 50px;
+    padding-right: 150px;
+    padding-left: 150px;
+    padding-bottom: 50px;
+    display: grid;
+    grid-template-areas:'auto auto';
+    overflow: auto;
+}
+
+.userDetails .col1 h1 {
+    font-style: italic;
+    font-size: 80px;
+    display: flex;
+    justify-content: left;
+}
+
+.userDetails .col1 h2 {
+    font-style: italic;
+    font-size: 45px;
+    display: flex;
+    justify-content: left;
+}
+
+.userDetails .col1 p {
+    font-style: italic;
+    font-size: 30px;
+    display: flex;
+    justify-content: left;
+}
+
+.userDetails img {
+    display: flex;
+    justify-content: left;
+}
+
+.col1 {
+    border: 2px solid red;
+    float: left; /* add this */
+    padding: 25px;
+}
+
+.col2 {
+    border: 2px solid green;
+
+}
+
+.userDetails .col2 p {
+    font-style: italic;
+    font-size: 50px;
+    color: #9999ef;
+    display: flex;
+    justify-content: right;
+    padding: 50px;
+}
