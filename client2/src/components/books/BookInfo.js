@@ -1,28 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getOneBook} from "../../API";
-import {useBoundStore} from "../../BoundStore";
+
+import {useBoundStore} from "../../stores/BoundStore";
+import {checkBookInCart} from "../orders/CartUtils";
 
 function BookInfo() {
-    const {id} = useParams(); // Get the book ID from the URL
-    const {addBookToCart}=useBoundStore();
+    const {id} = useParams();
+    const {addBookToCart, cartBooks} = useBoundStore();
+    const [inCart, setInCart] = useState(false);
 
-    const {selectedBook,selectBook}=useBoundStore()
+    const {selectedBook, selectBook} = useBoundStore();
+
     useEffect(() => {
         const fetchBook = async () => {
-            console.log("IDUL MEU" + id)
 
-                if (!selectedBook[id]) {
-                    await selectBook(id); // Wait for the book to be fetched
-                }
 
+            if (!selectedBook[id]) {
+                await selectBook(id);
+            }
+
+            // Check if the book is in the cart
+            if (checkBookInCart(cartBooks,id)) {
+                setInCart(true);
+            } else {
+                setInCart(false);
+            }
         };
 
         if (id) {
-            fetchBook(); // Fetch the book data only if bookId is provided
+            fetchBook();
         }
-    }, [id]); // Dependency array - fetch book when bookId changes
-// Handle case where book is not found
+    }, [id, cartBooks]);
 
     if (!selectedBook[id]) {
         return <div>No book found.</div>;
@@ -40,13 +48,16 @@ function BookInfo() {
                 <p>Cover type: {selectedBook[id].cover}</p>
             </div>
             <div className="col2">
+                <p>{inCart ? 'Book in cart' : ''}</p>
                 <p>Price: {selectedBook[id].price}</p>
+
                 <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
-                    <button  className="btn btn-outline-dark btn-lg" onClick={ () => addBookToCart(selectedBook[id]._id)}> ADD to Cart</button>
+                    <button className="btn btn-outline-dark btn-lg"
+                            onClick={() => addBookToCart(selectedBook[id]._id)}>
+                        ADD to Cart
+                    </button>
                 </div>
             </div>
-
-
         </div>
     )
 }

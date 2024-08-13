@@ -1,5 +1,5 @@
 import React from 'react';
-import {useBoundStore} from "../../BoundStore";
+import {useBoundStore} from "../../stores/BoundStore";
 
 function BookPagination() {
     const {page, limit, booksTotal, nextPage, previousPage, setLimit} = useBoundStore();

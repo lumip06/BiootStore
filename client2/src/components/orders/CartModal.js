@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 
-import "./../../styles/CartModal.css"
-import {useBoundStore} from "../../BoundStore";
+import "../../styles/CartModal.css"
+import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
 import {getCartBooksInfos} from "../../API";
+import {calculateTotalPrice} from "./CartUtils";
 
 
 function CartModal({ onCloseModal }) {
 
     const {cartBooks,removeBookFromCart,getCartBookIds}=useBoundStore()
     const [bookInfos, setBookInfos] = useState({});
-
+    const totalPrice = calculateTotalPrice(cartBooks,bookInfos);
 
     useEffect(() => {
 
@@ -40,19 +41,6 @@ function CartModal({ onCloseModal }) {
 
         fetchBookInfos();
     }, []);
-
-
-    const calculateTotalPrice = () => {
-        return Object.entries(cartBooks).reduce((total, [bookId, quantity]) => {
-            const bookInfo = bookInfos[bookId];
-            if (bookInfo) {
-                return total + (bookInfo.price * quantity);
-            }
-            return total;
-        }, 0);
-    };
-
-    const totalPrice = calculateTotalPrice();
 
 
     return (

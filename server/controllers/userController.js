@@ -1,11 +1,11 @@
-const user = require("../models/userModel");
+const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 
 
 // Retrieve All Users (GET /users)
 exports.userList = asyncHandler(async (req, res, next) => {
     try {
-        const users = await user.find();
+        const users = await User.find();
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -28,14 +28,17 @@ exports.userGetOne = asyncHandler(async (req, res, next) => {
 });
 // Retrieve a Single User by username (GET /users/)
 exports.userGetUsername = asyncHandler(async (req, res, next) => {
-    const { username } = req.params; // Extracting ID from the request parameters
+    const { username } = req.params; // Extract username from the request parameters
 
     try {
-        const user = await user.findById(username); ///DE FACUT PT USERNAME
+        // Find user by username
+        const user = await User.findOne({ username: username });
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json(user); // Return the found book
+
+        res.json(user); // Return the found user
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -44,7 +47,7 @@ exports.userGetUsername = asyncHandler(async (req, res, next) => {
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
     const { username ,email ,password } = req.body;
 
-    const newUser = new user({
+    const newUser = new User({
         username,
         email,
         password

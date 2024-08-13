@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import BookItem from './BookItem';
-import {useBoundStore} from "../../BoundStore";
+import {useBoundStore} from "../../stores/BoundStore";
 import Counters from "./Counters";
 
 
