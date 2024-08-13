@@ -14,6 +14,7 @@ import BookPage from "./pages/BookPage";
 
 import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
+import UserPage from "./pages/UserPage";
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/books/:id" element={<BookPage/>}/>
                     <Route path="/orders" element={<CartPage/>}/>
+                    <Route path="/user" element={<UserPage/>}/>
 
                 </Routes>
                 <Footer/>

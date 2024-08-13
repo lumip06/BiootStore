@@ -7,7 +7,7 @@ import {calculateTotalPrice} from './CartUtils.js';
 
 function OrderPlacement({bookInfos}) {
 
-    const {cartBooks, emptyBookCart} = useBoundStore();
+    const {cartBooks, emptyBookCart,loggedInUser} = useBoundStore();
     const [open, setOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
@@ -27,13 +27,21 @@ function OrderPlacement({bookInfos}) {
     return (
         <div style={{marginTop: "20px", textAlign: "right", padding: "50px"}}>
             <h1>TOTAL: {totalPrice} </h1>
-            <button onClick={() => {
-                placeOrder(cartBooks, bookInfos);
-                emptyBookCart();
-                onOpenModal()
-
-            }} className="btn btn-outline-dark btn-lg">Order books
+            <button
+                onClick={() => {
+                    placeOrder(cartBooks, bookInfos);
+                    emptyBookCart();
+                    onOpenModal();
+                }}
+                className="btn btn-outline-dark btn-lg"
+                disabled={!loggedInUser}>
+                Order books
             </button>
+            {!loggedInUser && (
+                <span style={{color: 'red', fontSize: 'small', marginTop: '5px', display: 'block'}}>
+                    You need to be logged in to place an order.
+                </span>
+            )}
             <Modal open={open} onClose={handleCloseModal} center>
                 <div>
                     <h1>Order placed successfully! :D</h1>
