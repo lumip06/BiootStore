@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {getOneBook} from "../../API";
-import {useBoundStore} from "../../BoundStore";
+import {useBoundStore} from "../../stores/BoundStore";
 
 function BookInfo() {
     const {id} = useParams(); // Get the book ID from the URL
     const {addBookToCart}=useBoundStore();
+
 
     const {selectedBook,selectBook}=useBoundStore()
     useEffect(() => {
@@ -41,6 +42,7 @@ function BookInfo() {
             </div>
             <div className="col2">
                 <p>Price: {selectedBook[id].price}</p>
+                <p>In cart</p>
                 <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
                     <button  className="btn btn-outline-dark btn-lg" onClick={ () => addBookToCart(selectedBook[id]._id)}> ADD to Cart</button>
                 </div>

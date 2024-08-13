@@ -4,12 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import {Link} from "react-router-dom";
 
-import "./../styles/CommonComponents.css"
+import "../../styles/CommonComponents.css"
 
 import {Modal} from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import CartModal from "./books/CartModal";
-import {useBoundStore} from "../BoundStore";
+import CartModal from "../orders/CartModal";
+import {useBoundStore} from "../../stores/BoundStore";
 import {Badge} from "react-bootstrap";
 
 
@@ -32,7 +32,7 @@ function AppNavbar() {
                             aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <a className="navbar-brand mr-auto" href="/" style={{fontSize: '50px'}}>BiootStore</a>
+                    <a className="navbar-brand mr-auto" href="/client2/public" style={{fontSize: '50px'}}>BiootStore</a>
 
                     <div className="offcanvas offcanvas-end text-bg-dark" tabIndex="-1" id="offcanvasDarkNavbar"
                          aria-labelledby="offcanvasDarkNavbarLabel">

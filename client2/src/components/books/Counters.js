@@ -1,5 +1,5 @@
 import React from 'react';
-import {useBoundStore} from "../../BoundStore";
+import {useBoundStore} from "../../stores/BoundStore";
 function Counters(){
     const filterCount  = useBoundStore((state)=>state.filterCount());
     const booksTotal=useBoundStore((state)=>state.booksTotal);

@@ -1,17 +1,7 @@
 import {create} from 'zustand'
-import {filterBooks, getOneBook} from "./API";
-
 
 // Helper function to load cart from localStorage
-const loadCartFromLocalStorage = () => {
-    const cartData = localStorage.getItem('cartBooks');
-    return cartData ? JSON.parse(cartData) : {};
-}
-
-// Helper function to save cart to localStorage
-const saveCartToLocalStorage = (cartBooks) => {
-    localStorage.setItem('cartBooks', JSON.stringify(cartBooks));
-}
+import {filterBooks, getOneBook} from "../API";
 
 
 export const createBookStore = ((set, get) => ({
@@ -22,7 +12,7 @@ export const createBookStore = ((set, get) => ({
         filters: {},
         limit: 12,
         selectedBook: {},
-        cartBooks: loadCartFromLocalStorage(),   ///pairs of {idBook ,quantity}
+
 
         filterCount: () => {
             const {filterOptions: filterOptions} = get();
@@ -102,44 +92,6 @@ export const createBookStore = ((set, get) => ({
                 console.error('Failed to fetch books:', error);
             }
         }),
-        addBookToCart: (bookId) => set(state => {
-
-            const newBookCart = {...state.cartBooks};
-
-            if (newBookCart[bookId]) {
-                newBookCart[bookId] += 1;
-            } else {
-                newBookCart[bookId] = 1;
-            }
-
-
-            saveCartToLocalStorage(newBookCart);
-
-            set({cartBooks: newBookCart});
-            return {
-                cartBooks: newBookCart,
-            };
-        }),
-        emptyBookCart:()=>set(state=>{
-            set({cartBooks: {}});
-            return {
-                cartBooks: {},
-            };
-        }),
-        removeBookFromCart: (bookId) => set(state => {
-
-            const newBookCart = {...state.cartBooks};
-
-            delete newBookCart[bookId];
-
-
-            saveCartToLocalStorage(newBookCart);
-
-            set({cartBooks: newBookCart});
-            return {
-                cartBooks: newBookCart,
-            };
-        }),
         toggleFilter: (checkboxId, checkboxName, isChecked) => {
             set((state) => {
                 const newFilter = {...state.filters};
@@ -166,9 +118,3 @@ export const createBookStore = ((set, get) => ({
 
     })
 );
-
-
-export const useBoundStore = create((...a) => ({
-        ...createBookStore(...a)
-    }
-))

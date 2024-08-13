@@ -6,7 +6,7 @@ import React from "react";
 
 
 import {useNavigate} from 'react-router-dom';
-import OrderInfo from "../components/books/OrderInfo";
+import OrderInfo from "../components/orders/OrderInfo";
 
 function CartPage() {
     const navigate = useNavigate();

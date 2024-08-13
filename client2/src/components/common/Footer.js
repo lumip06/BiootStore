@@ -1,6 +1,6 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/CommonComponents.css"
+import "../../styles/CommonComponents.css"
 import {Link} from "react-router-dom";
 
 function Footer() {

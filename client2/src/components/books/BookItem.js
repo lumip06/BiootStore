@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import "./../../styles/BookItem.css"
-import {useBoundStore} from "../../BoundStore";
+import {useBoundStore} from "../../stores/BoundStore";
 
 function BookItem({book, index, view}) {
     const {addBookToCart}=useBoundStore();
