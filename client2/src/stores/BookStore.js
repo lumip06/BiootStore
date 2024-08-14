@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 
-// Helper function to load cart from localStorage
+
 import {filterBooks, getOneBook} from "../api/BookAPI";
 
 
@@ -58,7 +58,7 @@ export const createBookStore = ((set, get) => ({
                 delete filters["skip"];
 
 
-                const response = await filterBooks(filters, state.limit, state.page);
+                const response = await filterBooks(filters, state.limit);
                 const newBooks = response.data.books || [];
                 const booksTotal = response.data.booksTotal;
 
@@ -78,7 +78,7 @@ export const createBookStore = ((set, get) => ({
 
 
                 const response = await getOneBook(id);
-                const newBook = await response.json() || [];
+                const newBook = await response || [];
                 console.log("new book selected " + newBook);
 
 

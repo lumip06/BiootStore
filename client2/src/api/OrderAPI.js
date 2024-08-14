@@ -1,53 +1,40 @@
 import axios from "axios";
-
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 
 export const getCartBooksInfos = async (ids) => {
     try {
+        const response = await axios.get(`${serverUrl}books/infos`, {
+            params: { ids: ids.join(',') }
+        });
 
-
-        // Fetch book data by passing ids in the query parameter
-        const response = await fetch(`${serverUrl}books/infos?ids=${ids.join(',')}`);
-
-        // Check if the response is successful
-        if (!response.ok) {
-            throw new Error(`Failed to fetch books: ${response.statusText}`);
-        }
-
-        return response.json();
-
+        return response.data;
     } catch (error) {
-        console.error('Error fetching book properties:', error); // Log the error object
-        throw error; // Rethrow error if needed
+        console.error('Error fetching book properties:', error);
+        throw error;
     }
 };
 
 export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
-    const { items } = createOrderItems(cartBooks, booksInfos); // Destructure to get the items array
+    const { items } = createOrderItems(cartBooks, booksInfos);
     const userId =loggedInUser;
 
     try {
-        // Log the payload to ensure it is correct
-        console.log('Sending order items:', items); // No need to wrap in an object
-        console.log('Sending order userId:', userId); // No need to wrap in an object
-        const response = await fetch(`${serverUrl}orders`, {
-            method: 'POST',
+
+        const response = await axios.post(`${serverUrl}orders`, {
+            userId,
+            items,
+        }, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId,items }), // Correctly sending the items array
         });
 
-        if (!response.ok) {
-            throw new Error(`Failed to create order: ${response.statusText}`);
-        }
-
-        return await response.json();
+        return response.data;
     } catch (error) {
         console.error('Error creating order:', error);
-        throw error; // Rethrow error if needed
+        throw error;
     }
 
 };
@@ -64,28 +51,21 @@ export const createOrderItems =  (cartBooks,booksInfos) => {
             };
             items.push(item);
         });
-        return { items };  // Return an object with the items array
+        return { items };
     } else {
-        return { items: [] };  // Return an empty items array if there are no items
+        return { items: [] };
     }
 };
 
 export const getOrdersForUser = async (id) => {
     try {
 
+        const response = await axios.get(`${serverUrl}orders/user/${id}`);
 
-        // Fetch book data by passing ids in the query parameter
-        const response = await fetch(`${serverUrl}orders/user/${id}`);
-
-        // Check if the response is successful
-        if (!response.ok) {
-            throw new Error(`Failed to fetch books: ${response.statusText}`);
-        }
         console.log(response);
-        return response.json();
-
+        return response.data;
     } catch (error) {
-        console.error('Error fetching book properties:', error); // Log the error object
-        throw error; // Rethrow error if needed
+        console.error('Error fetching orders for user:', error);
+        throw error;
     }
 };

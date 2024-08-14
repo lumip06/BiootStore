@@ -3,10 +3,9 @@ import {useBoundStore} from "../../stores/BoundStore";
 
 function BookPagination() {
     const {page, limit, booksTotal, nextPage, previousPage, setLimit} = useBoundStore();
-    // Calculate the total number of pages
+
     const totalPages = Math.ceil(booksTotal / limit);
-    console.log("book" + booksTotal)
-    console.log(limit)
+
     return (
         <div id="pagination">
             <div>

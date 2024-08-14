@@ -17,7 +17,7 @@ export const countBooksInCart = (cartBooks) => {
     let bookCount = 0;
 
     Object.values(cartBooks).forEach(book => {
-        // Ensure quantity is a valid number, default to 0 if not
+
         const quantity = Number(book) || 0;
         bookCount += quantity;
     });

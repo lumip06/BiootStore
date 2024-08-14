@@ -1,19 +1,19 @@
 const loadUserFromLocalStorage = () => {
     const loggedInUser = localStorage.getItem('loggedInUser');
     try {
-        return loggedInUser ? JSON.parse(loggedInUser) : null; // Return null if no user is found
+        return loggedInUser ? JSON.parse(loggedInUser) : null;
     } catch (error) {
         console.error("Error parsing JSON from localStorage", error);
-        return null; // Return null if there's an error parsing JSON
+        return null;
     }
 }
 
-// Helper function to save user to localStorage
+
 const saveUserToLocalStorage = (loggedInUser) => {
     if (loggedInUser !== null && loggedInUser !== undefined) {
         localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
     } else {
-        localStorage.removeItem('loggedInUser'); // Remove from storage if user is null or undefined
+        localStorage.removeItem('loggedInUser');
     }
 }
 
@@ -23,15 +23,15 @@ export const createUserStore = ((set, get) => ({
     setLoggedInUser: (newLoggedInUser) => set((state) => {
         set({ loggedInUser: newLoggedInUser });
         console.log(newLoggedInUser);
-        saveUserToLocalStorage(newLoggedInUser); // Pass the user data to saveUserToLocalStorage
+        saveUserToLocalStorage(newLoggedInUser);
         return { loggedInUser: newLoggedInUser };
     }),
 
     logoutUser: () => set(state => {
-        const emptyUser = null; // Use null to represent no user
+        const emptyUser = null;
         set({ loggedInUser: emptyUser });
         console.log("logout");
-        saveUserToLocalStorage(emptyUser); // Clear the user in localStorage
+        saveUserToLocalStorage(emptyUser);
         return {
             loggedInUser: emptyUser,
         };

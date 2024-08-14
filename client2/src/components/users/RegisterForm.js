@@ -6,7 +6,7 @@ import {useBoundStore} from "../../stores/BoundStore";
 
 function RegisterForm() {
     const {setLoggedInUser}=useBoundStore();
-    const [errors, setErrors] = useState({}); // Error state
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
@@ -15,14 +15,19 @@ function RegisterForm() {
         password2: '',
         agreement: false,
     });
-
+    const fields = [
+        { label: 'Username', type: 'text', name: 'username', placeholder: 'Username' },
+        { label: 'Email', type: 'email', name: 'email', placeholder: 'Email' },
+        { label: 'Password', type: 'password', name: 'password1', placeholder: 'Password' },
+        { label: 'Password once again', type: 'password', name: 'password2', placeholder: 'Password' }
+    ];
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
             [name]: type === 'checkbox' ? checked : value,
         });
-        // Clear the error for the field being updated
+
         setErrors({
             ...errors,
             [name]: '',
@@ -30,7 +35,7 @@ function RegisterForm() {
     };
     const validateRegisterForm=()=>{
         const newErrors = {};
-        // Validate fields
+
         if (!formData.username) {
             newErrors.username = 'Username is required.';
         }
@@ -75,63 +80,28 @@ function RegisterForm() {
         <form id="register-form" onSubmit={handleRegisterSubmit} autoComplete="on">
             <div className="d-grid gap-2 col-6 mx-auto">
                 <div className="form-group">
-
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="username"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                    {errors.username && <small className="text-danger">{errors.username}</small>} {/* Error message */}
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                    {errors.email && <small className="text-danger">{errors.email}</small>} {/* Error message */}
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password1">Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password1"
-                        name="password1"
-                        placeholder="Password"
-                        value={formData.password1}
-                        onChange={handleChange}
-                    />
-                    {errors.password1 && <small className="text-danger">{errors.password1}</small>} {/* Error message */}
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password2">Password once again</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password2"
-                        name="password2"
-                        placeholder="Password"
-                        value={formData.password2}
-                        onChange={handleChange}
-                    />
-                    {errors.password2 && <small className="text-danger">{errors.password2}</small>} {/* Error message */}
+                    {fields.map((field, index) => (
+                        <div key={index}>
+                            <label htmlFor={field.name}>{field.label}</label>
+                            <input
+                                type={field.type}
+                                className="form-control"
+                                id={field.name}
+                                name={field.name}
+                                placeholder={field.placeholder}
+                                value={formData[field.name]}
+                                onChange={handleChange}
+                            />
+                            {errors[field.name] &&
+                                <small className="text-danger">{errors[field.name]}</small>}
+                        </div>
+                    ))}
                     <small id="passwordHelpBlock" className="form-text text-muted">
                         Your password must be 8-20 characters long, contain letters and numbers, and must not contain
                         spaces, special characters, or emoji.
                     </small>
                 </div>
+
                 <div className="form-check mb-2">
                     <input
                         className="form-check-input"
@@ -144,8 +114,10 @@ function RegisterForm() {
                     <label className="form-check-label" htmlFor="agreement">
                         I Agree to the terms.
                     </label>
-                    {errors.agreement && <small className="text-danger">{errors.agreement}</small>} {/* Error message */}
+                    {errors.agreement &&
+                        <small className="text-danger">{errors.agreement}</small>}
                 </div>
+
                 <button type="submit" className="btn btn-outline-dark btn-lg" id="submit">Register</button>
                 <Link to="/login" className="btn btn-outline-dark btn-lg" id="new-user-button">Already a User?</Link>
             </div>

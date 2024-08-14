@@ -11,7 +11,7 @@ function OrderPlacement({bookInfos}) {
     const [open, setOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
-    // console.log(loggedInUser.userId)
+
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const handleCloseModal = () => {
