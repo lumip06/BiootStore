@@ -4,14 +4,13 @@ const loadCartFromLocalStorage = () => {
     return cartData ? JSON.parse(cartData) : {};
 }
 
-// Helper function to save cart to localStorage
 const saveCartToLocalStorage = (cartBooks) => {
     localStorage.setItem('cartBooks', JSON.stringify(cartBooks));
 }
 
 
 export const createOrderStore = ((set, get) => ({
-    cartBooks: loadCartFromLocalStorage(),   ///pairs of {idBook ,quantity}
+    cartBooks: loadCartFromLocalStorage(),
     addBookToCart: (bookId) => set(state => {
 
         const newBookCart = {...state.cartBooks};

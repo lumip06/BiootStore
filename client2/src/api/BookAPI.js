@@ -2,8 +2,8 @@ import axios from "axios";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-export const filterBooks = async (filters, limit, page) => {
-
+//searches for books depending on the filters chosen
+export const filterBooks = async (filters, limit) => {
     filters["limit"] = limit;
 
     return await axios.get(`${serverUrl}books/search?`, {
@@ -12,27 +12,28 @@ export const filterBooks = async (filters, limit, page) => {
     )
 };
 
+//gets filters values from the db to create the filters
 export const getBookFilters = async () => {
     try {
         const response = await axios.get(`${serverUrl}books/properties`);
-        return response.data; // Return the data from the response
+        return response.data;
     } catch (error) {
-        console.error('Error fetching book properties:', error); // Log the error object
+        console.error('Error fetching book properties:', error);
         console.error('Error details:', error.response ? error.response.data : error.message);
-        throw error; // Rethrow error if needed
+        throw error;
     }
 };
 
-
+//searches book with id
 export const getOneBook = async (id) => {
     try {
-        // Fetch specific book data
-        return await fetch(`${serverUrl}books/${id}`);
 
+        const response = await axios.get(`${serverUrl}books/${id}`);
+
+        return response.data;
     } catch (error) {
-        console.error('Error fetching book properties:', error); // Log the error object
-        console.error('Error details:', error.response ? error.response.data : error.message);
-        throw error; // Rethrow error if needed
+        console.error('Error fetching book properties:', error);
+        throw error;
     }
 };
 

@@ -5,6 +5,7 @@ import {useBoundStore} from "../stores/BoundStore";
 import '../styles/UserPage.css'
 import {getBookFilters} from "../api/BookAPI";
 import {getOrdersForUser} from "../api/OrderAPI";
+import OrderList from "../components/orders/OrderList";
 
 function UserPage() {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ function UserPage() {
         };
 
         fetchUserOrders();
-    }, []);
+    }, [loggedInUser.userId]);
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -50,43 +51,11 @@ function UserPage() {
             <div className="userDetails">
                 <div className="col1">
                     <p>ORDERS: </p>
-                    <table border="1" cellPadding={20}>
-                        <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Total Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {userOrders.length > 0 ? (
-                            userOrders.map((order) => (
-                                <tr key={order._id}>
-                                    <td>{order.userId}</td>
-                                    <td>{new Date(order.date).toLocaleDateString()}</td>
-                                    <td>
-                                        <ul>
-                                            {order.items.map((item, index) => (
-                                                <li key={index}>
-                                                    Book ID: {item.bookId}, Quantity: {item.quantity},
-                                                    Price: {item.price}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        {order.items.reduce((total, item) => total + item.price * item.quantity, 0)}
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="4">No orders found</td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
+                    {userOrders.length === 0 ? (
+                        <p>No orders found.</p>
+                    ) : (
+                        <OrderList userOrders={userOrders} />
+                    )}
                 </div>
                 <div className="col2">
                     <h1>Username:{loggedInUser.username}</h1>
