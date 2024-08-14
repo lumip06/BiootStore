@@ -5,42 +5,53 @@ import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
 import {getCartBooksInfos} from "../../api/OrderAPI";
 import {calculateTotalPrice} from "./CartUtils";
+import {useFetchRequest} from "../../api/CustomHook";
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function CartModal({ onCloseModal }) {
 
-    const {cartBooks,removeBookFromCart,getCartBookIds}=useBoundStore()
+    const { cartBooks, removeBookFromCart, getCartBookIds } = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
-    const totalPrice = calculateTotalPrice(cartBooks,bookInfos);
+    const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
+    const { apiCall, loading, error } = useFetchRequest();
 
     useEffect(() => {
-
-        const fetchBookInfos = async () => {
+        const fetchBookInfos = () => {
             const cartBookIds = getCartBookIds();
 
-
             if (cartBookIds.length > 0) {
-                try {
-                    const booksData = await getCartBooksInfos(cartBookIds);
-
-
-                    const booksObject = booksData.reduce((acc, book) => {
-                        acc[book._id] = book;
-                        return acc;
-                    }, {});
-
-                    setBookInfos(booksObject);
-                } catch (error) {
-                    console.error('Failed to fetch book infos:', error);
-                }
+                apiCall(
+                    `${serverUrl}books/infos`,
+                    'GET',
+                    null,
+                    [
+                        (booksData) => {
+                            const booksObject = booksData.reduce((acc, book) => {
+                                acc[book._id] = book;
+                                return acc;
+                            }, {});
+                            setBookInfos(booksObject);
+                        }
+                    ], // Success callback
+                    [console.error],
+                    { ids: cartBookIds.join(',') }
+                );
             } else {
-
                 setBookInfos({});
             }
         };
 
         fetchBookInfos();
-    }, []);
+    }, [getCartBookIds]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
 
     return (

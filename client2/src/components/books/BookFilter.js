@@ -3,42 +3,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import {getBookFilters} from "../../api/BookAPI";
 import BookFilterOption from "./BookFilterOption";
+import {useFetchRequest} from "../../api/CustomHook";
 
-
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 const BookFilter = () => {
 
     const [bookProperties, setBookProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { apiCall, loading } = useFetchRequest();
     const bookAttributes = ["genres", "prices", "publishers", "covers"];
+
     useEffect(() => {
-
-
-        const fetchBookFilters = async () => {
-            setLoading(true);
-            try {
-                const data = await getBookFilters();
-
-                setBookProperties(data);
-
-            } catch (err) {
-
-                setError(err);
-
-            } finally {
-
-                setLoading(false);
-
-            }
-
+        const fetchBookFilters = () => {
+            apiCall(
+                `${serverUrl}books/properties`,
+                'GET',
+                null,
+                [setBookProperties],
+                [setError]
+            );
         };
 
         fetchBookFilters();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+
 
     if (error) {
         return <div>Error: {error.message}</div>;
