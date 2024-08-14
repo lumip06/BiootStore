@@ -65,8 +65,8 @@ function RegisterForm() {
         }
 
         try {
-            await registerUser(formData);
-            const loggedUser = await loginUser(formData.username, formData.password1);
+            const loggedUser=await registerUser(formData);
+
             setLoggedInUser({ userId: loggedUser._id, username: loggedUser.username, email: loggedUser.email, password: loggedUser.password });
             navigate("/");
         } catch (error) {
