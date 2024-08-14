@@ -22,6 +22,15 @@ const itemSchema = new Schema({
 
 // Define the schema for an Order
 const orderSchema = new Schema({
+    userId:{
+        type:String,
+        required:true,
+        trim: true
+    },
+    date: {
+        type: Date,
+        default: Date.now // Automatically set the date to the current date and time
+    },
     items: {
         type: [itemSchema], // Use the item schema as the type for items
         required: true,

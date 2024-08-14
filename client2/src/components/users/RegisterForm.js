@@ -32,7 +32,7 @@ function RegisterForm() {
             const loggedUser = await loginUser(formData.username, formData.password1);
 
             console.log("user:" + loggedUser.username)
-            setLoggedInUser({username: loggedUser.username, email: loggedUser.email, password: loggedUser.password});
+            setLoggedInUser({userId:loggedUser._id,username: loggedUser.username, email: loggedUser.email, password: loggedUser.password});
             navigate("/"); // This will programmatically navigate to the main page
         }
 
