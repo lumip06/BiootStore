@@ -17,7 +17,7 @@ exports.userGetOne = asyncHandler(async (req, res, next) => {
     const { id } = req.params; // Extracting ID from the request parameters
 
     try {
-        const user = await user.findById(id);
+        const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -69,7 +69,7 @@ exports.userDelete = asyncHandler(async (req, res, next) => {
     const  id  = req.params.id;
 
     try {
-        const user = await user.findById(id);
+        const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

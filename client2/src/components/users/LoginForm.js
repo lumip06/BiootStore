@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {loginUser} from "../../api/UserAPI";
 import {useBoundStore} from "../../stores/BoundStore";
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ function LoginForm() {
         password: '',
         remember: false,
     });
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
@@ -19,21 +20,47 @@ function LoginForm() {
             [name]: type === 'checkbox' ? checked : value,
         });
     };
-    const handleSubmit =  async (e) => {
-        //TODO check if user already logged in?
+    const validateLoginForm=()=>{
+        const newErrors = {};
+
+        if (!formData.username) {
+            newErrors.username = 'Username is required.';
+        }
+
+        if (!formData.password) {
+            newErrors.password = 'Password is required.';
+        }
+
+        return newErrors;
+    }
+    const handleLoginSubmit =  async (e) => {
+
         e.preventDefault();
-        console.log("entering submit")
+        const newErrors = validateLoginForm()
 
-        console.log(formData);
-        const loggedUser = await loginUser(formData.username, formData.password);
 
-        console.log("user:" + loggedUser.username)
-        setLoggedInUser({username: loggedUser.username, email:loggedUser.email,password: loggedUser.password});
-        navigate("/"); // This will programmatically navigate to the main page
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        try {
+            //todo aici probabil ar trebui sa returneze altceva nu error daca nu gaseste?
+            const loggedUser = await loginUser(formData.username, formData.password);
+
+            setLoggedInUser({userId:loggedUser._id,username: loggedUser.username, email:loggedUser.email,password: loggedUser.password});
+            navigate("/");
+
+        } catch (error) {
+            console.error('Registration failed:', error);
+            const newErrors = {};
+            newErrors.notFound="User does not exist";
+            setErrors(newErrors);
+        }
 
     };
     return (
-        <form id="register-form" onSubmit={handleSubmit} autoComplete="on">
+        <form id="register-form" onSubmit={handleLoginSubmit} autoComplete="on">
             <div className="d-grid gap-2 col-6 mx-auto">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
@@ -46,6 +73,7 @@ function LoginForm() {
                         value={formData.username}
                         onChange={handleChange}
                     />
+                    {errors.username && <small className="text-danger">{errors.username}</small>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
@@ -58,6 +86,7 @@ function LoginForm() {
                         value={formData.password}
                         onChange={handleChange}
                     />
+                    {errors.password && <small className="text-danger">{errors.password}</small>}
                 </div>
 
                 <div className="form-check mb-2">
@@ -72,10 +101,13 @@ function LoginForm() {
                     <label className="form-check-label" htmlFor="remember">
                         Remember me
                     </label>
+
                 </div>
 
                 <button type="submit" className="btn btn-outline-dark btn-lg" value="Submit" id="submit">Login</button>
                 <Link to="/register" className="btn btn-outline-dark btn-lg" id="new-user-button">New User?</Link>
+                {errors.notFound && <small className="text-danger">{errors.notFound}</small>}
+
             </div>
         </form>
     );

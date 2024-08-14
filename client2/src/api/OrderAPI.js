@@ -24,19 +24,20 @@ export const getCartBooksInfos = async (ids) => {
     }
 };
 
-export const placeOrder = async (cartBooks,booksInfos) => {
+export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
     const { items } = createOrderItems(cartBooks, booksInfos); // Destructure to get the items array
-
+    const userId =loggedInUser;
 
     try {
         // Log the payload to ensure it is correct
         console.log('Sending order items:', items); // No need to wrap in an object
+        console.log('Sending order userId:', userId); // No need to wrap in an object
         const response = await fetch(`${serverUrl}orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ items }), // Correctly sending the items array
+            body: JSON.stringify({ userId,items }), // Correctly sending the items array
         });
 
         if (!response.ok) {
@@ -69,3 +70,22 @@ export const createOrderItems =  (cartBooks,booksInfos) => {
     }
 };
 
+export const getOrdersForUser = async (id) => {
+    try {
+
+
+        // Fetch book data by passing ids in the query parameter
+        const response = await fetch(`${serverUrl}orders/user/${id}`);
+
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`Failed to fetch books: ${response.statusText}`);
+        }
+        console.log(response);
+        return response.json();
+
+    } catch (error) {
+        console.error('Error fetching book properties:', error); // Log the error object
+        throw error; // Rethrow error if needed
+    }
+};
