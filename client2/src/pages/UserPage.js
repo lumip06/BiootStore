@@ -6,35 +6,35 @@ import '../styles/UserPage.css'
 import {getBookFilters} from "../api/BookAPI";
 import {getOrdersForUser} from "../api/OrderAPI";
 import OrderList from "../components/orders/OrderList";
+import {useFetchRequest} from "../api/CustomHook";
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function UserPage() {
+    const { loggedInUser } = useBoundStore();
+    const [userOrders, setUserOrders] = useState([]);
+    const { apiCall, loading, error } = useFetchRequest();
     const navigate = useNavigate();
-    const {loggedInUser}=useBoundStore();
-    const [userOrders,setUserOrders] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     useEffect(() => {
-        const fetchUserOrders = async () => {
-            setLoading(true);
-            try {
-                const data = await getOrdersForUser(loggedInUser.userId);
-                console.log(data);
-                setUserOrders(data);
-
-            } catch (err) {
-
-                setError(err);
-
-            } finally {
-
-                setLoading(false);
-
+        const fetchUserOrders = () => {
+            if (loggedInUser.userId) {
+                apiCall(
+                    `${serverUrl}orders/user/${loggedInUser.userId}`, // API URL
+                    'GET', // HTTP method
+                    null, // No body for GET request
+                    [
+                        (data) => {
+                            console.log(data); // Log the fetched data
+                            setUserOrders(data); // Set the user orders
+                        }
+                    ], // Success callback
+                    [console.error] // Error callback
+                );
             }
-
         };
 
         fetchUserOrders();
     }, [loggedInUser.userId]);
+
     if (loading) {
         return <div>Loading...</div>;
     }

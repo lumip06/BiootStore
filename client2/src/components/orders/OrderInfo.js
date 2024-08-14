@@ -7,30 +7,37 @@ import 'reactjs-popup/dist/index.css';
 
 import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
+import {useFetchRequest} from "../../api/CustomHook";
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function OrderInfo() {
-    let heading = ["Produs", "Disponibilitate", "Buc.", "Pret", "Total"];
-    const {cartBooks,  getCartBookIds} = useBoundStore()
+    const { cartBooks, getCartBookIds } = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
-
+    const { apiCall, loading, error } = useFetchRequest();
+    let heading = ["Produs", "Disponibilitate", "Buc.", "Pret", "Total"];
 
     useEffect(() => {
-        const fetchBookInfos = async () => {
+        const fetchBookInfos = () => {
             const cartBookIds = getCartBookIds();
 
-
             if (cartBookIds.length > 0) {
-                try {
-                    const booksData = await getCartBooksInfos(cartBookIds);
-                    const booksObject = booksData.reduce((acc, book) => {
-                        acc[book._id] = book;
-                        return acc;
-                    }, {});
-                    setBookInfos(booksObject);
-                } catch (error) {
-                    console.error('Failed to fetch book infos:', error);
-                }
+                apiCall(
+                    `${serverUrl}books/infos`, // API URL
+                    'GET', // HTTP method
+                    null, // No body for GET request
+                    [
+                        (booksData) => {
+                            const booksObject = booksData.reduce((acc, book) => {
+                                acc[book._id] = book;
+                                return acc;
+                            }, {});
+                            setBookInfos(booksObject);
+                        }
+                    ], // Success callback
+                    [console.error], // Error callback
+                    { ids: cartBookIds.join(',') } // Params object
+                );
             } else {
                 setBookInfos({});
             }
@@ -38,6 +45,14 @@ function OrderInfo() {
 
         fetchBookInfos();
     }, [cartBooks]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
 
     return (

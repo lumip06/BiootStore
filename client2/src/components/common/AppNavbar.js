@@ -59,11 +59,6 @@ function AppNavbar() {
                         </div>
                     </div>
 
-                    {/*<form className="d-flex" role="search">*/}
-                    {/*    <input className="form-control-lg me-2" type="search" placeholder="Search" aria-label="Search"*/}
-                    {/*           style={{width: '500px'}}/>*/}
-                    {/*    <button className="btn btn-outline-light" type="submit">Search</button>*/}
-                    {/*</form>*/}
 
                     <UserActions/>
 
