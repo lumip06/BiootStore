@@ -45,10 +45,16 @@ function LoginForm() {
         }
 
         try {
-            //todo aici probabil ar trebui sa returneze altceva nu error daca nu gaseste?
-            const loggedUser = await loginUser(formData.username, formData.password);
-
-            setLoggedInUser({userId:loggedUser._id,username: loggedUser.username, email:loggedUser.email,password: loggedUser.password});
+            const response = await loginUser(formData.username, formData.password); // Assume this returns { user, token }
+            if (response.token) {
+                setLoggedInUser(
+                    {
+                        userId: response.user._id,
+                        username: response.user.username,
+                        email: response.user.email
+                    }, response.token);
+                console.log(response.token)
+            }
             navigate("/");
 
         } catch (error) {

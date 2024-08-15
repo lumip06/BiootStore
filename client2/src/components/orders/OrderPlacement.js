@@ -29,7 +29,7 @@ function OrderPlacement({bookInfos}) {
             <h1>TOTAL: {totalPrice} </h1>
             <button
                 onClick={() => {
-                    placeOrder(cartBooks, bookInfos,loggedInUser.userId);
+                    placeOrder(cartBooks, bookInfos,loggedInUser);
                     emptyBookCart();
                     onOpenModal();
                 }}

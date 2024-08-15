@@ -19,11 +19,16 @@ function OrderInfo() {
 
     useEffect(() => {
         const fetchBookInfos = () => {
-            const cartBookIds = getCartBookIds();
+            const cartBookIds = getCartBookIds(); // Function to get book IDs in the cart
 
             if (cartBookIds.length > 0) {
+                const token = localStorage.getItem('token'); // Retrieve token from local storage
+
+                // Create query parameters
+                const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
+
                 apiCall(
-                    `${serverUrl}books/infos`, // API URL
+                    `${serverUrl}books/infos?${queryParams}`, // Append query parameters to the API URL
                     'GET', // HTTP method
                     null, // No body for GET request
                     [
@@ -32,19 +37,19 @@ function OrderInfo() {
                                 acc[book._id] = book;
                                 return acc;
                             }, {});
-                            setBookInfos(booksObject);
+                            setBookInfos(booksObject); // Set the state with fetched book info
                         }
                     ], // Success callback
                     [console.error], // Error callback
-                    { ids: cartBookIds.join(',') } // Params object
+                    token // Pass the token for authorization
                 );
             } else {
-                setBookInfos({});
+                setBookInfos({}); // Reset book info if no book IDs are present
             }
         };
 
         fetchBookInfos();
-    }, [cartBooks]);
+    }, [cartBooks]); // Dependency array
 
     if (loading) {
         return <div>Loading...</div>;

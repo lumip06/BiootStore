@@ -56,24 +56,45 @@ function RegisterForm() {
 
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
-        const newErrors = validateRegisterForm()
 
-
+        // Validate the form data and set errors if any
+        const newErrors = validateRegisterForm();
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
 
         try {
-            const loggedUser=await registerUser(formData);
+            // Register the user and get the loggedUser and token
+            const response = await registerUser(formData); // Adjust this line if necessary
+            const { user: loggedUser, token } = response; // Ensure the destructuring matches your API response
 
-            setLoggedInUser({ userId: loggedUser._id, username: loggedUser.username, email: loggedUser.email, password: loggedUser.password });
-            navigate("/");
+            // Check if the user and token are available
+            if (loggedUser && token) {
+                // Set the logged-in user and token in the store
+                setLoggedInUser(
+                    {
+                        userId: loggedUser._id,
+                        username: loggedUser.username,
+                        email: loggedUser.email,
+                    },
+                    token
+                );
+
+                // Optionally store the token in localStorage for future use
+                localStorage.setItem('token', token);
+
+                // Redirect to the home page or another page as needed
+                navigate("/"); // Redirect to the home page after registration
+            } else {
+                // Handle case where user or token is not returned
+                setErrors({ general: 'Registration successful, but unable to retrieve user details. Please try again.' });
+            }
         } catch (error) {
-            console.error('Registration failed:', error);
+            console.error('Registration failed:', error.response ? error.response.data : error.message);
+            // Optionally set error state to show a message to the user
+            setErrors({ general: 'Registration failed. Please try again.' });
         }
-
-
     };
     return (
 
