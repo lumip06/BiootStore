@@ -6,12 +6,13 @@ import '../styles/UserPage.css'
 
 import OrderList from "../components/orders/OrderList";
 import {useFetchRequest} from "../api/CustomHook";
+
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function UserPage() {
-    const { loggedInUser, getToken } = useBoundStore();
+    const {loggedInUser, getToken} = useBoundStore();
     const [userOrders, setUserOrders] = useState([]);
-    const { apiCall, loading, error } = useFetchRequest();
+    const {apiCall, loading, error} = useFetchRequest();
     const navigate = useNavigate();
     const token = getToken();
     console.log(loggedInUser.userId)
@@ -19,22 +20,22 @@ function UserPage() {
     useEffect(() => {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
-                const token = getToken(); // Get the JWT token from the store
-                // Client-side
+                const token = getToken();
+
                 console.log("Token being sent:", token);
-                // Call apiCall with the token
+
                 apiCall(
-                    `${serverUrl}orders/user/${loggedInUser.userId}`, // API URL
-                    'GET', // HTTP method
-                    null, // No body for GET request
+                    `${serverUrl}orders/user/${loggedInUser.userId}`,
+                    'GET',
+                    null,
                     [
                         (data) => {
-                            console.log(data); // Log the fetched data
-                            setUserOrders(data); // Set the user orders
+                            console.log(data);
+                            setUserOrders(data);
                         }
-                    ], // Success callback
-                    [console.error], // Error callback
-                    token // Pass the JWT token here
+                    ],
+                    [console.error],
+                    token
                 );
             }
         };
@@ -58,11 +59,8 @@ function UserPage() {
             <div className="userDetails">
                 <div className="col1">
                     <p>ORDERS: </p>
-                    {userOrders.length === 0 ? (
-                        <p>No orders found.</p>
-                    ) : (
-                        <OrderList userOrders={userOrders} />
-                    )}
+                    <OrderList userOrders={userOrders}/>
+
                 </div>
                 <div className="col2">
                     <h1>Username:{loggedInUser.username}</h1>

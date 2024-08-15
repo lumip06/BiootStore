@@ -3,7 +3,6 @@ import {useParams} from "react-router-dom";
 
 import {useBoundStore} from "../../stores/BoundStore";
 import {checkBookInCart} from "../orders/CartUtils";
-import {useFetchRequest} from "../../api/CustomHook";
 
 function BookInfo() {
     const { id } = useParams();

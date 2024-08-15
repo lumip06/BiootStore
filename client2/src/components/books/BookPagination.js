@@ -24,10 +24,11 @@ function BookPagination() {
                 id="pagelimit"
                 className="btn btn-outline-dark"
                 style={{marginRight: '10px'}}
+                value={limit}
                 onChange={(e) => setLimit(e.target.value)}>
                 <option value="6">6</option>
                 <option value="9">9</option>
-                <option value="12" selected="selected">12</option>
+                <option value="12" >12</option>
                 <option value="15">15</option>
             </select>
 

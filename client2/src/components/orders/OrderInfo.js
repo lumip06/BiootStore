@@ -19,37 +19,37 @@ function OrderInfo() {
 
     useEffect(() => {
         const fetchBookInfos = () => {
-            const cartBookIds = getCartBookIds(); // Function to get book IDs in the cart
+            const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-                const token = localStorage.getItem('token'); // Retrieve token from local storage
+                const token = localStorage.getItem('token');
 
-                // Create query parameters
+
                 const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
 
                 apiCall(
-                    `${serverUrl}books/infos?${queryParams}`, // Append query parameters to the API URL
-                    'GET', // HTTP method
-                    null, // No body for GET request
+                    `${serverUrl}books/infos?${queryParams}`,
+                    'GET',
+                    null,
                     [
                         (booksData) => {
                             const booksObject = booksData.reduce((acc, book) => {
                                 acc[book._id] = book;
                                 return acc;
                             }, {});
-                            setBookInfos(booksObject); // Set the state with fetched book info
+                            setBookInfos(booksObject);
                         }
                     ], // Success callback
-                    [console.error], // Error callback
-                    token // Pass the token for authorization
+                    [console.error],
+                    token
                 );
             } else {
-                setBookInfos({}); // Reset book info if no book IDs are present
+                setBookInfos({});
             }
         };
 
         fetchBookInfos();
-    }, [cartBooks]); // Dependency array
+    }, [cartBooks]);
 
     if (loading) {
         return <div>Loading...</div>;

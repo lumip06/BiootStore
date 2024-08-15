@@ -27,20 +27,24 @@ function UserActions() {
         <div id="user-space" className="btn-group btn-group-lg" role="group"
              aria-label="Large button group">
 
-            <Link to="/register" className="btn btn-outline-light btn-lg">Register</Link>
+
+
             {!loggedInUser && (
+                <div>
+                <Link to="/register" className="btn btn-outline-light btn-lg">Register</Link>
                 <Link to="/login" className="btn btn-outline-light btn-lg">Login</Link>
+                </div>
             )}
 
             {loggedInUser && (
+               <div>
                 <Link to="/" className="btn btn-outline-light btn-lg" onClick={handleLogout}>
                     Logout
                 </Link>
-            )}
-            {loggedInUser && (
                 <Link to="/user" className="btn btn-outline-light btn-lg">
                     Profile
                 </Link>
+               </div>
             )}
 
             <div style={{marginLeft: "20px"}}>

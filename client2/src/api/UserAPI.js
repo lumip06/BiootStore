@@ -36,8 +36,11 @@ export const registerUser = async (formData) => {
 
 export const loginUser = async (username, password) => {
     try {
-
-        const response = await axios.get(`${serverUrl}users/username/${username}`);
+        // Use POST to send username and password in the request body
+        const response = await axios.post(`${serverUrl}users/login`, {
+            username,
+            password
+        });
 
         return response.data;
     } catch (error) {

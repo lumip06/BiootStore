@@ -21,13 +21,13 @@ function CartModal({ onCloseModal }) {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-                const token = localStorage.getItem('token'); // Or however you are managing your tokens
+                const token = localStorage.getItem('token');
 
-                // Create query parameters
+
                 const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
 
                 apiCall(
-                    `${serverUrl}books/infos?${queryParams}`, // Append query parameters
+                    `${serverUrl}books/infos?${queryParams}`,
                     'GET',
                     null,
                     [
@@ -38,9 +38,9 @@ function CartModal({ onCloseModal }) {
                             }, {});
                             setBookInfos(booksObject);
                         }
-                    ], // Success callback
+                    ],
                     [console.error],
-                    token // Pass token for authorization
+                    token
                 );
             } else {
                 setBookInfos({});
@@ -64,7 +64,7 @@ function CartModal({ onCloseModal }) {
         <div id="cartModal" style={{padding:"50px",paddingTop:"100px"}}>
 
 
-            <div>
+
                 {Object.keys(cartBooks).length > 0 ? (
                     Object.entries(cartBooks).map(([bookId, quantity], index) => {
                         const bookInfo = bookInfos[bookId];
@@ -84,8 +84,7 @@ function CartModal({ onCloseModal }) {
                                 </h3>
                                 <button
                                     onClick={() => removeBookFromCart(bookId)}
-                                    className="btn btn-outline-dark btn-lg"
-                                >
+                                    className="btn btn-outline-dark btn-lg">
                                     &#10006;
                                 </button>
                             </div>
@@ -98,7 +97,7 @@ function CartModal({ onCloseModal }) {
                 <h1>TOTAL: {totalPrice} </h1>
 
                 <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-dark btn-lg">Finalize Order</Link>
-            </div>
+
 
         </div>
 
