@@ -21,8 +21,13 @@ function CartModal({ onCloseModal }) {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
+                const token = localStorage.getItem('token'); // Or however you are managing your tokens
+
+                // Create query parameters
+                const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
+
                 apiCall(
-                    `${serverUrl}books/infos`,
+                    `${serverUrl}books/infos?${queryParams}`, // Append query parameters
                     'GET',
                     null,
                     [
@@ -35,7 +40,7 @@ function CartModal({ onCloseModal }) {
                         }
                     ], // Success callback
                     [console.error],
-                    { ids: cartBookIds.join(',') }
+                    token // Pass token for authorization
                 );
             } else {
                 setBookInfos({});

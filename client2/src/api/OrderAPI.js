@@ -18,8 +18,9 @@ export const getCartBooksInfos = async (ids) => {
 
 export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
     const { items } = createOrderItems(cartBooks, booksInfos);
-    const userId =loggedInUser;
-
+    const userId =loggedInUser.userId;
+    const token = localStorage.getItem('token'); // Retrieve the token from local storage
+    console.log("USER ID IN CLIENT:",userId)
     try {
 
         const response = await axios.post(`${serverUrl}orders`, {
@@ -28,6 +29,7 @@ export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
         }, {
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Include the token in the headers
             },
         });
 

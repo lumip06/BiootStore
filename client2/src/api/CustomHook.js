@@ -1,24 +1,28 @@
-import {useState} from "react";
+import { useState } from "react";
 
 export const invokeFunctions = (functionArray, args) => {
-    functionArray.forEach(func => func(args))
+    functionArray.forEach(func => func(args));
 }
 
 export const useFetchRequest = () => {
     const [loading, setLoading] = useState(false);
 
-    const apiCall = async (url, method, body, successCallbacks, errorCallbacks, params = {}) => {
+    const apiCall = async (url, method, body, successCallbacks, errorCallbacks, token = null) => {
         setLoading(true);
         try {
-            // Construct query parameters string if any are provided
-            const queryString = new URLSearchParams(params).toString();
-            const fullUrl = queryString ? `${url}?${queryString}` : url;
+            // Construct headers object
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            // Add Authorization header if token is provided
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
 
             const options = {
                 method,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
             };
 
             // Only include the body if the method is not GET or HEAD
@@ -26,7 +30,7 @@ export const useFetchRequest = () => {
                 options.body = JSON.stringify(body);
             }
 
-            const response = await fetch(fullUrl, options);
+            const response = await fetch(url, options);
             const data = await response.json();
 
             if (successCallbacks && successCallbacks.length) {

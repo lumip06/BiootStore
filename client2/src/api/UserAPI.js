@@ -11,9 +11,7 @@ export const registerUser = async (formData) => {
     };
 
     try {
-
-        console.log('Sending user data for register:', user);
-
+        console.log('Sending user data for registration:', user);
 
         const response = await axios.post(`${serverUrl}users/`, user, {
             headers: {
@@ -21,12 +19,18 @@ export const registerUser = async (formData) => {
             }
         });
 
-        return response.data;
+        // Assuming the response contains user data and a token
+        const { user: registeredUser, token } = response.data;
+
+        // Store the token in localStorage or sessionStorage
+        localStorage.setItem('token', token);
+
+        console.log('User registered successfully:', registeredUser);
+        return { user: registeredUser, token }; // Return the user and token
     } catch (error) {
         console.error('Error creating user:', error);
-        throw error;
+        throw error; // Rethrow the error for further handling if necessary
     }
-
 };
 
 

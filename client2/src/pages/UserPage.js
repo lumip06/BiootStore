@@ -3,20 +3,26 @@ import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useBoundStore} from "../stores/BoundStore";
 import '../styles/UserPage.css'
-import {getBookFilters} from "../api/BookAPI";
-import {getOrdersForUser} from "../api/OrderAPI";
+
 import OrderList from "../components/orders/OrderList";
 import {useFetchRequest} from "../api/CustomHook";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function UserPage() {
-    const { loggedInUser } = useBoundStore();
+    const { loggedInUser, getToken } = useBoundStore();
     const [userOrders, setUserOrders] = useState([]);
     const { apiCall, loading, error } = useFetchRequest();
     const navigate = useNavigate();
+    const token = getToken();
+    console.log(loggedInUser.userId)
+    console.log("User ID:", loggedInUser.userId);
     useEffect(() => {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
+                const token = getToken(); // Get the JWT token from the store
+                // Client-side
+                console.log("Token being sent:", token);
+                // Call apiCall with the token
                 apiCall(
                     `${serverUrl}orders/user/${loggedInUser.userId}`, // API URL
                     'GET', // HTTP method
@@ -27,7 +33,8 @@ function UserPage() {
                             setUserOrders(data); // Set the user orders
                         }
                     ], // Success callback
-                    [console.error] // Error callback
+                    [console.error], // Error callback
+                    token // Pass the JWT token here
                 );
             }
         };
