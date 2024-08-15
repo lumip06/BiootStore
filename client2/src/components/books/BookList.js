@@ -15,7 +15,6 @@ function BookList() {
 
 
     useEffect(() => {
-
         fetchBooks();
     }, [filters, limit, page]);
 

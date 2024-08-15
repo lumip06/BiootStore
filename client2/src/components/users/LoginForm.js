@@ -45,6 +45,7 @@ function LoginForm() {
         }
 
         try {
+
             const response = await loginUser(formData.username, formData.password); // Assume this returns { user, token }
             if (response.token) {
                 setLoggedInUser(

@@ -6,7 +6,6 @@ function Counters(){
     return (
         <div id="filterCounter">
             <h2 style={{ fontStyle: 'italic'}}>{filterCount} filters used {booksTotal} books</h2>
-
         </div>
     )
 

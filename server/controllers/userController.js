@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcryptjs');
 
 // Retrieve All Users (GET /users)
 exports.userList = asyncHandler(async (req, res, next) => {
@@ -28,16 +28,19 @@ exports.userGetOne = asyncHandler(async (req, res, next) => {
     }
 });
 // Retrieve a Single User by username (GET /users/)
-exports.userGetUsername = asyncHandler(async (req, res, next) => {
-    const { username } = req.params; // Extract username from the request parameters
-
+//LOGIN
+exports.userGetLogin = asyncHandler(async (req, res, next) => {
     try {
-        // Find user by username
-        const user = await User.findOne({ username: username });
+        const { username, password } = req.body;
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        // Find the user by username
+        const user = await User.findOne({ username });
+        if (!user) return res.status(400).send('User not found!');
+
+        // Compare the provided password with the hashed password in the database
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).send('Invalid password!');
+
         const token = jwt.sign({ userId: user.id}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token,user }); // Return the found user
@@ -48,16 +51,20 @@ exports.userGetUsername = asyncHandler(async (req, res, next) => {
 // Create a New User (POST /users)
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
     const { username, email, password } = req.body;
+    // Generate salt and hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
     const newUser = new User({
         username,
         email,
-        password,
+        password: hashedPassword,
     });
 
     try {
         // Save user to the database
+
         const savedUser = await newUser.save();
 
         // Generate a JWT token using savedUser's details

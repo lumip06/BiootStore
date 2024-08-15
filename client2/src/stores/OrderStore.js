@@ -1,12 +1,4 @@
-
-const loadCartFromLocalStorage = () => {
-    const cartData = localStorage.getItem('cartBooks');
-    return cartData ? JSON.parse(cartData) : {};
-}
-
-const saveCartToLocalStorage = (cartBooks) => {
-    localStorage.setItem('cartBooks', JSON.stringify(cartBooks));
-}
+import {loadCartFromLocalStorage, saveCartToLocalStorage} from "./FromLocalStorage";
 
 
 export const createOrderStore = ((set, get) => ({

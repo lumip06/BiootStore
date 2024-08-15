@@ -15,7 +15,7 @@ router.get("/users", userController.userList);
 router.get("/users/:id", userController.userGetOne);
 
 // GET request for one user by username
-router.get("/users/username/:username",userController.userGetUsername);
+router.post("/users/login",userController.userGetLogin);
 
 // POST request for creating user.
 router.post("/users",userController.userCreatePost);

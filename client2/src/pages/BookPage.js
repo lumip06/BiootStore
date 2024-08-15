@@ -1,4 +1,3 @@
-
 import '../App.css';
 
 import '../styles/BookPage.css'
@@ -6,7 +5,7 @@ import '../styles/BookPage.css'
 import React from "react";
 
 import BookInfo from "../components/books/BookInfo";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 function BookPage() {
     const navigate = useNavigate();
@@ -19,8 +18,6 @@ function BookPage() {
                 </div>
 
                 <div className="container">
-
-
                     <BookInfo/>
                 </div>
 
