@@ -4,6 +4,7 @@ import {placeOrder} from "../../api/OrderAPI";
 import {Modal} from "react-responsive-modal";
 import {Navigate} from "react-router-dom";
 import {calculateTotalPrice} from './CartUtils.js';
+import {updateStock} from "../../api/BookAPI";
 
 function OrderPlacement({bookInfos}) {
 
@@ -30,6 +31,9 @@ function OrderPlacement({bookInfos}) {
             <button
                 onClick={() => {
                     placeOrder(cartBooks, bookInfos,loggedInUser);
+                    console.log("plaseaza comanda")
+                    updateStock(cartBooks);
+                    console.log("updateaza stocku")
                     emptyBookCart();
                     onOpenModal();
                 }}

@@ -59,7 +59,7 @@ exports.bookGetInfosByIds = asyncHandler(async (req, res, next) => {
     try {
         const idsArray = ids.split(',').map(id => new mongoose.Types.ObjectId(id.trim())); // Use 'new' keyword here
 
-        const books = await Book.find({ _id: { $in: idsArray } }).select('title author price');
+        const books = await Book.find({ _id: { $in: idsArray } }).select('title author price stock');
 
         if (!books.length) {
             return res.status(404).json({ error: 'No books found for the provided IDs' });
@@ -102,8 +102,8 @@ exports.bookCreatePost = asyncHandler(async (req, res, next) => {
 
         // Validate each book object in the array
         const books = req.body.map(book => {
-            const { title, author, publishedYear, genre, publisher, cover, price, img } = book;
-            if (!title || !author || !publishedYear || !publisher || !cover || !price || !img) {
+            const { title, author, publishedYear, genre, publisher, cover, price, stock, img } = book;
+            if (!title || !author || !publishedYear || !publisher || !cover || !price || !stock || !img) {
                 throw new Error("All fields are required");
             }
             return new Book(book);
@@ -156,7 +156,48 @@ exports.getBookProperties = asyncHandler(async (req, res, next) => {
     }
 });
 
+exports.updateBookStock = asyncHandler(async (req, res, next) => {
+    try {
+        console.log("AJUNGE LA UPDATE");
 
+        // Ensure req.body.items is an array
+        if (!Array.isArray(req.body.items)) {
+            return res.status(400).send({ message: "Request body must contain an array of items" });
+        }
+
+        // Prepare an array of promises for updating stocks
+        const updatePromises = req.body.items.map(async (item) => {
+            const { bookId, quantity } = item;
+
+            // Validate bookId and quantity
+            if (!bookId || typeof quantity !== 'number' || quantity <= 0) {
+                throw new Error("Invalid item data. bookId and quantity are required and quantity must be greater than zero.");
+            }
+
+            // Find the book by ID
+            const book = await Book.findById(bookId);
+            if (!book) {
+                throw new Error(`Book with ID ${bookId} not found.`);
+            }
+
+            // Check if there's enough stock
+            if (book.stock < quantity) {
+                throw new Error(`Not enough stock for book ID ${bookId}. Available: ${book.stock}, Requested: ${quantity}`);
+            }
+
+            // Update stock
+            book.stock -= quantity;
+            return book.save();
+        });
+
+        // Wait for all stock updates to complete
+        const updatedBooks = await Promise.all(updatePromises);
+
+        res.status(200).send(updatedBooks);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+});
 function parseQueryString(queryString) {
     const params = new URLSearchParams(queryString);
     const filters = {};

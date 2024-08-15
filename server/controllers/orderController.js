@@ -139,6 +139,8 @@ exports.orderCreatePost = asyncHandler(async (req, res, next) => {
 
         // Save the new order to the database
         const savedOrder = await newOrder.save();
+
+
         res.status(201).send(savedOrder); // Send the saved order back as a response
     } catch (error) {
         res.status(400).send({message: error.message});
