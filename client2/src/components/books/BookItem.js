@@ -19,7 +19,7 @@ function BookItem({book, index, view}) {
 
                 </div>
             </Link>
-            <button className="btn btn-outline-dark btn-lg" onClick={ () => addBookToCart(book._id)}> ADD to Cart</button>
+            <button className="btn btn-outline-dark btn-lg"  disabled={book.stock===0} onClick={ () => addBookToCart(book._id)}> ADD to Cart</button>
         </div>
 
 

@@ -9,7 +9,7 @@ function BookInfo() {
     const { addBookToCart, cartBooks } = useBoundStore();
     const [inCart, setInCart] = useState(false);
     const { selectedBook, selectBook } = useBoundStore();
-
+    const [quantityInCart, setQuantityInCart] = useState(0);
     useEffect(() => {
         const fetchBook = async () => {
             if (!selectedBook[id]) {
@@ -18,19 +18,41 @@ function BookInfo() {
 
             if (checkBookInCart(cartBooks, id)) {
                 setInCart(true);
+                // Ensure cartBooks is an array before using .find
+                if (Array.isArray(cartBooks)) {
+                    const bookInCart = cartBooks.find(book => book._id === id);
+                    if (bookInCart) {
+                        setQuantityInCart(bookInCart.quantity);
+                    }
+                } else {
+                    console.error("cartBooks is not an array:", cartBooks);
+                }
             } else {
                 setInCart(false);
+                setQuantityInCart(0);
             }
         };
 
         if (id) {
             fetchBook();
         }
-    }, [id, cartBooks]);
+    }, [id, cartBooks ,selectedBook]);
 
     if (!selectedBook[id]) {
         return <div>No book found.</div>;
     }
+    // Determine if the button should be disabled
+    // Calculate the difference between stock and quantity in cart
+    const stock = selectedBook[id].stock;
+    const availableQuantity = stock - quantityInCart;
+
+    const isButtonDisabled = stock === 0 || availableQuantity <= 0;
+
+    // Handle adding the book to the cart
+    const handleAddToCart = () => {
+        addBookToCart(selectedBook[id]._id);
+        setQuantityInCart(prevQuantity => prevQuantity + 1); // Increment the quantity in cart
+    };
     return (
         <div className="bookDetails">
             <div className="col1">
@@ -45,10 +67,12 @@ function BookInfo() {
             <div className="col2">
                 <p>{inCart ? 'Book in cart' : ''}</p>
                 <p>Price: {selectedBook[id].price}</p>
-
+                <p>In Stock: {availableQuantity ? 'Yes' : 'No'}</p>
+                <p>Available to Add to Cart: {availableQuantity > 0 ? availableQuantity : 0}</p>
                 <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
                     <button className="btn btn-outline-dark btn-lg"
-                            onClick={() => addBookToCart(selectedBook[id]._id)}>
+                            disabled={isButtonDisabled}
+                            onClick={handleAddToCart}>
                         ADD to Cart
                     </button>
                 </div>

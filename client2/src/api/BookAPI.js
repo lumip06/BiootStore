@@ -1,4 +1,5 @@
 import axios from "axios";
+import {createOrderItems} from "./OrderAPI";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -37,3 +38,25 @@ export const getOneBook = async (id) => {
     }
 };
 
+
+export const updateStock = async (cartBooks) => {
+    const items =cartBooks;
+    console.log("ITEMS ",items)
+    try {
+
+        const response = await axios.post(`${serverUrl}books/update`, {
+            items,
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error;
+    }
+
+};
