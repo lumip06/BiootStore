@@ -50,16 +50,21 @@ exports.bookGetOne = asyncHandler(async (req, res, next) => {
 });
 //GET BOOK INFOS FOR CART
 exports.bookGetInfosByIds = asyncHandler(async (req, res, next) => {
-    const { ids } = req.query;
-
+    const ids = req.query.ids;
+    console.log("IDS",ids)
     if (!ids) {
         return res.status(400).json({ error: 'No IDs provided' });
     }
 
-    try {
-        const idsArray = ids.split(',').map(id => new mongoose.Types.ObjectId(id.trim())); // Use 'new' keyword here
+    // If ids is a string, convert it into an array
+    const idsArray = Array.isArray(ids) ? ids : ids.split(',');
 
-        const books = await Book.find({ _id: { $in: idsArray } }).select('title author price stock');
+    try {
+        // Convert each ID to a MongoDB ObjectId
+        const objectIdsArray = idsArray.map(id => new mongoose.Types.ObjectId(id.trim()));
+
+        // Fetch books from the database
+        const books = await Book.find({ _id: { $in: objectIdsArray } }).select('title author price stock');
 
         if (!books.length) {
             return res.status(404).json({ error: 'No books found for the provided IDs' });

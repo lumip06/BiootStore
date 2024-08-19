@@ -34,5 +34,21 @@ export const createUserStore = ((set, get) => ({
             get().logoutUser();
             return null;
         }
-    }
+    },
+    setToken: (token) => set((state) => {
+
+        localStorage.setItem('token', token);
+
+
+        if (token && !isTokenExpired(token)) {
+            const decodedToken = jwt_decode(token);
+            console.log("Decoded Token:", decodedToken);
+
+        } else {
+            console.error("Token is expired or invalid");
+            get().logoutUser();
+        }
+
+        return { token };
+    })
 }));

@@ -1,46 +1,43 @@
 import React, {useEffect, useState} from 'react';
-
+import qs from 'qs';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
-import {getCartBooksInfos} from "../../api/OrderAPI";
-import {calculateTotalPrice} from "./CartUtils";
+import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
+import {getCartBooksInfos} from "../../api/BookAPI";
+import Status from "../common/Status";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function CartModal({ onCloseModal }) {
 
-    const { cartBooks, removeBookFromCart, getCartBookIds } = useBoundStore();
+    const { cartBooks, removeBookFromCart, getCartBookIds,getToken } = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
     const { apiCall, loading, error } = useFetchRequest();
+
 
     useEffect(() => {
         const fetchBookInfos = () => {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-                const token = localStorage.getItem('token');
 
 
-                const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
+
+                const queryParams = qs.stringify({ ids: cartBookIds }, { arrayFormat: 'brackets' });
 
                 apiCall(
                     `${serverUrl}books/infos?${queryParams}`,
                     'GET',
                     null,
+
                     [
-                        (booksData) => {
-                            const booksObject = booksData.reduce((acc, book) => {
-                                acc[book._id] = book;
-                                return acc;
-                            }, {});
-                            setBookInfos(booksObject);
-                        }
+                        (booksData) => processBooksData(booksData, setBookInfos)
                     ],
                     [console.error],
-                    token
+                    getToken()
                 );
             } else {
                 setBookInfos({});
@@ -50,20 +47,14 @@ function CartModal({ onCloseModal }) {
         fetchBookInfos();
     }, [getCartBookIds]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
 
 
     return (
 
         <div id="cartModal" style={{padding:"50px",paddingTop:"100px"}}>
 
-
+            <Status loading={loading} error={error} />
 
                 {Object.keys(cartBooks).length > 0 ? (
                     Object.entries(cartBooks).map(([bookId, quantity], index) => {

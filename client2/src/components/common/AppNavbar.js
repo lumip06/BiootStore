@@ -13,11 +13,7 @@ function AppNavbar() {
         <header id="header-areas">
             <nav className="navbar navbar-dark bg-dark fixed-top">
                 <div className="container-fluid">
-                    {/*<button className="navbar-toggler" type="button" data-bs-toggle="offcanvas"*/}
-                    {/*        data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"*/}
-                    {/*        aria-label="Toggle navigation">*/}
-                    {/*    <span className="navbar-toggler-icon"></span>*/}
-                    {/*</button>*/}
+
                     <a className="navbar-brand mr-auto" href="/" style={{fontSize: '50px'}}>BiootStore</a>
 
 

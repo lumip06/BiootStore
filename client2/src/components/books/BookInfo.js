@@ -18,8 +18,8 @@ function BookInfo() {
 
             if (checkBookInCart(cartBooks, id)) {
                 setInCart(true);
-                // Adjust for the object structure of cartBooks
-                const quantity = cartBooks[id]; // Get the quantity directly from the object
+
+                const quantity = cartBooks[id];
                 if (quantity) {
                     setQuantityInCart(quantity);
                 }
@@ -37,17 +37,16 @@ function BookInfo() {
     if (!selectedBook[id]) {
         return <div>No book found.</div>;
     }
-    // Determine if the button should be disabled
-    // Calculate the difference between stock and quantity in cart
+
     const stock = selectedBook[id].stock;
     const availableQuantity = stock - quantityInCart;
 
     const isButtonDisabled = stock === 0 || availableQuantity <= 0;
 
-    // Handle adding the book to the cart
+
     const handleAddToCart = () => {
         addBookToCart(selectedBook[id]._id);
-        setQuantityInCart(prevQuantity => prevQuantity + 1); // Increment the quantity in cart
+        setQuantityInCart(prevQuantity => prevQuantity + 1);
     };
     return (
         <div className="bookDetails">

@@ -50,10 +50,14 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
 });
 // Create a New User (POST /users)
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { username, email, password1,password2 } = req.body;
     // Generate salt and hash password
+    if(password1!=password2)
+    {
+        throw new Error("Passwords do not match");
+    }
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password1, salt);
 
     // Create new user
     const newUser = new User({

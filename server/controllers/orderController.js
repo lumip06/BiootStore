@@ -68,9 +68,9 @@ exports.orderListByUser = asyncHandler(async (req, res, next) => {
 
         const orders = await Order.find({ userId });
 
-        if (!orders || orders.length === 0) {
-            return res.status(404).json({ message: 'No orders found for this user' });
-        }
+        // if (!orders || orders.length === 0) {
+        //     return res.status(404).json({ message: 'No orders found for this user' });
+        // }
 
         res.json(orders); // Return the found orders
     } catch (err) {
