@@ -18,14 +18,10 @@ function BookInfo() {
 
             if (checkBookInCart(cartBooks, id)) {
                 setInCart(true);
-                // Ensure cartBooks is an array before using .find
-                if (Array.isArray(cartBooks)) {
-                    const bookInCart = cartBooks.find(book => book._id === id);
-                    if (bookInCart) {
-                        setQuantityInCart(bookInCart.quantity);
-                    }
-                } else {
-                    console.error("cartBooks is not an array:", cartBooks);
+                // Adjust for the object structure of cartBooks
+                const quantity = cartBooks[id]; // Get the quantity directly from the object
+                if (quantity) {
+                    setQuantityInCart(quantity);
                 }
             } else {
                 setInCart(false);
@@ -36,7 +32,7 @@ function BookInfo() {
         if (id) {
             fetchBook();
         }
-    }, [id, cartBooks ,selectedBook]);
+    }, [id, cartBooks, selectedBook]);
 
     if (!selectedBook[id]) {
         return <div>No book found.</div>;

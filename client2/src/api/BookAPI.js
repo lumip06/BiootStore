@@ -40,22 +40,36 @@ export const getOneBook = async (id) => {
 
 
 export const updateStock = async (cartBooks) => {
-    const items =cartBooks;
-    console.log("ITEMS ",items)
-    try {
+    const items = Object.keys(cartBooks).map(bookId => ({
+        bookId: bookId,
+        quantity: cartBooks[bookId]
+    }));
 
-        const response = await axios.post(`${serverUrl}books/update`, {
+    console.log("Converted ITEMS ", items);
+
+    try {
+        const response = await axios.put(`${serverUrl}books`, {
             items,
         }, {
             headers: {
                 'Content-Type': 'application/json',
-
             },
         });
 
         return response.data;
     } catch (error) {
-        console.error('Error creating order:', error);
+        if (error.response) {
+            // Server responded with a status other than 200 range
+            console.error('Error response:', error.response.data);
+            console.error('Status code:', error.response.status);
+            console.error('Headers:', error.response.headers);
+        } else if (error.request) {
+            // Request was made but no response was received
+            console.error('Error request:', error.request);
+        } else {
+            // Something else happened in setting up the request
+            console.error('Error message:', error.message);
+        }
         throw error;
     }
 

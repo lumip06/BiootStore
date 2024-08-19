@@ -155,14 +155,13 @@ exports.getBookProperties = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: err.message });
     }
 });
-
 exports.updateBookStock = asyncHandler(async (req, res, next) => {
     try {
-        console.log("AJUNGE LA UPDATE");
+        console.log("Processing updateBookStock request");
 
         // Ensure req.body.items is an array
         if (!Array.isArray(req.body.items)) {
-            return res.status(400).send({ message: "Request body must contain an array of items" });
+            return res.status(400).json({ message: "Request body must contain an array of items" });
         }
 
         // Prepare an array of promises for updating stocks
@@ -171,7 +170,7 @@ exports.updateBookStock = asyncHandler(async (req, res, next) => {
 
             // Validate bookId and quantity
             if (!bookId || typeof quantity !== 'number' || quantity <= 0) {
-                throw new Error("Invalid item data. bookId and quantity are required and quantity must be greater than zero.");
+                throw new Error("Invalid item data. 'bookId' and 'quantity' are required, and 'quantity' must be a positive number.");
             }
 
             // Find the book by ID
@@ -187,15 +186,16 @@ exports.updateBookStock = asyncHandler(async (req, res, next) => {
 
             // Update stock
             book.stock -= quantity;
-            return book.save();
+            return book.save(); // Save and return the updated book
         });
 
         // Wait for all stock updates to complete
         const updatedBooks = await Promise.all(updatePromises);
 
-        res.status(200).send(updatedBooks);
+        res.status(200).json(updatedBooks);
     } catch (error) {
-        res.status(400).send({ message: error.message });
+        console.error("Error updating book stock:", error.message);
+        res.status(400).json({ message: error.message });
     }
 });
 function parseQueryString(queryString) {
