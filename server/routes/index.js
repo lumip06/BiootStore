@@ -35,7 +35,7 @@ router.get("/books", bookController.bookList);
 //GET books by title and author (search)
 router.get("/books/search",bookController.bookSearch);
 // POST request for creating Book.
-router.post("/books/update", bookController.updateBookStock);
+router.put("/books", bookController.updateBookStock);
 
 // GET request for book properties
 router.get("/books/properties", bookController.getBookProperties);

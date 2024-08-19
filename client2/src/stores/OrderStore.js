@@ -23,6 +23,7 @@ export const createOrderStore = ((set, get) => ({
     }),
     emptyBookCart: () => set(state => {
         set({cartBooks: {}});
+        localStorage.removeItem('cartBooks');
         return {
             cartBooks: {},
         };

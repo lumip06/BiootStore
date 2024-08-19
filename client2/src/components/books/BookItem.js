@@ -1,10 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import "./../../styles/BookItem.css"
 import {useBoundStore} from "../../stores/BoundStore";
 
 function BookItem({book, index, view}) {
     const {addBookToCart}=useBoundStore();
+    const [quantityInCart, setQuantityInCart] = useState(0);
+    const stock = book.stock;
+    const availableQuantity = stock - quantityInCart;
+
+    const isButtonDisabled = stock === 0 || availableQuantity <= 0;
+
+    const handleAddToCart = () => {
+        addBookToCart(book._id);
+        setQuantityInCart(prevQuantity => prevQuantity + 1); // Increment the quantity in cart
+    };
     return (
 
         <div className={view}>
@@ -19,7 +29,7 @@ function BookItem({book, index, view}) {
 
                 </div>
             </Link>
-            <button className="btn btn-outline-dark btn-lg"  disabled={book.stock===0} onClick={ () => addBookToCart(book._id)}> ADD to Cart</button>
+            <button className="btn btn-outline-dark btn-lg"  disabled={isButtonDisabled} onClick={handleAddToCart}> ADD to Cart</button>
         </div>
 
 
