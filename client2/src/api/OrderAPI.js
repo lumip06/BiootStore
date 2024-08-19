@@ -22,6 +22,13 @@ export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
             },
         });
 
+        // const response = await axios.put(`${serverUrl}books`, {
+        //     items,
+        // }, {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // });
         return response.data;
     } catch (error) {
         console.error('Error creating order:', error);

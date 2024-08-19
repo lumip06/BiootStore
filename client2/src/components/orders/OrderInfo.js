@@ -9,6 +9,7 @@ import OrderPlacement from "./OrderPlacement";
 import {useFetchRequest} from "../../api/CustomHook";
 import {getCartBooksInfos} from "../../api/BookAPI";
 import Status from "../common/Status";
+import {processBooksData} from "./CartUtils";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
@@ -33,14 +34,8 @@ function OrderInfo() {
                     'GET',
                     null,
                     [
-                        (booksData) => {
-                            const booksObject = booksData.reduce((acc, book) => {
-                                acc[book._id] = book;
-                                return acc;
-                            }, {});
-                            setBookInfos(booksObject);
-                        }
-                    ], // Success callback
+                        (booksData) => processBooksData(booksData, setBookInfos)
+                    ],
                     [console.error],
                     getToken()
                 );
@@ -52,13 +47,7 @@ function OrderInfo() {
         fetchBookInfos();
     }, [cartBooks]);
 
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
-    //
-    // if (error) {
-    //     return <div>Error: {error.message}</div>;
-    // }
+
 
 
     return (

@@ -25,3 +25,16 @@ export const countBooksInCart = (cartBooks) => {
     return bookCount;
 };
 
+export const processBooksData = (booksData, setBookInfos) => {
+    console.log('API Response:', booksData);
+    if (Array.isArray(booksData)) {
+        const booksObject = booksData.reduce((acc, book) => {
+            acc[book._id] = book;
+            return acc;
+        }, {});
+        setBookInfos(booksObject);
+    } else {
+        console.error('Expected an array but received:', booksData);
+        setBookInfos({});
+    }
+};

@@ -19,7 +19,13 @@ function OrderPlacement({bookInfos}) {
         onCloseOrderSuccessModal();
         setOrderPlaced(true);
     };
+    const handleOrderClick = () => {
 
+        placeOrder(cartBooks, bookInfos, loggedInUser);
+        // updateStock(cartBooks);
+        emptyBookCart();
+        onOpenOrderSuccessModal();
+    };
 
     if (orderPlaced) {
         return <Navigate to="/" replace/>;
@@ -29,14 +35,7 @@ function OrderPlacement({bookInfos}) {
         <div style={{marginTop: "20px", textAlign: "right", padding: "50px"}}>
             <h1>TOTAL: {totalPrice} </h1>
             <button
-                onClick={() => {
-                    placeOrder(cartBooks, bookInfos,loggedInUser);
-
-                    updateStock(cartBooks);
-
-                    emptyBookCart();
-                    onOpenOrderSuccessModal();
-                }}
+                onClick={handleOrderClick}
                 className="btn btn-outline-dark btn-lg"
                 disabled={!loggedInUser}>
                 Order books

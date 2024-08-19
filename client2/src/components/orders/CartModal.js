@@ -3,7 +3,7 @@ import qs from 'qs';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
-import {calculateTotalPrice} from "./CartUtils";
+import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
 import {getCartBooksInfos} from "../../api/BookAPI";
 import Status from "../common/Status";
@@ -16,6 +16,7 @@ function CartModal({ onCloseModal }) {
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
     const { apiCall, loading, error } = useFetchRequest();
+
 
     useEffect(() => {
         const fetchBookInfos = () => {
@@ -33,19 +34,7 @@ function CartModal({ onCloseModal }) {
                     null,
 
                     [
-                        (booksData) => {
-                            console.log('API Response:', booksData);
-                            if (Array.isArray(booksData)) {
-                                const booksObject = booksData.reduce((acc, book) => {
-                                    acc[book._id] = book;
-                                    return acc;
-                                }, {});
-                                setBookInfos(booksObject);
-                            } else {
-                                console.error('Expected an array but received:', booksData);
-                                setBookInfos({});
-                            }
-                        }
+                        (booksData) => processBooksData(booksData, setBookInfos)
                     ],
                     [console.error],
                     getToken()
@@ -58,13 +47,7 @@ function CartModal({ onCloseModal }) {
         fetchBookInfos();
     }, [getCartBookIds]);
 
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
-    //
-    // if (error) {
-    //     return <div>Error: {error.message}</div>;
-    // }
+
 
 
     return (
