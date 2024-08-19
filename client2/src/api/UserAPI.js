@@ -7,7 +7,8 @@ export const registerUser = async (formData) => {
     const user = {
         username: formData.username,
         email: formData.email,
-        password: formData.password1
+        password1: formData.password1,
+        password2: formData.password2,
     };
 
     try {
@@ -19,17 +20,15 @@ export const registerUser = async (formData) => {
             }
         });
 
-        // Assuming the response contains user data and a token
+
         const { user: registeredUser, token } = response.data;
 
-        // Store the token in localStorage or sessionStorage
-        localStorage.setItem('token', token);
 
         console.log('User registered successfully:', registeredUser);
-        return { user: registeredUser, token }; // Return the user and token
+        return { user: registeredUser ,token};
     } catch (error) {
         console.error('Error creating user:', error);
-        throw error; // Rethrow the error for further handling if necessary
+
     }
 };
 
@@ -46,6 +45,6 @@ export const loginUser = async (username, password) => {
     } catch (error) {
         console.error('Error fetching user data:', error);
         console.error('Error details:', error.response ? error.response.data : error.message);
-        throw error;
+
     }
 };

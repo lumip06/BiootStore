@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-
+import qs from 'qs';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
-import {getCartBooksInfos} from "../../api/OrderAPI";
 import {calculateTotalPrice} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
+import {getCartBooksInfos} from "../../api/BookAPI";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
@@ -24,19 +24,26 @@ function CartModal({ onCloseModal }) {
                 const token = localStorage.getItem('token');
 
 
-                const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
+                const queryParams = qs.stringify({ ids: cartBookIds }, { arrayFormat: 'brackets' });
 
                 apiCall(
                     `${serverUrl}books/infos?${queryParams}`,
                     'GET',
                     null,
+
                     [
                         (booksData) => {
-                            const booksObject = booksData.reduce((acc, book) => {
-                                acc[book._id] = book;
-                                return acc;
-                            }, {});
-                            setBookInfos(booksObject);
+                            console.log('API Response:', booksData);
+                            if (Array.isArray(booksData)) {
+                                const booksObject = booksData.reduce((acc, book) => {
+                                    acc[book._id] = book;
+                                    return acc;
+                                }, {});
+                                setBookInfos(booksObject);
+                            } else {
+                                console.error('Expected an array but received:', booksData);
+                                setBookInfos({});
+                            }
                         }
                     ],
                     [console.error],

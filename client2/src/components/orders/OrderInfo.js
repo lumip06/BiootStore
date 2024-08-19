@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useBoundStore} from "../../stores/BoundStore";
-import {getCartBooksInfos} from "../../api/OrderAPI";
 import "../../styles/CartModal.css"
 
 import 'reactjs-popup/dist/index.css';
@@ -8,6 +7,7 @@ import 'reactjs-popup/dist/index.css';
 import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
 import {useFetchRequest} from "../../api/CustomHook";
+import {getCartBooksInfos} from "../../api/BookAPI";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 

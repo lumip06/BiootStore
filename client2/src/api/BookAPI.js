@@ -1,6 +1,5 @@
 import axios from "axios";
-import {createOrderItems} from "./OrderAPI";
-
+import qs from 'qs';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 //searches for books depending on the filters chosen
@@ -21,7 +20,7 @@ export const getBookFilters = async () => {
     } catch (error) {
         console.error('Error fetching book properties:', error);
         console.error('Error details:', error.response ? error.response.data : error.message);
-        throw error;
+
     }
 };
 
@@ -34,10 +33,26 @@ export const getOneBook = async (id) => {
         return response.data;
     } catch (error) {
         console.error('Error fetching book properties:', error);
-        throw error;
+
     }
 };
 
+export const getCartBooksInfos = async (ids) => {
+    try {
+        const queryParams = qs.stringify({ ids }, { arrayFormat: 'brackets' });
+
+        const response = await axios.get(`${serverUrl}books/infos?${queryParams}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching book properties:', error);
+
+    }
+};
 
 export const updateStock = async (cartBooks) => {
     const items = Object.keys(cartBooks).map(bookId => ({
@@ -70,7 +85,7 @@ export const updateStock = async (cartBooks) => {
             // Something else happened in setting up the request
             console.error('Error message:', error.message);
         }
-        throw error;
+
     }
 
 };

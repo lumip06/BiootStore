@@ -15,8 +15,8 @@ function UserActions() {
     };
 
     const [open, setOpen] = useState(false);
-    const onOpenModal = () => setOpen(true);
-    const onCloseModal = () => setOpen(false);
+    const onOpenCartModal = () => setOpen(true);
+    const onCloseCartModal = () => setOpen(false);
     const [numberOfCartBooks, setNumberOfCartBooks] = useState(0);
     const navigate = useNavigate();
     useEffect(() => {
@@ -49,14 +49,14 @@ function UserActions() {
 
             <div style={{marginLeft: "20px"}}>
                 <div className="button-container">
-                    <button onClick={onOpenModal} className="btn btn-outline-light btn-lg">
+                    <button onClick={onOpenCartModal} className="btn btn-outline-light btn-lg">
                         Cart
                     </button>
                     {numberOfCartBooks > 0 && <span className="badge">{numberOfCartBooks}</span>}
                 </div>
 
-                <Modal open={open} onClose={onCloseModal} center>
-                    <CartModal onCloseModal={onCloseModal}/>
+                <Modal open={open} onClose={onCloseCartModal} center>
+                    <CartModal onCloseModal={onCloseCartModal}/>
                 </Modal>
             </div>
 
