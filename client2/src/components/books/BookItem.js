@@ -13,7 +13,7 @@ function BookItem({book, index, view}) {
 
     const handleAddToCart = () => {
         addBookToCart(book._id);
-        setQuantityInCart(prevQuantity => prevQuantity + 1); // Increment the quantity in cart
+        setQuantityInCart(prevQuantity => prevQuantity + 1);
     };
     return (
 

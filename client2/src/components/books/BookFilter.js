@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {getBookFilters} from "../../api/BookAPI";
 import BookFilterOption from "./BookFilterOption";
 import {useFetchRequest} from "../../api/CustomHook";
+import Status from "../common/Status";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const BookFilter = () => {
@@ -22,13 +23,13 @@ const BookFilter = () => {
     }, []);
 
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    // if (error) {
+    //     return <div>Error: {error.message}</div>;
+    // }
 
     return (<div id="filter-area">
             <div className="form-check">
-
+                <Status loading={loading} error={error} />
                 {bookAttributes.map((bookAttribute) => {
                     const category = bookAttribute.charAt(0).toUpperCase() + bookAttribute.slice(1);
 

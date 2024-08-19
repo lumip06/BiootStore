@@ -12,7 +12,5 @@ export const createOrderItems = (cartBooks, booksInfos) => {
         });
     }
     return items;
-    // } else {
-    //     return { items: [] };
-    // }
+
 };

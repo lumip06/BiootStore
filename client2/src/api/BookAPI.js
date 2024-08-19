@@ -74,15 +74,15 @@ export const updateStock = async (cartBooks) => {
         return response.data;
     } catch (error) {
         if (error.response) {
-            // Server responded with a status other than 200 range
+
             console.error('Error response:', error.response.data);
             console.error('Status code:', error.response.status);
             console.error('Headers:', error.response.headers);
         } else if (error.request) {
-            // Request was made but no response was received
+
             console.error('Error request:', error.request);
         } else {
-            // Something else happened in setting up the request
+
             console.error('Error message:', error.message);
         }
 

@@ -8,17 +8,17 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
     const  items  = createOrderItems(cartBooks, booksInfos);
     const userId =loggedInUser.userId;
-    const token = localStorage.getItem('token'); // Retrieve the token from local storage
-    console.log("USER ID IN CLIENT:",userId)
+    // const token = localStorage.getItem('token'); // Retrieve the token from local storage
+
     try {
-        console.log("ITEMS",items)
+
         const response = await axios.post(`${serverUrl}orders`, {
             userId,
             items,
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Include the token in the headers
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
 

@@ -35,7 +35,7 @@ export const registerUser = async (formData) => {
 
 export const loginUser = async (username, password) => {
     try {
-        // Use POST to send username and password in the request body
+
         const response = await axios.post(`${serverUrl}users/login`, {
             username,
             password

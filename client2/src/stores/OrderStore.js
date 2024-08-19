@@ -42,5 +42,24 @@ export const createOrderStore = ((set, get) => ({
             cartBooks: newBookCart,
         };
 
-    }),})
+    }),
+        // Simplified method to change the quantity of a book
+        changeBookQuantity: (bookId, quantity) => set(state => {
+            const newBookCart = { ...state.cartBooks };
+
+            if (quantity <= 0) {
+                delete newBookCart[bookId]; // If quantity is 0 or less, remove the book from the cart
+            } else {
+                newBookCart[bookId] = quantity; // Update the quantity directly
+            }
+
+            saveCartToLocalStorage(newBookCart);
+
+            set({ cartBooks: newBookCart });
+            return {
+                cartBooks: newBookCart,
+            };
+        }),
+    })
+
 );

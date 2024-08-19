@@ -8,11 +8,12 @@ import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
 import {useFetchRequest} from "../../api/CustomHook";
 import {getCartBooksInfos} from "../../api/BookAPI";
+import Status from "../common/Status";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function OrderInfo() {
-    const { cartBooks, getCartBookIds } = useBoundStore();
+    const { cartBooks, getCartBookIds ,getToken} = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
     const { apiCall, loading, error } = useFetchRequest();
     let heading = ["Produs", "Disponibilitate", "Buc.", "Pret", "Total"];
@@ -22,7 +23,7 @@ function OrderInfo() {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-                const token = localStorage.getItem('token');
+
 
 
                 const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
@@ -41,7 +42,7 @@ function OrderInfo() {
                         }
                     ], // Success callback
                     [console.error],
-                    token
+                    getToken()
                 );
             } else {
                 setBookInfos({});
@@ -51,13 +52,13 @@ function OrderInfo() {
         fetchBookInfos();
     }, [cartBooks]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
+    //
+    // if (error) {
+    //     return <div>Error: {error.message}</div>;
+    // }
 
 
     return (
@@ -72,6 +73,7 @@ function OrderInfo() {
                     </tr>
                     </thead>
                     <tbody>
+                    <Status loading={loading} error={error} />
                     {Object.keys(cartBooks).length > 0 ? (
                         Object.entries(cartBooks).map(([bookId, quantity], index) => {
                             const bookInfo = bookInfos[bookId];
@@ -82,9 +84,10 @@ function OrderInfo() {
                                         id={bookId}
                                         title="Loading..."
                                         initialQuantity={quantity}
-                                        inStoc="Loading..."
+                                        inStock="Loading..."
                                         pret="Loading..."
                                         total="Loading..."
+                                        stock="Loading.."
                                         key={index}
                                     />
                                 );
@@ -95,7 +98,7 @@ function OrderInfo() {
                                     id={bookId}
                                     title={`${bookInfo.title} by ${bookInfo.author}`}
                                     initialQuantity={quantity}
-                                    inStoc="Da"
+                                    inStock={bookInfo.stock}
                                     pret={bookInfo.price}
                                     total={bookInfo.price * quantity}
                                     key={index}

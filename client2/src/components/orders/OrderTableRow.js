@@ -1,34 +1,38 @@
 import React, {useState} from "react";
 import {useBoundStore} from "../../stores/BoundStore";
 
-function OrderTableRow({id, title, inStoc, initialQuantity, pret, total}) {
+function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
     const [quantity, setQuantity] = useState(initialQuantity || 1);
-    const {removeBookFromCart} = useBoundStore();
+    const {removeBookFromCart,changeBookQuantity} = useBoundStore();
 
-    const handleDecrease = () => {
+
+    const handleChangeQuantity = (delta) => {
         setQuantity((prevQuantity) => {
-            const newQuantity = prevQuantity - 1;
+            const newQuantity = prevQuantity + delta;
+
+
             if (newQuantity <= 0) {
                 removeBookFromCart(id);
                 return 0;
-            }
-            return newQuantity;
-        });
-    };
+            } else if (newQuantity > inStock) {
+                return prevQuantity;
+            } else {
 
-    const handleIncrease = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
+                changeBookQuantity(id, newQuantity);
+                return newQuantity;
+            }
+        });
     };
 
     return (
         <tr style={{height: "50%", width: "100%"}}>
             <td style={{padding: "45px"}}>{title}</td>
-            <td style={{padding: "45px"}}>{inStoc}</td>
+            <td style={{padding: "45px"}}>{inStock}</td>
             <td>
                 <div className="number">
-                    <span className="minus" onClick={handleDecrease}>-</span>
+                    <span className="minus" onClick={() => handleChangeQuantity(-1)}>-</span>
                     <input type="text" value={quantity} readOnly/>
-                    <span className="plus" onClick={handleIncrease}>+</span>
+                    <span className="plus" onClick={() => handleChangeQuantity(1)}>+</span>
 
                     <button onClick={() => removeBookFromCart(id)}
                             className="btn btn-outline-dark ">&#10006;</button>

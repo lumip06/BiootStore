@@ -6,6 +6,7 @@ import '../styles/UserPage.css'
 
 import OrderList from "../components/orders/OrderList";
 import {useFetchRequest} from "../api/CustomHook";
+import Status from "../components/common/Status";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -14,15 +15,13 @@ function UserPage() {
     const [userOrders, setUserOrders] = useState([]);
     const {apiCall, loading, error} = useFetchRequest();
     const navigate = useNavigate();
-    const token = getToken();
-    console.log(loggedInUser.userId)
-    console.log("User ID:", loggedInUser.userId);
+
     useEffect(() => {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
-                const token = getToken();
 
-                console.log("Token being sent:", token);
+
+
 
                 apiCall(
                     `${serverUrl}orders/user/${loggedInUser.userId}`,
@@ -35,7 +34,7 @@ function UserPage() {
                         }
                     ],
                     [console.error],
-                    token
+                    getToken()
                 );
             }
         };
@@ -43,13 +42,13 @@ function UserPage() {
         fetchUserOrders();
     }, [loggedInUser.userId]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
+    //
+    // if (error) {
+    //     return <div>Error: {error.message}</div>;
+    // }
 
     return (
         <div className="userPage">
@@ -59,6 +58,7 @@ function UserPage() {
             <div className="userDetails">
                 <div className="col1">
                     <p>ORDERS: </p>
+                    <Status loading={loading} error={error} />
                     <OrderList userOrders={userOrders}/>
 
                 </div>

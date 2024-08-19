@@ -13,10 +13,10 @@ function OrderPlacement({bookInfos}) {
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
 
-    const onOpenModal = () => setOpen(true);
-    const onCloseModal = () => setOpen(false);
-    const handleCloseModal = () => {
-        onCloseModal();
+    const onOpenOrderSuccessModal = () => setOpen(true);
+    const onCloseOrderSuccessModal = () => setOpen(false);
+    const handleCloseOrderSuccessModal = () => {
+        onCloseOrderSuccessModal();
         setOrderPlaced(true);
     };
 
@@ -31,11 +31,11 @@ function OrderPlacement({bookInfos}) {
             <button
                 onClick={() => {
                     placeOrder(cartBooks, bookInfos,loggedInUser);
-                    console.log("plaseaza comanda")
+
                     updateStock(cartBooks);
-                    console.log("updateaza stocku")
+
                     emptyBookCart();
-                    onOpenModal();
+                    onOpenOrderSuccessModal();
                 }}
                 className="btn btn-outline-dark btn-lg"
                 disabled={!loggedInUser}>
@@ -46,7 +46,7 @@ function OrderPlacement({bookInfos}) {
                     You need to be logged in to place an order.
                 </span>
             )}
-            <Modal open={open} onClose={handleCloseModal} center>
+            <Modal open={open} onClose={handleCloseOrderSuccessModal} center>
                 <div>
                     <h1>Order placed successfully! :D</h1>
                 </div>
