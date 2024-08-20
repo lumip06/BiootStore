@@ -7,26 +7,35 @@ import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
 import {getCartBooksInfos} from "../../api/BookAPI";
 import Status from "../common/Status";
+
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
-function CartModal({ onCloseModal }) {
+function CartModal({onCloseModal}) {
 
-    const { cartBooks, removeBookFromCart, getCartBookIds,getToken } = useBoundStore();
+    const {cartBooks, removeBookFromCart, getCartBookIds, getToken} = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
-    const { apiCall, loading, error } = useFetchRequest();
-
+    const {apiCall, loading, error} = useFetchRequest();
+    // const {cartBookIds, setCartBookIds} = useState({});
+    // const [idsToIgnore, setIdsToIgnore] = useState([]);
 
     useEffect(() => {
+
+
         const fetchBookInfos = () => {
+            // const newIdsToIgnore = bookInfos.map(book => book._id);
+            // setIdsToIgnore(newIdsToIgnore);
+            // console.log(idsToIgnore)
+            // console.log("IDS",idsToIgnore)
+            // const cartBookIds = getCartBookIds(idsToIgnore);
+
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
 
 
-
-                const queryParams = qs.stringify({ ids: cartBookIds }, { arrayFormat: 'brackets' });
+                const queryParams = qs.stringify({ids: cartBookIds}, {arrayFormat: 'brackets'});
 
                 apiCall(
                     `${serverUrl}books/infos?${queryParams}`,
@@ -34,7 +43,16 @@ function CartModal({ onCloseModal }) {
                     null,
 
                     [
-                        (booksData) => processBooksData(booksData, setBookInfos)
+                        (booksData) => {
+                            processBooksData(booksData, setBookInfos);
+                            // setIdsToIgnore(prevIds => {
+                            //     // Create a set to avoid duplicates
+                            //     const updatedIds = new Set([...prevIds, ...Object.keys(cartBooks)]);
+                            //     return Array.from(updatedIds);
+                            // });
+                            // // setIdsToIgnore(Object.keys(cartBooks));
+
+                        }
                     ],
                     [console.error],
                     getToken()
@@ -45,49 +63,47 @@ function CartModal({ onCloseModal }) {
         };
 
         fetchBookInfos();
-    }, [getCartBookIds]);
-
-
+    }, [cartBooks]);
 
 
     return (
 
-        <div id="cartModal" style={{padding:"50px",paddingTop:"100px"}}>
+        <div id="cartModal" style={{padding: "50px", paddingTop: "100px"}}>
 
-            <Status loading={loading} error={error} />
+            <Status loading={loading} error={error}/>
 
-                {Object.keys(cartBooks).length > 0 ? (
-                    Object.entries(cartBooks).map(([bookId, quantity], index) => {
-                        const bookInfo = bookInfos[bookId];
+            {Object.keys(cartBooks).length > 0 ? (
+                Object.entries(cartBooks).map(([bookId, quantity], index) => {
+                    const bookInfo = bookInfos[bookId];
 
-                        if (!bookInfo) {
-                            return (
-                                <div className="cartItem" key={index}>
-                                    <h3>Loading book info...</h3>
-                                </div>
-                            );
-                        }
-
+                    if (!bookInfo) {
                         return (
                             <div className="cartItem" key={index}>
-                                <h3 style={{paddingRight: "50px"}}>
-                                    {quantity} X {bookInfo.title} by {bookInfo.author} Price: {bookInfo.price}
-                                </h3>
-                                <button
-                                    onClick={() => removeBookFromCart(bookId)}
-                                    className="btn btn-outline-dark btn-lg">
-                                    &#10006;
-                                </button>
+                                <h3>Loading book info...</h3>
                             </div>
                         );
-                    })
-                ) : (
-                    <p style={{fontSize:"50px"}}>No books available</p>
-                )}
-                <hr className="solid"/>
-                <h1>TOTAL: {totalPrice} </h1>
+                    }
 
-                <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-dark btn-lg">Finalize Order</Link>
+                    return (
+                        <div className="cartItem" key={index}>
+                            <h3 style={{paddingRight: "50px"}}>
+                                {quantity} X {bookInfo.title} by {bookInfo.author} Price: {bookInfo.price}
+                            </h3>
+                            <button
+                                onClick={() => removeBookFromCart(bookId)}
+                                className="btn btn-outline-dark btn-lg">
+                                &#10006;
+                            </button>
+                        </div>
+                    );
+                })
+            ) : (
+                <p style={{fontSize: "50px"}}>No books available</p>
+            )}
+            <hr className="solid"/>
+            <h1>TOTAL: {totalPrice} </h1>
+
+            <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-dark btn-lg">Finalize Order</Link>
 
 
         </div>

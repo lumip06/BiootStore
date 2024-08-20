@@ -8,7 +8,6 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
     const  items  = createOrderItems(cartBooks, booksInfos);
     const userId =loggedInUser.userId;
-    // const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
     try {
 
@@ -22,13 +21,7 @@ export const placeOrder = async (cartBooks,booksInfos,loggedInUser) => {
             },
         });
 
-        // const response = await axios.put(`${serverUrl}books`, {
-        //     items,
-        // }, {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // });
+
         return response.data;
     } catch (error) {
         console.error('Error creating order:', error);

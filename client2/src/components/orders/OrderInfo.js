@@ -10,6 +10,7 @@ import {useFetchRequest} from "../../api/CustomHook";
 import {getCartBooksInfos} from "../../api/BookAPI";
 import Status from "../common/Status";
 import {processBooksData} from "./CartUtils";
+import qs from "qs";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
@@ -27,8 +28,8 @@ function OrderInfo() {
 
 
 
-                const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
-
+                // const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
+                const queryParams = qs.stringify({ids: cartBookIds}, {arrayFormat: 'brackets'});
                 apiCall(
                     `${serverUrl}books/infos?${queryParams}`,
                     'GET',
@@ -62,7 +63,11 @@ function OrderInfo() {
                     </tr>
                     </thead>
                     <tbody>
-                    <Status loading={loading} error={error} />
+                    <tr>
+                        <td colSpan="5">
+                            <Status loading={loading} error={error}/>
+                        </td>
+                    </tr>
                     {Object.keys(cartBooks).length > 0 ? (
                         Object.entries(cartBooks).map(([bookId, quantity], index) => {
                             const bookInfo = bookInfos[bookId];
@@ -103,7 +108,7 @@ function OrderInfo() {
                     )}
                     </tbody>
                 </table>
-              <OrderPlacement bookInfos={bookInfos}/>
+                <OrderPlacement bookInfos={bookInfos}/>
 
             </div>
 

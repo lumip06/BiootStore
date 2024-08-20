@@ -2,60 +2,60 @@ import {loadCartFromLocalStorage, saveCartToLocalStorage} from "./FromLocalStora
 
 
 export const createOrderStore = ((set, get) => ({
-    cartBooks: loadCartFromLocalStorage(),
-    addBookToCart: (bookId) => set(state => {
+        cartBooks: loadCartFromLocalStorage(),
+        addBookToCart: (bookId) => set(state => {
 
-        const newBookCart = {...state.cartBooks};
+            const newBookCart = {...state.cartBooks};
 
-        if (newBookCart[bookId]) {
-            newBookCart[bookId] += 1;
-        } else {
-            newBookCart[bookId] = 1;
-        }
-
-
-        saveCartToLocalStorage(newBookCart);
-
-        set({cartBooks: newBookCart});
-        return {
-            cartBooks: newBookCart,
-        };
-    }),
-    emptyBookCart: () => set(state => {
-        set({cartBooks: {}});
-        localStorage.removeItem('cartBooks');
-        return {
-            cartBooks: {},
-        };
-    }),
-    removeBookFromCart: (bookId) => set(state => {
-
-        const newBookCart = {...state.cartBooks};
-
-        delete newBookCart[bookId];
+            if (newBookCart[bookId]) {
+                newBookCart[bookId] += 1;
+            } else {
+                newBookCart[bookId] = 1;
+            }
 
 
-        saveCartToLocalStorage(newBookCart);
+            saveCartToLocalStorage(newBookCart);
 
-        set({cartBooks: newBookCart});
-        return {
-            cartBooks: newBookCart,
-        };
+            set({cartBooks: newBookCart});
+            return {
+                cartBooks: newBookCart,
+            };
+        }),
+        emptyBookCart: () => set(state => {
+            set({cartBooks: {}});
+            localStorage.removeItem('cartBooks');
+            return {
+                cartBooks: {},
+            };
+        }),
+        removeBookFromCart: (bookId) => set(state => {
 
-    }),
-        // Simplified method to change the quantity of a book
+            const newBookCart = {...state.cartBooks};
+
+            delete newBookCart[bookId];
+
+
+            saveCartToLocalStorage(newBookCart);
+
+            set({cartBooks: newBookCart});
+            return {
+                cartBooks: newBookCart,
+            };
+
+        }),
+
         changeBookQuantity: (bookId, quantity) => set(state => {
-            const newBookCart = { ...state.cartBooks };
+            const newBookCart = {...state.cartBooks};
 
             if (quantity <= 0) {
-                delete newBookCart[bookId]; // If quantity is 0 or less, remove the book from the cart
+                delete newBookCart[bookId];
             } else {
-                newBookCart[bookId] = quantity; // Update the quantity directly
+                newBookCart[bookId] = quantity;
             }
 
             saveCartToLocalStorage(newBookCart);
 
-            set({ cartBooks: newBookCart });
+            set({cartBooks: newBookCart});
             return {
                 cartBooks: newBookCart,
             };

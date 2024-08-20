@@ -12,15 +12,27 @@ function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
 
 
             if (newQuantity <= 0) {
-                removeBookFromCart(id);
-                return 0;
-            } else if (newQuantity > inStock) {
+
                 return prevQuantity;
+            } else if (newQuantity > inStock) {
+
+                return inStock;
             } else {
 
                 changeBookQuantity(id, newQuantity);
                 return newQuantity;
             }
+            //VARIANTA CU ZERO
+            // if (newQuantity <= 0) {
+            //     removeBookFromCart(id);
+            //     return 0;
+            // } else if (newQuantity > inStock) {
+            //     return prevQuantity;
+            // } else {
+            //
+            //     changeBookQuantity(id, newQuantity);
+            //     return newQuantity;
+            // }
         });
     };
 
