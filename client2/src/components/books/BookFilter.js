@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect,  useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import {getBookFilters} from "../../api/BookAPI";
+
 import BookFilterOption from "./BookFilterOption";
 import {useFetchRequest} from "../../api/CustomHook";
 import Status from "../common/Status";
@@ -23,9 +23,6 @@ const BookFilter = () => {
     }, []);
 
 
-    // if (error) {
-    //     return <div>Error: {error.message}</div>;
-    // }
 
     return (<div id="filter-area">
             <div className="form-check">

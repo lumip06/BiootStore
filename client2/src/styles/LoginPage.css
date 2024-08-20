@@ -7,7 +7,7 @@
     /*        'blankarea container blankarea'*/
     /*        'blankarea blankarea blankarea';*/
     padding: 100px;
-    background-color: #CDE6F5;
+    background-color: #C9D5B5;
 
 }
 .container {
@@ -19,7 +19,7 @@
     width: 700px;
 }
 #login-form {
-    background: #2D82B7;
+    background-color: #496F5D;
     padding: 3em;
     height: 500px;
     width: 700px;
@@ -34,7 +34,7 @@
 }
 label {
     font-size: 30px;
-    color: #CDE6F5;
+    color: #C9D5B5;
 }
 
 .blankarea {

@@ -54,7 +54,7 @@ function OrderInfo() {
     return (
         <div className="bookDetails">
             <div style={{width: "100%", overflow: "visible"}}>
-                <table style={{width: "100%", border: '1px solid black', borderCollapse: 'collapse'}}>
+                <table style={{width: "100%", border: '1px solid s', borderCollapse: 'collapse'}}>
                     <thead>
                     <tr style={{border: '1px solid black'}}>
                         {heading.map((head, headID) => (
