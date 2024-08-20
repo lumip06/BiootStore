@@ -4,11 +4,11 @@ import {placeOrder} from "../../api/OrderAPI";
 import {Modal} from "react-responsive-modal";
 import {Navigate} from "react-router-dom";
 import {calculateTotalPrice} from './CartUtils.js';
-import {updateStock} from "../../api/BookAPI";
+
 
 function OrderPlacement({bookInfos}) {
 
-    const {cartBooks, emptyBookCart,loggedInUser} = useBoundStore();
+    const {cartBooks, emptyBookCart,loggedInUser,deleteSelectedBooks} = useBoundStore();
     const [open, setOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
@@ -19,10 +19,10 @@ function OrderPlacement({bookInfos}) {
         onCloseOrderSuccessModal();
         setOrderPlaced(true);
     };
-    const handleOrderClick = () => {
+    const handlePlaceOrder = () => {
 
         placeOrder(cartBooks, bookInfos, loggedInUser);
-        // updateStock(cartBooks);
+        deleteSelectedBooks( Object.keys(cartBooks));
         emptyBookCart();
         onOpenOrderSuccessModal();
     };
@@ -35,7 +35,7 @@ function OrderPlacement({bookInfos}) {
         <div style={{marginTop: "20px", textAlign: "right", padding: "50px"}}>
             <h1>TOTAL: {totalPrice} </h1>
             <button
-                onClick={handleOrderClick}
+                onClick={handlePlaceOrder}
                 className="btn btn-outline-dark btn-lg"
                 disabled={!loggedInUser}>
                 Order books

@@ -15,14 +15,14 @@ exports.userList = asyncHandler(async (req, res, next) => {
 
 // Retrieve a Single User by id (GET /users/)
 exports.userGetOne = asyncHandler(async (req, res, next) => {
-    const { id } = req.params; // Extracting ID from the request parameters
+    const { id } = req.params;
 
     try {
         const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json(user); // Return the found book
+        res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -33,17 +33,17 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
     try {
         const { username, password } = req.body;
 
-        // Find the user by username
+
         const user = await User.findOne({ username });
         if (!user) return res.status(400).send('User not found!');
 
-        // Compare the provided password with the hashed password in the database
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).send('Invalid password!');
 
         const token = jwt.sign({ userId: user.id}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ token,user }); // Return the found user
+        res.json({ token,user });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -51,8 +51,8 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
 // Create a New User (POST /users)
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
     const { username, email, password1,password2 } = req.body;
-    // Generate salt and hash password
-    if(password1!=password2)
+
+    if(password1!==password2)
     {
         throw new Error("Passwords do not match");
     }

@@ -33,6 +33,7 @@ export const processBooksData = (booksData, setBookInfos) => {
             return acc;
         }, {});
         setBookInfos(booksObject);
+
     } else {
         console.error('Expected an array but received:', booksData);
         setBookInfos({});

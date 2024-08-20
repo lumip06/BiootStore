@@ -6,6 +6,7 @@ const router = express.Router();
 const bookController = require("../controllers/bookController");
 const userController=require("../controllers/userController");
 const orderController=require("../controllers/orderController");
+const {validateToken} = require("../middleware/ValidateToken");
 
 //USER ROUTES
 // GET request for list of all user items.
@@ -55,7 +56,7 @@ router.delete("/books/:id", bookController.bookDelete);
 //ORDER ROUTES
 
 //get all orders for one user
-router.get("/orders/user/:userId", orderController.orderListByUser);
+router.get("/orders/user/:userId", validateToken, orderController.orderListByUser);
 // GET request for list of all order items.
 router.get("/orders", orderController.orderList);
 
@@ -64,6 +65,6 @@ router.get("/orders", orderController.orderList);
 router.get("/orders/:id", orderController.orderGetOne);
 
 // POST request for creating order.
-router.post("/orders", orderController.orderCreatePost);
+router.post("/orders", validateToken,orderController.orderCreatePost);
 
 module.exports = router

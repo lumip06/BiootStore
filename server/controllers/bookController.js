@@ -160,6 +160,8 @@ exports.getBookProperties = asyncHandler(async (req, res, next) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+
 exports.updateBookStock = asyncHandler(async (req, res, next) => {
     try {
         console.log("Processing updateBookStock request");
@@ -189,15 +191,17 @@ exports.updateBookStock = asyncHandler(async (req, res, next) => {
                 throw new Error(`Not enough stock for book ID ${bookId}. Available: ${book.stock}, Requested: ${quantity}`);
             }
 
-            // Update stock
+
             book.stock -= quantity;
-            return book.save(); // Save and return the updated book
+            return book.save();
         });
 
-        // Wait for all stock updates to complete
-        const updatedBooks = await Promise.all(updatePromises);
 
-        res.status(200).json(updatedBooks);
+        const updatedBooks = await Promise.all(updatePromises);
+        console.log("Updated books:", updatedBooks);
+
+        next();
+
     } catch (error) {
         console.error("Error updating book stock:", error.message);
         res.status(400).json({ message: error.message });

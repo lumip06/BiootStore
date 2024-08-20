@@ -20,8 +20,7 @@ function UserPage() {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
 
-
-
+                console.log(getToken())
 
                 apiCall(
                     `${serverUrl}orders/user/${loggedInUser.userId}`,
@@ -42,13 +41,7 @@ function UserPage() {
         fetchUserOrders();
     }, [loggedInUser.userId]);
 
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
-    //
-    // if (error) {
-    //     return <div>Error: {error.message}</div>;
-    // }
+
 
     return (
         <div className="userPage">

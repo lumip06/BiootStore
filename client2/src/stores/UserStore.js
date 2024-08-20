@@ -28,7 +28,8 @@ export const createUserStore = ((set, get) => ({
 
     getToken: () => {
         const token = localStorage.getItem('token');
-        if (token && !isTokenExpired(token)) {
+        // if (token && !isTokenExpired(token)) {
+        if(token){
             return token;
         } else {
             get().logoutUser();
@@ -40,7 +41,8 @@ export const createUserStore = ((set, get) => ({
         localStorage.setItem('token', token);
 
 
-        if (token && !isTokenExpired(token)) {
+        // if (token && !isTokenExpired(token)) {
+        if(token){
             const decodedToken = jwt_decode(token);
             console.log("Decoded Token:", decodedToken);
 
