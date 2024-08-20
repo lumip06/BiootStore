@@ -4,7 +4,8 @@
     gap: 50px;
     grid-template-areas:'filter books books books books';
     padding: 50px;
-    border: 5px solid #9999ef;
+    border: 5px solid #C9D5B5;
+    background-color: #C9D5B5;
 }
 
 #filter-area {
@@ -12,7 +13,8 @@
     grid-area: filter;
     padding:35px;
     border-radius: 25px;
-    border: 5px solid #99efdf;
+    border: 5px solid #533745;
+    background-color:#496F5D;
     color: #333333;
     font-style: italic;
 }
@@ -21,7 +23,8 @@
     grid-area: books;
     padding:35px;
     border-radius: 25px;
-    border: 5px solid #99efdf;
+    border: 5px solid #533745;
+
 }
 #filter-counter{
     padding:35px;

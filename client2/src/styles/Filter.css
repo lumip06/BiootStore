@@ -1,0 +1,7 @@
+.form-check-input {
+    border: 2px solid rgb(199, 211, 180)
+}
+.form-check-input:checked {
+    border: 2px solid rgb(199, 211, 180);
+    background-color: #7A6F9B /* Change color when checked */
+}

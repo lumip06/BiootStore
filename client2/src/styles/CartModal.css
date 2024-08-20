@@ -49,3 +49,7 @@ input {
     border-radius: 4px;
     margin: 0 5px; /* Add margin to create space between elements */
 }
+tr:nth-child(even) {
+    background-color: #486e5c;
+    color: #c7d3b4;
+}

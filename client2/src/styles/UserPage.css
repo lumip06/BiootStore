@@ -8,7 +8,7 @@
             'blankarea blankarea blankarea';
     padding-top: 200px;
     padding-bottom: 50px;
-    background-color: #CDE6F5;
+    background-color: #496F5D;
     overflow: auto;
 }
 
@@ -19,7 +19,7 @@
 
 
 .userDetails {
-    background-color: #f9f9f9;
+    background-color: #C9D5B5;
     margin: 50px;
     padding-top: 50px;
     padding-right: 150px;
@@ -57,20 +57,20 @@
 }
 
 .col1 {
-    border: 2px solid red;
+    border: 2px solid #496F5D;
     float: left; /* add this */
     padding: 25px;
 }
 
 .col2 {
-    border: 2px solid green;
+    border: 2px solid #496F5D;
 
 }
 
 .userDetails .col2 p {
     font-style: italic;
     font-size: 50px;
-    color: #9999ef;
+    color: #496F5D;
     display: flex;
     justify-content: right;
     padding: 50px;

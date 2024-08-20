@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "../../styles/Filter.css"
 import {useBoundStore} from "../../stores/BoundStore";
 
 function BookFilterOption({bookAttribute,filterOptionValue}) {
@@ -14,6 +14,8 @@ function BookFilterOption({bookAttribute,filterOptionValue}) {
                 <input
                     type="checkbox"
                     id={filterOptionValue}
+                    className="form-check-input "
+                    style={{ width:"40px" ,height:"40px"}}
                     name={filterOptionValue}
                     checked={filterOptions[filterOptionValue] || false}
                     onChange={(e) => toggleFilter(filterOptionValue, bookAttribute, e.target.checked)}

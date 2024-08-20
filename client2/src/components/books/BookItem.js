@@ -29,7 +29,7 @@ function BookItem({book, index, view}) {
 
                 </div>
             </Link>
-            <button className="btn btn-outline-dark btn-lg"  disabled={isButtonDisabled} onClick={handleAddToCart}> ADD to Cart</button>
+            <button className="btn btn-outline-light btn-lg"  disabled={isButtonDisabled} onClick={handleAddToCart}> ADD to Cart</button>
         </div>
 
 
