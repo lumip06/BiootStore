@@ -10,14 +10,14 @@ function Login() {
         <div className="Login">
 
 
-            <div className=" row  ">
+
 
                 <div id="login-area">
                     <div className="container">
                        <LoginForm/>
                     </div>
                 </div>
-            </div>
+
 
 
         </div>

@@ -9,9 +9,9 @@ function Register() {
 
             <div id="register-area">
                 <div className="container">
-                    <div className=" row  ">
-                        <RegisterForm/>
-                    </div>
+
+                    <RegisterForm/>
+
                 </div>
             </div>
 

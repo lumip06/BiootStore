@@ -10,9 +10,10 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 const BookFilter = () => {
 
     const [bookProperties, setBookProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
+    const bookAttributes = ["genres", "prices", "publishers", "covers"];
     const [error, setError] = useState(null);
     const {apiCall, loading} = useFetchRequest();
-    const bookAttributes = ["genres", "prices", "publishers", "covers"];
+
 
     useEffect(() => {
         const fetchBookFilters = () => {
@@ -24,7 +25,8 @@ const BookFilter = () => {
 
 
 
-    return (<div id="filter-area">
+    return (
+        <div id="filter-area">
             <div className="form-check">
                 <Status loading={loading} error={error} />
                 {bookAttributes.map((bookAttribute) => {
@@ -50,7 +52,8 @@ const BookFilter = () => {
 
 
             </div>
-        </div>);
+        </div>
+    );
 };
 
 export default BookFilter;

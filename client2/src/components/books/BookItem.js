@@ -6,15 +6,16 @@ import {useBoundStore} from "../../stores/BoundStore";
 function BookItem({book, index, view}) {
     const {addBookToCart}=useBoundStore();
     const [quantityInCart, setQuantityInCart] = useState(0);
+
     const stock = book.stock;
     const availableQuantity = stock - quantityInCart;
-
     const isButtonDisabled = stock === 0 || availableQuantity <= 0;
 
     const handleAddToCart = () => {
         addBookToCart(book._id);
         setQuantityInCart(prevQuantity => prevQuantity + 1);
     };
+
     return (
 
         <div className={view}>

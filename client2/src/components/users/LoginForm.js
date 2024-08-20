@@ -46,7 +46,7 @@ function LoginForm() {
 
         try {
 
-            const response = await loginUser(formData.username, formData.password); // Assume this returns { user, token }
+            const response = await loginUser(formData.username, formData.password);
             if (response.token) {
                 setLoggedInUser(
                     {
@@ -59,7 +59,7 @@ function LoginForm() {
             navigate("/");
 
         } catch (error) {
-            console.error('Registration failed:', error);
+            console.error('Login failed:', error);
             const newErrors = {};
             newErrors.notFound="User does not exist";
             setErrors(newErrors);
@@ -67,7 +67,7 @@ function LoginForm() {
 
     };
     return (
-        <form id="register-form" onSubmit={handleLoginSubmit} autoComplete="on">
+        <form id="login-form" onSubmit={handleLoginSubmit} autoComplete="on">
             <div className="d-grid gap-2 col-6 mx-auto">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
