@@ -3,10 +3,8 @@ import "../../styles/Filter.css"
 import {useBoundStore} from "../../stores/BoundStore";
 
 function BookFilterOption({bookAttribute,filterOptionValue}) {
-    const {toggleFilter} = useBoundStore();
-    const {  filterOptions } = useBoundStore(state => ({
-        filterOptions: state.filterOptions,
-    }));
+    const {toggleFilter, filterOptions} = useBoundStore();
+
 
     return (
         <div className="bookFilterOption">

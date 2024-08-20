@@ -15,26 +15,23 @@ class Home extends React.Component {
 
     render() {
 
-        return <div className="Home" style={{backgroundColor:"#496F5D"}} >
+        return <div className="Home" style={{backgroundColor: "#496F5D"}}>
 
-            <div className=" row  ">
+            <h1 style={{paddingTop: "150px", color: "#C9D5B5"}}>Welcome to BiootStore!</h1>
 
-                <div ><h1 style={{paddingTop: "150px" ,color:"#C9D5B5"}}>Welcome to BiootStore!</h1></div>
+            <div id="content-area">
 
-                <div id="content-area">
 
-                    <div className="col">
-                        <BookFilter/>
+                <BookFilter/>
 
-                    </div>
-                    <div id="books-area">
 
-                        <BookList/>
-                        <BookPagination/>
+                <div id="books-area">
 
-                    </div>
+                    <BookList/>
+                    <BookPagination/>
 
                 </div>
+
             </div>
 
 

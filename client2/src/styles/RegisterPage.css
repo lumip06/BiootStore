@@ -1,12 +1,7 @@
 
 #register-area {
-    /*display: grid;*/
     gap: 50px;
-    /*grid-template-areas:*/
-    /*        'blankarea blankarea blankarea'*/
-    /*        'blankarea container blankarea'*/
-    /*        'blankarea blankarea blankarea';*/
-    padding: 250px;
+    padding: 150px;
     background-color: #C9D5B5;
 }
 .container {

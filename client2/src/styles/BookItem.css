@@ -4,7 +4,7 @@
 
 }
 .cardView{
-    border: 2px solid #533745;
+    border: 5px solid #533745;
     border-radius: 25px;
     padding: 5px;
     width: 300px;
@@ -14,14 +14,14 @@
 }
 
 .listView{
-    border: 2px solid #986C6A;
+    border: 5px solid #533745;
     border-radius: 25px;
     gap: 10px;
     margin: 5px;
     padding: 10px;
     display: grid;
     align-items: center;
-    background-color: #986C6A;
+    background-color: #3F5E5A;
 }
 
 p{

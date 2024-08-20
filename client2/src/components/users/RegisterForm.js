@@ -21,7 +21,7 @@ function RegisterForm() {
         { label: 'Password', type: 'password', name: 'password1', placeholder: 'Password' },
         { label: 'Password once again', type: 'password', name: 'password2', placeholder: 'Password' }
     ];
-    const handleChange = (e) => {
+    const handleAgreement = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
@@ -108,7 +108,7 @@ function RegisterForm() {
                                 name={field.name}
                                 placeholder={field.placeholder}
                                 value={formData[field.name]}
-                                onChange={handleChange}
+                                onChange={handleAgreement}
                             />
                             {errors[field.name] &&
                                 <small className="text-danger">{errors[field.name]}</small>}
@@ -127,7 +127,7 @@ function RegisterForm() {
                         id="agreement"
                         name="agreement"
                         checked={formData.agreement}
-                        onChange={handleChange}
+                        onChange={handleAgreement}
                     />
                     <label className="form-check-label" htmlFor="agreement">
                         I Agree to the terms.
