@@ -10,17 +10,15 @@ import {useNavigate} from 'react-router-dom';
 function BookPage() {
     const navigate = useNavigate();
     return (
-        <div className="BookPage">
+        <div id="book-area" className="BookPage">
 
-            <div id="book-area">
-                <div style={{display: 'flex', justifyContent: 'flex-start', padding: '15px', marginRight: '150px'}}>
-                    <button onClick={() => navigate(-1)} className="btn btn-outline-dark btn-lg"> goBack</button>
-                </div>
 
-                <div className="container">
-                    <BookInfo/>
-                </div>
+            <div style={{display: 'flex', justifyContent: 'flex-start', padding: '15px', marginRight: '150px'}}>
+                <button onClick={() => navigate(-1)} className="btn btn-outline-dark btn-lg"> goBack</button>
+            </div>
 
+            <div className="container">
+                <BookInfo/>
             </div>
 
 
