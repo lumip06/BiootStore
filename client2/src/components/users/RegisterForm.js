@@ -136,8 +136,8 @@ function RegisterForm() {
                         <small className="text-danger">{errors.agreement}</small>}
                 </div>
 
-                <button type="submit" className="btn btn-outline-dark btn-lg" id="submit">Register</button>
-                <Link to="/login" className="btn btn-outline-dark btn-lg" id="new-user-button">Already a User?</Link>
+                <button type="submit" className="btn btn-outline-light btn-lg" id="submit">Register</button>
+                <Link to="/login" className="btn btn-outline-light btn-lg" id="new-user-button">Already a User?</Link>
             </div>
         </form>
     );

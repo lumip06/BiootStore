@@ -111,8 +111,8 @@ function LoginForm() {
 
                 </div>
 
-                <button type="submit" className="btn btn-outline-dark btn-lg" value="Submit" id="submit">Login</button>
-                <Link to="/register" className="btn btn-outline-dark btn-lg" id="new-user-button">New User?</Link>
+                <button type="submit" className="btn btn-outline-light btn-lg" value="Submit" id="submit">Login</button>
+                <Link to="/register" className="btn btn-outline-light btn-lg" id="new-user-button">New User?</Link>
                 {errors.notFound && <small className="text-danger">{errors.notFound}</small>}
 
             </div>
