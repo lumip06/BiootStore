@@ -7,8 +7,10 @@ import React from "react";
 import BookInfo from "../components/books/BookInfo";
 import {useNavigate} from 'react-router-dom';
 
+
 function BookPage() {
     const navigate = useNavigate();
+
     return (
         <div id="book-area" className="BookPage">
 

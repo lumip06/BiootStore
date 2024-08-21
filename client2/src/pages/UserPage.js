@@ -19,21 +19,38 @@ function UserPage() {
     useEffect(() => {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
+                //TODO aici un check role
 
-                console.log(getToken())
+                if(loggedInUser.role==="client"){
+                    apiCall(
+                        `${serverUrl}orders/user/${loggedInUser.userId}`,
+                        'GET',
+                        null,
+                        [
+                            (data) => {
+                                console.log(data);
+                                setUserOrders(data);
+                            }
+                        ],
+                        [console.error]
+                    );
+                }
+                else{
+                    apiCall(
+                        `${serverUrl}orders/`,
+                        'GET',
+                        null,
+                        [
+                            (data) => {
+                                console.log(data);
+                                setUserOrders(data);
+                            }
+                        ],
+                        [console.error]
+                    );
+                }
 
-                apiCall(
-                    `${serverUrl}orders/user/${loggedInUser.userId}`,
-                    'GET',
-                    null,
-                    [
-                        (data) => {
-                            console.log(data);
-                            setUserOrders(data);
-                        }
-                    ],
-                    [console.error]
-                );
+
             }
         };
 
@@ -57,7 +74,7 @@ function UserPage() {
                 <div className="col2">
                     <h1>Username:{loggedInUser.username}</h1>
                     <h1>Email:{loggedInUser.email}</h1>
-
+                    <h1>Role:{loggedInUser.role}</h1>
                 </div>
             </div>
 

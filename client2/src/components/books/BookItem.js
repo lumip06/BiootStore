@@ -4,7 +4,7 @@ import "./../../styles/BookItem.css"
 import {useBoundStore} from "../../stores/BoundStore";
 
 function BookItem({book, index, view}) {
-    const {addBookToCart}=useBoundStore();
+    const {addBookToCart,loggedInUser}=useBoundStore();
     const [quantityInCart, setQuantityInCart] = useState(0);
 
     const stock = book.stock;
@@ -30,7 +30,9 @@ function BookItem({book, index, view}) {
 
                 </div>
             </Link>
+            {(loggedInUser?.role==="client" || !loggedInUser) &&(
             <button className="btn btn-outline-light btn-lg"  disabled={isButtonDisabled} onClick={handleAddToCart}> ADD to Cart</button>
+                )}
         </div>
 
 
