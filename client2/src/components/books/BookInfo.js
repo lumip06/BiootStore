@@ -5,11 +5,11 @@ import {useBoundStore} from "../../stores/BoundStore";
 import {checkBookInCart} from "../orders/CartUtils";
 
 function BookInfo() {
+    const { addBookToCart, cartBooks ,selectedBook, selectBook} = useBoundStore();
     const { id } = useParams();
-    const { addBookToCart, cartBooks } = useBoundStore();
     const [inCart, setInCart] = useState(false);
-    const { selectedBook, selectBook } = useBoundStore();
     const [quantityInCart, setQuantityInCart] = useState(0);
+
     useEffect(() => {
         const fetchBook = async () => {
             if (!selectedBook[id]) {
@@ -40,7 +40,6 @@ function BookInfo() {
 
     const stock = selectedBook[id].stock;
     const availableQuantity = stock - quantityInCart;
-
     const isButtonDisabled = stock === 0 || availableQuantity <= 0;
 
 
@@ -48,6 +47,7 @@ function BookInfo() {
         addBookToCart(selectedBook[id]._id);
         setQuantityInCart(prevQuantity => prevQuantity + 1);
     };
+
     return (
         <div className="bookDetails">
             <div className="col1">

@@ -16,8 +16,8 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderInfo() {
     const { cartBooks, getCartBookIds ,getToken} = useBoundStore();
-    const [bookInfos, setBookInfos] = useState({});
     const { apiCall, loading, error } = useFetchRequest();
+    const [bookInfos, setBookInfos] = useState({});
     let heading = ["Produs", "Disponibilitate", "Buc.", "Pret", "Total"];
 
     useEffect(() => {
@@ -26,9 +26,6 @@ function OrderInfo() {
 
             if (cartBookIds.length > 0) {
 
-
-
-                // const queryParams = new URLSearchParams({ ids: cartBookIds.join(',') }).toString();
                 const queryParams = qs.stringify({ids: cartBookIds}, {arrayFormat: 'brackets'});
                 apiCall(
                     `${serverUrl}books/infos?${queryParams}`,
@@ -52,13 +49,13 @@ function OrderInfo() {
 
 
     return (
-        <div className="bookDetails">
-            <div style={{width: "100%", overflow: "visible"}}>
-                <table style={{width: "100%", border: '1px solid s', borderCollapse: 'collapse'}}>
+        <div className="bookDetails" style={{width: "100%", overflow: "visible"}}>
+            {/*<div >*/}
+                <table style={{width: "100%", border: '1px solid black', borderCollapse: 'collapse'}}>
                     <thead>
                     <tr style={{border: '1px solid black'}}>
                         {heading.map((head, headID) => (
-                            <th style={{border: '1px solid black'}} key={headID}>{head}</th>
+                            <th style={{border: '1px solid black',padding:"10px"}} key={headID}>{head}</th>
                         ))}
                     </tr>
                     </thead>
@@ -110,7 +107,7 @@ function OrderInfo() {
                 </table>
                 <OrderPlacement bookInfos={bookInfos}/>
 
-            </div>
+            {/*</div>*/}
 
 
         </div>

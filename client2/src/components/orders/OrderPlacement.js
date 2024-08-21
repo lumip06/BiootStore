@@ -46,7 +46,7 @@ function OrderPlacement({bookInfos}) {
                 </span>
             )}
             <Modal open={open} onClose={handleCloseOrderSuccessModal} center>
-                <div>
+                <div style={{ padding: "50px"}}>
                     <h1>Order placed successfully! :D</h1>
                 </div>
             </Modal>

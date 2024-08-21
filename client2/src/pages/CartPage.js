@@ -1,6 +1,6 @@
 import '../App.css';
 
-import '../styles/BookPage.css'
+import '../styles/CartPage.css'
 
 import React from "react";
 
@@ -11,7 +11,7 @@ import OrderInfo from "../components/orders/OrderInfo";
 function CartPage() {
     const navigate = useNavigate();
     return (
-        <div className="BookPage">
+        <div className="CartPage">
 
             <div id="book-area">
                 <div style={{display: 'flex', justifyContent: 'flex-start', padding: '15px', marginRight: '150px'}}>

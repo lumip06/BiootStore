@@ -1,0 +1,25 @@
+#cart-area {
+    display: grid;
+    gap: 50px;
+    grid-template-areas:
+            'blankarea blankarea blankarea'
+            'blankarea container blankarea'
+            'blankarea blankarea blankarea';
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #496F5D;
+    overflow: auto;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: auto;
+    width: auto;
+
+}
+.blankarea {
+    grid-area: blankarea;
+}

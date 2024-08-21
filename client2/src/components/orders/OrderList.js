@@ -7,8 +7,8 @@ function OrderList({userOrders}) {
 
     return (
         <table border="1" cellPadding={20}>
-            <thead>
-            <tr>
+            <thead >
+            <tr >
                 <th>User ID</th>
                 <th>Date</th>
                 <th>Items</th>
