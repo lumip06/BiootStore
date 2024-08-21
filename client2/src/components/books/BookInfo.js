@@ -32,15 +32,15 @@ function BookInfo() {
         if (id) {
             fetchBook();
         }
-    }, [id, cartBooks, selectedBook]);
+    }, [id, cartBooks, selectedBook,quantityInCart]);
 
     if (!selectedBook[id]) {
         return <div>No book found.</div>;
     }
-
     const stock = selectedBook[id].stock;
     const availableQuantity = stock - quantityInCart;
     const isButtonDisabled = stock === 0 || availableQuantity <= 0;
+
 
 
     const handleAddToCart = () => {

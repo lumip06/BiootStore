@@ -16,11 +16,11 @@ const itemSchema = new Schema({
     price: {
         type: Number,
         required: true,
-        min: 1 // Ensures price is not negative
+        min: 1
     }
 });
 
-// Define the schema for an Order
+
 const orderSchema = new Schema({
     userId:{
         type:String,
@@ -29,10 +29,10 @@ const orderSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now // Automatically set the date to the current date and time
+        default: Date.now
     },
     items: {
-        type: [itemSchema], // Use the item schema as the type for items
+        type: [itemSchema],
         required: true,
         trim: true
     }
@@ -40,7 +40,7 @@ const orderSchema = new Schema({
 });
 
 
-// Create a model from the schema
+
 const order = mongoose.model('Order', orderSchema);
 
 module.exports = order;

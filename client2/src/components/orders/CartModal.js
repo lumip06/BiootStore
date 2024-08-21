@@ -17,45 +17,29 @@ function CartModal({onCloseModal}) {
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
     const {apiCall, loading, error} = useFetchRequest();
-    // const {cartBookIds, setCartBookIds} = useState({});
-    // const [idsToIgnore, setIdsToIgnore] = useState([]);
+
 
     useEffect(() => {
 
 
         const fetchBookInfos = () => {
-            // const newIdsToIgnore = bookInfos.map(book => book._id);
-            // setIdsToIgnore(newIdsToIgnore);
-            // console.log(idsToIgnore)
-            // console.log("IDS",idsToIgnore)
-            // const cartBookIds = getCartBookIds(idsToIgnore);
 
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-
-
-                const queryParams = qs.stringify({ids: cartBookIds}, {arrayFormat: 'brackets'});
+                // No need to stringify for the URL since we're sending the data in the body
+                const requestBody = { ids: cartBookIds };
 
                 apiCall(
-                    `${serverUrl}books/infos?${queryParams}`,
-                    'GET',
-                    null,
-
+                    `${serverUrl}books/infos`, // Endpoint URL without query parameters
+                    'POST', // Using POST method now
+                    requestBody, // Sending the cartBookIds in the body
                     [
                         (booksData) => {
                             processBooksData(booksData, setBookInfos);
-                            // setIdsToIgnore(prevIds => {
-                            //     // Create a set to avoid duplicates
-                            //     const updatedIds = new Set([...prevIds, ...Object.keys(cartBooks)]);
-                            //     return Array.from(updatedIds);
-                            // });
-                            // // setIdsToIgnore(Object.keys(cartBooks));
-
                         }
                     ],
-                    [console.error],
-                    getToken()
+                    [console.error]
                 );
             } else {
                 setBookInfos({});
@@ -103,7 +87,7 @@ function CartModal({onCloseModal}) {
             <hr className="solid"/>
             <h1>TOTAL: {totalPrice} </h1>
 
-            <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-dark btn-lg">Finalize Order</Link>
+            <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-light btn-lg">Finalize Order</Link>
 
 
         </div>

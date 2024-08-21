@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useBoundStore} from "../stores/BoundStore";
 
 export const invokeFunctions = (functionArray, args) => {
     functionArray.forEach(func => func(args));
@@ -6,16 +7,16 @@ export const invokeFunctions = (functionArray, args) => {
 
 export const useFetchRequest = () => {
     const [loading, setLoading] = useState(false);
-
-    const apiCall = async (url, method, body, successCallbacks, errorCallbacks, token = null) => {
+    const { getToken} = useBoundStore();
+    const apiCall = async (url, method, body, successCallbacks, errorCallbacks, token = getToken()) => {
         setLoading(true);
         try {
-            // Construct headers object
+
             const headers = {
                 'Content-Type': 'application/json',
             };
 
-            // Add Authorization header if token is provided
+
             if (token) {
                 headers['Authorization'] = `Bearer ${token}`;
             }
@@ -25,7 +26,7 @@ export const useFetchRequest = () => {
                 headers,
             };
 
-            // Only include the body if the method is not GET or HEAD
+
             if (method !== 'GET' && method !== 'HEAD') {
                 options.body = JSON.stringify(body);
             }

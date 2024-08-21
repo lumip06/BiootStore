@@ -8,7 +8,7 @@ import {calculateTotalPrice} from './CartUtils.js';
 
 function OrderPlacement({bookInfos}) {
 
-    const {cartBooks, emptyBookCart,loggedInUser,deleteSelectedBooks} = useBoundStore();
+    const {cartBooks, emptyBookCart,loggedInUser,updateSelectedBooksStock} = useBoundStore();
     const [open, setOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
@@ -22,7 +22,7 @@ function OrderPlacement({bookInfos}) {
     const handlePlaceOrder = () => {
 
         placeOrder(cartBooks, bookInfos, loggedInUser);
-        deleteSelectedBooks( Object.keys(cartBooks));
+        updateSelectedBooksStock( );
         emptyBookCart();
         onOpenOrderSuccessModal();
     };

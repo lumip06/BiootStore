@@ -39,53 +39,17 @@ export const getOneBook = async (id) => {
 
 export const getCartBooksInfos = async (ids) => {
     try {
-        const queryParams = qs.stringify({ ids }, { arrayFormat: 'brackets' });
-
-        const response = await axios.get(`${serverUrl}books/infos?${queryParams}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        const response = await axios.post(`${serverUrl}books/infos`,
+            { ids },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
 
         return response.data;
     } catch (error) {
         console.error('Error fetching book properties:', error);
-
     }
-};
-
-export const updateStock = async (cartBooks) => {
-    const items = Object.keys(cartBooks).map(bookId => ({
-        bookId: bookId,
-        quantity: cartBooks[bookId]
-    }));
-
-    console.log("Converted ITEMS ", items);
-
-    try {
-        const response = await axios.put(`${serverUrl}books`, {
-            items,
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        return response.data;
-    } catch (error) {
-        if (error.response) {
-
-            console.error('Error response:', error.response.data);
-            console.error('Status code:', error.response.status);
-            console.error('Headers:', error.response.headers);
-        } else if (error.request) {
-
-            console.error('Error request:', error.request);
-        } else {
-
-            console.error('Error message:', error.message);
-        }
-
-    }
-
 };
