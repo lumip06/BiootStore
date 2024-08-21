@@ -50,20 +50,18 @@ exports.bookGetOne = asyncHandler(async (req, res, next) => {
 });
 //GET BOOK INFOS FOR CART
 exports.bookGetInfosByIds = asyncHandler(async (req, res, next) => {
-    const ids = req.query.ids;
-    console.log("IDS",ids)
-    if (!ids) {
-        return res.status(400).json({ error: 'No IDs provided' });
+    const { ids } = req.body;
+    console.log("IDS", ids);
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ error: 'No IDs provided or IDs are not in array format' });
     }
 
-    // If ids is a string, convert it into an array
-    const idsArray = Array.isArray(ids) ? ids : ids.split(',');
-
     try {
-        // Convert each ID to a MongoDB ObjectId
-        const objectIdsArray = idsArray.map(id => new mongoose.Types.ObjectId(id.trim()));
 
-        // Fetch books from the database
+        const objectIdsArray = ids.map(id => new mongoose.Types.ObjectId(id.trim()));
+
+
         const books = await Book.find({ _id: { $in: objectIdsArray } }).select('title author price stock');
 
         if (!books.length) {
@@ -166,27 +164,27 @@ exports.updateBookStock = asyncHandler(async (req, res, next) => {
     try {
         console.log("Processing updateBookStock request");
 
-        // Ensure req.body.items is an array
+
         if (!Array.isArray(req.body.items)) {
             return res.status(400).json({ message: "Request body must contain an array of items" });
         }
 
-        // Prepare an array of promises for updating stocks
+
         const updatePromises = req.body.items.map(async (item) => {
             const { bookId, quantity } = item;
 
-            // Validate bookId and quantity
+
             if (!bookId || typeof quantity !== 'number' || quantity <= 0) {
                 throw new Error("Invalid item data. 'bookId' and 'quantity' are required, and 'quantity' must be a positive number.");
             }
 
-            // Find the book by ID
+
             const book = await Book.findById(bookId);
             if (!book) {
                 throw new Error(`Book with ID ${bookId} not found.`);
             }
 
-            // Check if there's enough stock
+
             if (book.stock < quantity) {
                 throw new Error(`Not enough stock for book ID ${bookId}. Available: ${book.stock}, Requested: ${quantity}`);
             }

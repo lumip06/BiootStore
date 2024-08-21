@@ -25,17 +25,19 @@ function OrderInfo() {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
+                // No need to stringify for the URL since we're sending the data in the body
+                const requestBody = { ids: cartBookIds };
 
-                const queryParams = qs.stringify({ids: cartBookIds}, {arrayFormat: 'brackets'});
                 apiCall(
-                    `${serverUrl}books/infos?${queryParams}`,
-                    'GET',
-                    null,
+                    `${serverUrl}books/infos`, // Endpoint URL without query parameters
+                    'POST', // Using POST method now
+                    requestBody, // Sending the cartBookIds in the body
                     [
-                        (booksData) => processBooksData(booksData, setBookInfos)
+                        (booksData) => {
+                            processBooksData(booksData, setBookInfos);
+                        }
                     ],
-                    [console.error],
-                    getToken()
+                    [console.error]
                 );
             } else {
                 setBookInfos({});

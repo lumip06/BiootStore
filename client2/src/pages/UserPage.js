@@ -32,8 +32,7 @@ function UserPage() {
                             setUserOrders(data);
                         }
                     ],
-                    [console.error],
-                    getToken()
+                    [console.error]
                 );
             }
         };

@@ -55,7 +55,7 @@ function UserActions() {
                     {numberOfCartBooks > 0 && <span className="badge">{numberOfCartBooks}</span>}
                 </div>
 
-                <Modal open={open} onClose={onCloseCartModal} center>
+                <Modal open={open} style={{backgroundColor:"#523744"}} onClose={onCloseCartModal} center>
                     <CartModal onCloseModal={onCloseCartModal}/>
                 </Modal>
             </div>

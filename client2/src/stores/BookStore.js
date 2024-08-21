@@ -131,16 +131,19 @@ export const createBookStore = ((set, get) => ({
 
         },
 
-        deleteSelectedBooks: (ids) => set((state) => {
-
-
+        updateSelectedBooksStock: () => set((state) => {
+            const { cartBooks } = get();
+            const cartBookIds = Object.keys(cartBooks);
             const updatedSelectedBook = { ...state.selectedBook };
-            ids.forEach(id => {
-                delete updatedSelectedBook[id];
+
+            cartBookIds.forEach(id => {
+
+                if (updatedSelectedBook[id] && cartBooks[id]) {
+                    updatedSelectedBook[id].quantity -= cartBooks[id].quantity;
+                }
             });
 
             return {
-
                 selectedBook: updatedSelectedBook,
             };
         }),

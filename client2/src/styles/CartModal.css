@@ -1,4 +1,9 @@
 
+#cartModal{
+    background-color: #486e5c;
+
+    color: #c7d3b4;
+}
 hr.solid {
     border-top: 3px solid #bbb;
 }
@@ -7,6 +12,7 @@ hr.solid {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .bookDetails {
@@ -48,6 +54,7 @@ input {
     border: 1px solid #ddd;
     border-radius: 4px;
     margin: 0 5px; /* Add margin to create space between elements */
+
 }
 tr:nth-child(even) {
     background-color: #486e5c;

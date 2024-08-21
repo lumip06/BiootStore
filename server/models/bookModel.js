@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const url = require("node:url");
 const Schema = mongoose.Schema;
 
-// Define the schema for a Book
 const bookSchema = new Schema({
     title: {
         type: String,
@@ -45,7 +44,7 @@ const bookSchema = new Schema({
     }
 });
 
-// Create a model from the schema
+
 const book = mongoose.model('Book', bookSchema);
 
 module.exports = book;
