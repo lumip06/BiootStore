@@ -1,10 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useBoundStore} from "../../stores/BoundStore";
 
 function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const {removeBookFromCart,changeBookQuantity} = useBoundStore();
 
+
+    useEffect(() => {
+        setQuantity(initialQuantity || 1);
+    }, [id, initialQuantity]);
 
     const handleChangeQuantity = (delta) => {
         setQuantity((prevQuantity) => {
@@ -22,17 +26,7 @@ function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
                 changeBookQuantity(id, newQuantity);
                 return newQuantity;
             }
-            //VARIANTA CU ZERO
-            // if (newQuantity <= 0) {
-            //     removeBookFromCart(id);
-            //     return 0;
-            // } else if (newQuantity > inStock) {
-            //     return prevQuantity;
-            // } else {
-            //
-            //     changeBookQuantity(id, newQuantity);
-            //     return newQuantity;
-            // }
+
         });
     };
 

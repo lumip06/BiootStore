@@ -1,6 +1,6 @@
 .containerFooter {
 
-    position: absolute;
+    flex-shrink: 0; /* Ensure the footer doesn't shrink */
 
     bottom: 0;
     width: 100%;

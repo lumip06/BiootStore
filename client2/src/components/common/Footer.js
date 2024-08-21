@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 function Footer() {
     return (
-        <footer id="footer-areas " className="text-center text-white" style={{backgroundColor: "#486e5c"}}>
+        <footer id="footer-areas " className="text-center text-white containerFooter" style={{backgroundColor: "#486e5c"}}>
 
 
             <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
