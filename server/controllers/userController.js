@@ -50,7 +50,7 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
 });
 // Create a New User (POST /users)
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
-    const { username, email, password1,password2 } = req.body;
+    const { username, email, password1,password2,role } = req.body;
 
     if(password1!==password2)
     {
@@ -59,26 +59,26 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password1, salt);
 
-    // Create new user
+
     const newUser = new User({
         username,
         email,
         password: hashedPassword,
+        role
     });
 
     try {
-        // Save user to the database
 
         const savedUser = await newUser.save();
 
-        // Generate a JWT token using savedUser's details
+
         const token = jwt.sign(
-            { userId: savedUser._id }, // Corrected to use savedUser
+            { userId: savedUser._id },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        // Send the token along with the user data
+
         res.status(201).json({ user: savedUser, token });
     } catch (err) {
         res.status(400).json({ message: err.message });

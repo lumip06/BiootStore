@@ -1,0 +1,37 @@
+
+#bookFormArea {
+    gap: 50px;
+    padding: 150px;
+    background-color: #C9D5B5;
+
+}
+
+#book-form {
+    background-color: #496F5D;
+    padding: 3em;
+    height: 800px;
+    width: 950px;
+    border-radius: 20px;
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    backdrop-filter: blur(10px);
+    box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+    align-content: center;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 60px;
+}
+label {
+    font-size: 30px;
+    color: #C9D5B5;
+}
+
+.blankarea {
+    grid-area: blankarea;
+}
+button {
+    margin-top: 50px;
+
+}
+.content {
+    grid-column: col-start 4 / span 7;
+}

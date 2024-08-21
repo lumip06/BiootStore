@@ -14,6 +14,7 @@ function RegisterForm() {
         password1: '',
         password2: '',
         agreement: false,
+        role:'client'
     });
     const fields = [
         { label: 'Username', type: 'text', name: 'username', placeholder: 'Username' },
@@ -77,6 +78,7 @@ function RegisterForm() {
                         userId: loggedUser._id,
                         username: loggedUser.username,
                         email: loggedUser.email,
+                        role:loggedUser.role
                     },
                     token
                 );

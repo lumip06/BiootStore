@@ -53,3 +53,32 @@ export const getCartBooksInfos = async (ids) => {
         console.error('Error fetching book properties:', error);
     }
 };
+
+export const addNewBook = async (formData) => {
+    const book = {
+        title: formData.title,
+        author: formData.author,
+        genre: formData.genre,
+        publisher: formData.publisher,
+        publishedYear:formData.publishedYear,
+        cover:formData.cover,
+        price:formData.price,
+        stock:formData.stock,
+        img:formData.img
+    };
+
+    try {
+        console.log('Sending book data :', book);
+
+        const response = await axios.post(`${serverUrl}books/`, [book], {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error creating user:', error);
+
+    }
+};

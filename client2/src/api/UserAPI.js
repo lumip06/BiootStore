@@ -9,6 +9,7 @@ export const registerUser = async (formData) => {
         email: formData.email,
         password1: formData.password1,
         password2: formData.password2,
+        role:formData.role
     };
 
     try {

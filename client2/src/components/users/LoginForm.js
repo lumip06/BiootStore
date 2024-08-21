@@ -52,9 +52,10 @@ function LoginForm() {
                     {
                         userId: response.user._id,
                         username: response.user.username,
-                        email: response.user.email
+                        email: response.user.email,
+                        role:response.user.role
                     }, response.token);
-                console.log(response.token)
+
             }
             navigate("/");
 

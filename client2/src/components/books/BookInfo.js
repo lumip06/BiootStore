@@ -5,7 +5,7 @@ import {useBoundStore} from "../../stores/BoundStore";
 import {checkBookInCart} from "../orders/CartUtils";
 
 function BookInfo() {
-    const { addBookToCart, cartBooks ,selectedBook, selectBook} = useBoundStore();
+    const { addBookToCart, cartBooks ,selectedBook, selectBook ,loggedInUser} = useBoundStore();
     const { id } = useParams();
     const [inCart, setInCart] = useState(false);
     const [quantityInCart, setQuantityInCart] = useState(0);
@@ -64,13 +64,16 @@ function BookInfo() {
                 <p>Price: {selectedBook[id].price}</p>
                 <p>In Stock: {availableQuantity ? 'Yes' : 'No'}</p>
                 <p>Available to Add to Cart: {availableQuantity > 0 ? availableQuantity : 0}</p>
-                <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
-                    <button className="btn btn-outline-dark btn-lg"
-                            disabled={isButtonDisabled}
-                            onClick={handleAddToCart}>
-                        ADD to Cart
-                    </button>
-                </div>
+                {(loggedInUser?.role==="client" || !loggedInUser) && (
+                    <div style={{display: 'flex', justifyContent: 'flex-end', padding: '15px', marginRight: '30px'}}>
+                        <button className="btn btn-outline-dark btn-lg"
+                                disabled={isButtonDisabled}
+                                onClick={handleAddToCart}>
+                            ADD to Cart
+                        </button>
+                    </div>
+                )}
+
             </div>
         </div>
     )
