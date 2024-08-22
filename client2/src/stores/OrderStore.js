@@ -3,6 +3,7 @@ import {loadCartFromLocalStorage, saveCartToLocalStorage} from "./FromLocalStora
 
 export const createOrderStore = ((set, get) => ({
         cartBooks: loadCartFromLocalStorage(),
+
         addBookToCart: (bookId) => set(state => {
 
             const newBookCart = {...state.cartBooks};
@@ -60,6 +61,7 @@ export const createOrderStore = ((set, get) => ({
                 cartBooks: newBookCart,
             };
         }),
+
     })
 
 );

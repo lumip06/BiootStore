@@ -3,8 +3,10 @@ import React, {useState} from "react";
 import "../../styles/NewBookPage.css"
 import {registerUser} from "../../api/UserAPI";
 import {addNewBook} from "../../api/BookAPI";
+import {Modal} from "react-responsive-modal";
 function NewBookForm() {
     const [errors, setErrors] = useState({});
+    const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
         title:'',
         author: '',
@@ -54,6 +56,12 @@ function NewBookForm() {
 
         return newErrors;
     }
+    const onOpenBookSuccessModal = () => setOpen(true);
+    const onCloseBookSuccessModal = () => setOpen(false);
+    const handleCloseBookSuccessModal = () => {
+        onCloseBookSuccessModal();
+        // setOrderPlaced(true);
+    };
     const handleBookForm = async (e)=>{
         e.preventDefault();
         const newErrors = validateBookForm();
@@ -67,7 +75,7 @@ function NewBookForm() {
             console.error('book add failed:', error.response ? error.response.data : error.message);
 
         }
-
+        onOpenBookSuccessModal();
     }
     return (
         <div className="newBookPage">
@@ -123,6 +131,11 @@ function NewBookForm() {
                             >
                                 Add book
                             </button>
+                            <Modal open={open} onClose={handleCloseBookSuccessModal} center>
+                                <div style={{ padding: "50px"}}>
+                                    <h1>Book added successfully! :D</h1>
+                                </div>
+                            </Modal>
                         </div>
                     </form>
                 </div>
