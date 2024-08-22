@@ -51,7 +51,10 @@ function BookInfo() {
     return (
         <div className="bookDetails">
             <div className="col1">
-                <img className="card-img-top" src={selectedBook[id].img} alt={selectedBook[id].title}/>
+                <img className="card-img-top" src={selectedBook[id].img} alt={selectedBook[id].title} onError={event => {
+                    event.target.src = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1645580888i/60478042.jpg"
+                    event.onerror = null
+                }}/>
                 <h1>{selectedBook[id]?.title || 'No title available'}</h1>
                 <h2>Author: {selectedBook[id].author}</h2>
                 <p>Genre: {selectedBook[id].genre}</p>

@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
 import UserPage from "./pages/UserPage";
 import NewBookForm from "./components/books/NewBookForm";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/books/:id" element={<BookPage/>}/>
                     <Route path="/orders" element={<CartPage/>}/>
+                    <Route path="/orders/:id" element={<OrderPage/>}/>
                     <Route path="/user" element={<UserPage/>}/>
                     <Route path="/book" element={<NewBookForm/>}/>
                 </Routes>

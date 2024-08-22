@@ -60,10 +60,10 @@ exports.bookGetInfosByIds = asyncHandler(async (req, res, next) => {
     try {
 
         const objectIdsArray = ids.map(id => new mongoose.Types.ObjectId(id.trim()));
-
+        console.log('ObjectIds Array:', objectIdsArray);
 
         const books = await Book.find({ _id: { $in: objectIdsArray } }).select('title author price stock');
-
+        console.log(books)
         if (!books.length) {
             return res.status(404).json({ error: 'No books found for the provided IDs' });
         }
