@@ -85,7 +85,7 @@ function CartModal({onCloseModal}) {
                 <p style={{fontSize: "50px"}}>No books available</p>
             )}
             <hr className="solid"/>
-            <h1>TOTAL: {totalPrice} </h1>
+            <h1>TOTAL: ${totalPrice} </h1>
 
             <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-light btn-lg">Finalize Order</Link>
 

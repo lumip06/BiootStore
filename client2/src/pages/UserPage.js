@@ -19,36 +19,19 @@ function UserPage() {
     useEffect(() => {
         const fetchUserOrders = () => {
             if (loggedInUser.userId) {
-                //TODO aici un check role
 
-                if(loggedInUser.role==="client"){
-                    apiCall(
-                        `${serverUrl}orders/user/${loggedInUser.userId}`,
-                        'GET',
-                        null,
-                        [
-                            (data) => {
-                                console.log(data);
-                                setUserOrders(data);
-                            }
-                        ],
-                        [console.error]
-                    );
-                }
-                else{
-                    apiCall(
-                        `${serverUrl}orders/`,
-                        'GET',
-                        null,
-                        [
-                            (data) => {
-                                console.log(data);
-                                setUserOrders(data);
-                            }
-                        ],
-                        [console.error]
-                    );
-                }
+                apiCall(
+                    `${serverUrl}orders/`,
+                    'GET',
+                    null,
+                    [
+                        (data) => {
+                            console.log(data);
+                            setUserOrders(data);
+                        }
+                    ],
+                    [console.error]
+                );
 
 
             }
@@ -56,7 +39,6 @@ function UserPage() {
 
         fetchUserOrders();
     }, [loggedInUser.userId]);
-
 
 
     return (
@@ -67,7 +49,7 @@ function UserPage() {
             <div className="userDetails">
                 <div className="col1">
                     <p>ORDERS: </p>
-                    <Status loading={loading} error={error} />
+                    <Status loading={loading} error={error}/>
                     <OrderList userOrders={userOrders}/>
 
                 </div>

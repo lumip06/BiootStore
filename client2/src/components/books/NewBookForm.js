@@ -10,7 +10,7 @@ function NewBookForm() {
     const [formData, setFormData] = useState({
         title:'',
         author: '',
-        publishedYear:0,
+        publishedYear:"",
         genre:"",
         publisher:"",
         cover:"",
@@ -23,14 +23,14 @@ function NewBookForm() {
         { label: 'Author', type: 'text', name: 'author', placeholder: 'Author' },
         { label: 'Genre', type: 'text', name: 'genre', placeholder: 'Genre' },
         { label: 'Publisher', type: 'text', name: 'publisher', placeholder: 'Publisher' },
-        { label: 'Published year', type: 'text', name: 'publishedYear', placeholder: 'Published Year' },
+        { label: 'Published year', type: 'number', name: 'publishedYear', placeholder: 'Published Year' , min:"1800", max:"2025" },
         {label: 'Cover type', type: 'select', name: 'cover', placeholder: 'Select cover type',
             options: [
                 { value: 'Softcover', label: 'Softcover' },
                 { value: 'Hardcover', label: 'Hardcover' }]
         },
-        { label: 'Price', type: 'number', name: 'price', placeholder: 'Price'  },
-        { label: 'In Stock', type: 'number', name: 'stock', placeholder: 'Stock' },
+        { label: 'Price', type: 'number', name: 'price', placeholder: 'Price', min:"5"  },
+        { label: 'In Stock', type: 'number', name: 'stock', placeholder: 'Stock' ,min:"0"},
         { label: 'Book Cover Image', type: 'text', name: 'img', placeholder: 'Image' }
     ];
     const handleBookAddition = (e) => {
@@ -79,7 +79,9 @@ function NewBookForm() {
     }
     return (
         <div className="newBookPage">
+
             <div id="bookFormArea">
+                <h1>ADD A NEW BOOK:</h1>
                 <div className="container">
 
                     <form id="book-form" autoComplete="on" onSubmit={handleBookForm}>
@@ -112,6 +114,10 @@ function NewBookForm() {
                                                 placeholder={field.placeholder}
                                                 value={formData[field.name]}
                                                 onChange={handleBookAddition}
+                                                {...(field.type === 'number' && {
+                                                    min: field.min,
+                                                    max: field.max,
+                                                })}
                                             />
                                         )}
                                         {errors[field.name] && (
@@ -128,11 +134,12 @@ function NewBookForm() {
                                 className="btn btn-outline-light btn-lg"
                                 value="Submit"
                                 id="submit"
+                                style={{marginTop: "50px"}}
                             >
                                 Add book
                             </button>
                             <Modal open={open} onClose={handleCloseBookSuccessModal} center>
-                                <div style={{ padding: "50px"}}>
+                                <div style={{padding: "50px"}}>
                                     <h1>Book added successfully! :D</h1>
                                 </div>
                             </Modal>

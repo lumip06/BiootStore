@@ -12,11 +12,6 @@ const itemSchema = new Schema({
         type: Number,
         required: true,
         min: 1 // at least 1 book
-    },
-    price: {
-        type: Number,
-        required: true,
-        min: 1
     }
 });
 
