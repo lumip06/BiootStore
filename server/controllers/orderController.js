@@ -8,9 +8,29 @@ const {updateBookStock} = require("./bookController");
 
 // Display list of all orders.
 exports.orderList = asyncHandler(async (req, res, next) => {
+    console.log("Incoming Request:", req.method, req.url);
+    console.log("Request Headers:", req.headers);
+
+    const userId = req.user.userId;
+    const role=req.user.role;
+    console.log(userId);
+    console.log(role);
     try {
-        const orders = await Order.find();
-        res.json(orders);
+        if(role==="admin"){
+
+            const orders = await Order.find();
+            res.json(orders);
+        }
+        else{
+            const orders = await Order.find({ userId });
+
+            if (!orders || orders.length === 0) {
+                return res.status(404).json({ message: 'No orders found for this user' });
+            }
+            res.json(orders);
+        }
+
+
     } catch (err) {
         res.status(500).json({message: err.message});
     }
@@ -30,36 +50,38 @@ exports.orderGetOne = asyncHandler(async (req, res, next) => {
         res.status(500).json({message: err.message});
     }
 });
-exports.orderListByUser = asyncHandler(async (req, res, next) => {
-
-    console.log("Incoming Request:", req.method, req.url);
-    console.log("Request Headers:", req.headers);
-
-    const { userId } = req.params;
-    console.log(userId);
-
-    try {
-        const orders = await Order.find({ userId });
-
-        if (!orders || orders.length === 0) {
-            return res.status(404).json({ message: 'No orders found for this user' });
-        }
-
-        res.json(orders); // Return the found orders
-    } catch (err) {
-        res.status(500).json({ message: 'Server error: ' + err.message });
-    }
-});
+// exports.orderListByUser = asyncHandler(async (req, res, next) => {
+//
+//     console.log("Incoming Request:", req.method, req.url);
+//     console.log("Request Headers:", req.headers);
+//
+//     const { userId } = req.params;
+//     console.log(userId);
+//
+//     try {
+//         const orders = await Order.find({ userId });
+//
+//         if (!orders || orders.length === 0) {
+//             return res.status(404).json({ message: 'No orders found for this user' });
+//         }
+//
+//         res.json(orders); // Return the found orders
+//     } catch (err) {
+//         res.status(500).json({ message: 'Server error: ' + err.message });
+//     }
+// });
 
 // Handle order create on POST.
 exports.orderCreatePost = asyncHandler(async (req, res, next) => {
 
     try {
 
-        const {userId, date, items} = req.body;
+        const {date, items} = req.body;
         console.log("USER :", req.body);
         console.log("data :",date);
         console.log("items :", items);
+        // Get userId from req.user (set by middleware)
+        const userId = req.user.userId;
 
         if (!userId) {
             console.log("User ID is required")
@@ -73,9 +95,9 @@ exports.orderCreatePost = asyncHandler(async (req, res, next) => {
         }
 
         const orders = items.map(item => {
-            const { bookId, quantity, price } = item;
-            if (!bookId || !quantity || !price) {
-                throw new Error("All fields (bookId, quantity, price) are required for each item");
+            const { bookId, quantity } = item;
+            if (!bookId || !quantity ) {
+                throw new Error("All fields (bookId, quantity) are required for each item");
                 // return res.status(400).send({ message:"All fields (bookId, quantity, price) are required for each item"});
             }
 
@@ -85,12 +107,8 @@ exports.orderCreatePost = asyncHandler(async (req, res, next) => {
                 // return res.status(400).send({ message:"Quantity must be at least 1"});
             }
 
-            if (price < 1) {
-                throw new Error("Price must be at least 1");
-                // return res.status(400).send({ message:"Price must be at least 1"});
-            }
 
-            return { bookId, quantity, price };
+            return { bookId, quantity };
         });
 
 

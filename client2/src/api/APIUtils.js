@@ -6,7 +6,7 @@ export const createOrderItems = (cartBooks, booksInfos) => {
             const item = {
                 bookId: bookId,
                 quantity: quantity,
-                price: booksInfos[bookId].price
+               // price: booksInfos[bookId].price
             };
             items.push(item);
         });

@@ -1,9 +1,13 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {calculateTotalPrice} from "./CartUtils";
 
 
 function OrderRow({order}){
-
+    const bookQuantities = order.items.reduce((acc, item) => {
+        acc[item.bookId] = item.quantity;
+        return acc;
+    }, {});
 
     return (
 
@@ -24,10 +28,10 @@ function OrderRow({order}){
                     </Link>
                 </ul>
             </td>
-            <td>
-                <Link to={`/orders/${order._id}`} style={{textDecoration: 'none',color: "#000000"}}  state={{ order }}>
-                    {order.items.reduce((total, item) => total + item.price * item.quantity, 0)}</Link>
-            </td>
+            {/*<td>*/}
+            {/*    /!*<Link to={`/orders/${order._id}`} style={{textDecoration: 'none',color: "#000000"}}  state={{ order }}>*!/*/}
+            {/*    /!*    ${calculateTotalPrice(bookQuantities, bookInfos).toFixed(2)}</Link>*!/*/}
+            {/*</td>*/}
 
         </tr>
 

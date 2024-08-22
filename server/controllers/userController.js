@@ -41,7 +41,7 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).send('Invalid password!');
 
-        const token = jwt.sign({ userId: user.id}, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.id, role: user.role}, process.env.JWT_SECRET, { expiresIn: '2h' });
 
         res.json({ token,user });
     } catch (err) {
@@ -73,9 +73,9 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
 
 
         const token = jwt.sign(
-            { userId: savedUser._id },
+            { userId: savedUser._id , role: savedUser.role},
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '2h' }
         );
 
 

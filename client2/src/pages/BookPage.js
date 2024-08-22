@@ -21,6 +21,7 @@ function BookPage() {
 
             <div className="container">
                 <BookInfo/>
+
             </div>
 
 

@@ -21,7 +21,7 @@ function OrderPlacement({bookInfos}) {
     };
     const handlePlaceOrder = () => {
 
-        placeOrder(cartBooks, bookInfos, loggedInUser);
+        placeOrder(cartBooks, bookInfos);
         updateSelectedBooksStock( );
         emptyBookCart();
         onOpenOrderSuccessModal();
@@ -33,7 +33,7 @@ function OrderPlacement({bookInfos}) {
 
     return (
         <div style={{marginTop: "20px", textAlign: "right", padding: "50px"}}>
-            <h1>TOTAL: {totalPrice} </h1>
+            <h1>TOTAL: ${totalPrice} </h1>
             <button
                 onClick={handlePlaceOrder}
                 className="btn btn-outline-dark btn-lg"

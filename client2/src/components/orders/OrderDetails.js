@@ -2,7 +2,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import BookItem from "../books/BookItem";
-import {processBooksData} from "./CartUtils";
+import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
 import "../../styles/BookItem.css"
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -12,6 +12,10 @@ function OrderDetails({order}) {
     const { id } = useParams();
     const [bookInfos, setBookInfos] = useState({});
     const { apiCall, loading, error } = useFetchRequest();
+    const bookQuantities = order.items.reduce((acc, item) => {
+        acc[item.bookId] = item.quantity;
+        return acc;
+    }, {});
     useEffect(() => {
         const fetchBookInfos = () => {
             const itemIds = [];
@@ -55,7 +59,7 @@ function OrderDetails({order}) {
                 <p>Order: {id}</p>
                 <p>Date:{new Date(order.date).toLocaleDateString()}</p>
                 <p>Placed by user:{order.userId}</p>
-                <p>Total price:{order.items.reduce((total, item) => total + item.price * item.quantity, 0)}</p>
+                <p>Total price:${calculateTotalPrice(bookQuantities, bookInfos).toFixed(2)}</p>
             </div>
             <div className="col2">
                 <h1>Books ordered:</h1>

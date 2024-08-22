@@ -56,9 +56,8 @@ router.delete("/books/:id", bookController.bookDelete);
 //ORDER ROUTES
 
 //get all orders for one user
-router.get("/orders/user/:userId", validateToken, orderController.orderListByUser);
-// GET request for list of all order items.
-router.get("/orders", orderController.orderList);
+// OR GET request for list of all order items.
+router.get("/orders", validateToken,orderController.orderList);
 
 
 // GET request for one order

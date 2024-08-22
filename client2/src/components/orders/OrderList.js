@@ -12,7 +12,7 @@ function OrderList({userOrders}) {
                 <th>User ID</th>
                 <th>Date</th>
                 <th>Items</th>
-                <th>Total Price</th>
+                {/*<th>Total Price</th>*/}
             </tr>
             </thead>
             <tbody>
