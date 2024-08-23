@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useBoundStore} from "../../stores/BoundStore";
-
+import "./../../styles/OrderTableRow.css"
 function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const {removeBookFromCart,changeBookQuantity} = useBoundStore();
@@ -31,9 +31,9 @@ function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
     };
 
     return (
-        <tr style={{height: "50%", width: "100%"}}>
-            <td style={{padding: "45px"}}>{title}</td>
-            <td style={{padding: "45px"}}>{inStock}</td>
+        <tr >
+            <td >{title}</td>
+            <td >{inStock}</td>
             <td>
                 <div className="number">
                     <span className="minus" onClick={() => handleChangeQuantity(-1)}>-</span>
@@ -44,8 +44,8 @@ function OrderTableRow({id, title, inStock, initialQuantity, pret, total}) {
                             className="btn btn-outline-dark ">&#10006;</button>
                 </div>
             </td>
-            <td style={{padding: "45px"}}>{pret}</td>
-            <td style={{padding: "45px"}}>{total}</td>
+            <td >{pret}</td>
+            <td >{total}</td>
         </tr>
     );
 }

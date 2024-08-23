@@ -1,7 +1,7 @@
 
 .userPage {
     display: grid;
-    gap: 50px;
+
     grid-template-areas:
             'blankarea blankarea blankarea'
             'blankarea container blankarea'
@@ -11,8 +11,19 @@
     background-color: #496F5D;
     overflow: auto;
 }
-
-
+.userPageH1{
+    font-style: italic;
+    font-size: 50px;
+    margin-left: 500px;
+    display: flex;
+    justify-content: center;
+    color: #523744;
+}
+.button-container{
+    display: flex;
+    justify-content: flex-start;
+    padding: 15px;
+}
 .blankarea {
     grid-area: blankarea;
 }
@@ -21,13 +32,36 @@
 .userDetails {
     background-color: #C9D5B5;
     margin: 50px;
-    padding-top: 50px;
-    padding-right: 150px;
-    padding-left: 150px;
-    padding-bottom: 50px;
+    padding: 50px 150px;
     display: grid;
-    grid-template-areas:'auto auto';
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "header header"
+        "col1 col2";
+    gap: 20px;
     overflow: auto;
+}
+
+.userDetails .userPageH1 {
+    grid-area: header;
+    font-style: italic;
+    font-size: 70px;
+    color: #523744;
+    margin-left: 50px;
+    justify-content: left;
+    display: flex;
+}
+
+.userDetails .col1 {
+    grid-area: col1;
+    border: 2px solid #496F5D;
+    padding: 25px;
+}
+
+.userDetails .col2 {
+    grid-area: col2;
+    border: 2px solid #496F5D;
 }
 
 .userDetails .col1 h1 {
@@ -37,34 +71,29 @@
     justify-content: left;
 }
 
-.userDetails .col1 h2 {
+.userDetails .col2 h1 {
     font-style: italic;
-    font-size: 45px;
+    font-size: 50px;
     display: flex;
     justify-content: left;
+    color: #476d5b;
 }
 
 .userDetails .col1 p {
     font-style: italic;
-    font-size: 30px;
+    font-size: 50px;
     display: flex;
     justify-content: left;
+    color: #3a5749;
 }
 
-.userDetails img {
+.userDetails .col2 p {
+    font-style: italic;
+    font-size: 50px;
+    color: #496F5D;
     display: flex;
-    justify-content: left;
-}
-
-.col1 {
-    border: 2px solid #496F5D;
-    float: left; /* add this */
-    padding: 25px;
-}
-
-.col2 {
-    border: 2px solid #496F5D;
-
+    justify-content: right;
+    padding: 50px;
 }
 
 .userDetails .col2 p {

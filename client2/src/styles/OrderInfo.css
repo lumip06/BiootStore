@@ -1,0 +1,65 @@
+.orderBookDetails {
+    width: 100%;
+    padding: 20px;
+    overflow: visible;
+}
+
+
+
+
+span {cursor:pointer; }
+.number {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.minus, .plus {
+    width: 40px;
+    height: 40px;
+    background: #f2f2f2;
+    border-radius: 4px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+input {
+    height: 40px;
+    width: 60px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+
+}
+.tableOrderInfo {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.thhead{
+    border: 1px solid black;
+    padding:10px;
+}
+.trhead{
+    border: 1px solid black;
+}
+tr:nth-child(even) {
+    background-color: #486e5c;
+    color: #c7d3b4;
+}
+th:nth-child(odd) {
+    background-color: #486e5c;
+    color: #c7d3b4;
+}
+.noBooksTd{
+    text-align: center;
+    font-size: 60px;
+    padding: 30px;
+}
+

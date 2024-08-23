@@ -1,4 +1,4 @@
-export const createOrderItems = (cartBooks, booksInfos) => {
+export const createOrderItems = (cartBooks) => {
     let items = [];
 
     if (Object.keys(cartBooks).length > 0) {
@@ -6,7 +6,7 @@ export const createOrderItems = (cartBooks, booksInfos) => {
             const item = {
                 bookId: bookId,
                 quantity: quantity,
-               // price: booksInfos[bookId].price
+
             };
             items.push(item);
         });

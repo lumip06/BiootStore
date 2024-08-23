@@ -4,11 +4,11 @@ import BookItem from './BookItem';
 import {useBoundStore} from "../../stores/BoundStore";
 import Counters from "./Counters";
 import {Link} from "react-router-dom";
-
+import "./../../styles/BookList.css"
 
 function BookList() {
 
-    const {filters, books, fetchBooks, limit, page,loggedInUser} = useBoundStore();
+    const {filters, books, fetchBooks, limit, page, loggedInUser} = useBoundStore();
     const [viewType, setViewType] = useState('card');
 
     useEffect(() => {
@@ -18,35 +18,32 @@ function BookList() {
 
     return (
         <div className="container-fluid">
-            <div id="viewChanger" style={{display: 'flex'}}>
-                <div style={{justifyContent: 'flex-start', padding: '15px', marginRight: '350px'}}>
-                    <Counters/>
-                </div>
+            <div id="viewChanger">
 
-                {/* Check if loggedInUser exists and if the role is "admin" */}
-                {(loggedInUser?.role === "admin" ) && (
-                    <div style={{justifyContent: 'flex-end', padding: '15px'}}>
+                <Counters/>
+
+
+                {(loggedInUser?.role === "admin") && (
+                    <div className="bookListButtons">
                         <Link to="/book" id="buttonNewBook" className="btn btn-outline-dark">
                             Add new book
                         </Link>
                     </div>
                 )}
 
-                <div style={{justifyContent: 'flex-end', padding: '15px'}}>
+                <div className="bookListButtons">
                     <button
                         id="buttoncard"
                         className="btn btn-outline-dark"
                         disabled={viewType === "card"}
-                        onClick={() => setViewType("card")}
-                    >
+                        onClick={() => setViewType("card")}>
                         CardView
                     </button>
                     <button
                         id="buttonlist"
                         className="btn btn-outline-dark"
                         disabled={viewType === "list"}
-                        onClick={() => setViewType("list")}
-                    >
+                        onClick={() => setViewType("list")}>
                         ListView
                     </button>
                 </div>

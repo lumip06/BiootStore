@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import qs from 'qs';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
 import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
-import {getCartBooksInfos} from "../../api/BookAPI";
 import Status from "../common/Status";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -27,13 +25,13 @@ function CartModal({onCloseModal}) {
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
-                // No need to stringify for the URL since we're sending the data in the body
+
                 const requestBody = { ids: cartBookIds };
 
                 apiCall(
-                    `${serverUrl}books/infos`, // Endpoint URL without query parameters
-                    'POST', // Using POST method now
-                    requestBody, // Sending the cartBookIds in the body
+                    `${serverUrl}books/infos`,
+                    'POST',
+                    requestBody,
                     [
                         (booksData) => {
                             processBooksData(booksData, setBookInfos);
@@ -52,7 +50,7 @@ function CartModal({onCloseModal}) {
 
     return (
 
-        <div id="cartModal" style={{padding: "50px", paddingTop: "100px"}}>
+        <div id="cartModal">
 
             <Status loading={loading} error={error}/>
 
@@ -70,7 +68,7 @@ function CartModal({onCloseModal}) {
 
                     return (
                         <div className="cartItem" key={index}>
-                            <h3 style={{paddingRight: "50px"}}>
+                            <h3 >
                                 {quantity} X {bookInfo.title} by {bookInfo.author} Price: {bookInfo.price}
                             </h3>
                             <button
@@ -82,7 +80,7 @@ function CartModal({onCloseModal}) {
                     );
                 })
             ) : (
-                <p style={{fontSize: "50px"}}>No books available</p>
+                <p >No books available</p>
             )}
             <hr className="solid"/>
             <h1>TOTAL: ${totalPrice} </h1>

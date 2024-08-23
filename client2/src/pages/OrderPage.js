@@ -8,10 +8,10 @@ function OrderPage() {
     const location = useLocation();
     const order = location.state?.order;
     return (
-        <div id="order-area" className="OrderPage">
+        <div id="order-area" >
 
 
-            <div style={{display: 'flex', justifyContent: 'flex-start', padding: '15px', marginRight: '150px'}}>
+            <div className="container-button">
                 <button onClick={() => navigate(-1)} className="btn btn-outline-dark btn-lg"> goBack</button>
             </div>
 
