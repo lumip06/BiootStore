@@ -43,10 +43,14 @@ function UserPage() {
 
     return (
         <div className="userPage">
-            <div style={{display: 'flex', justifyContent: 'flex-start', padding: '15px'}}>
+            <div className="button-container">
                 <button onClick={() => navigate(-1)} className="btn btn-outline-dark btn-lg"> goBack</button>
+
             </div>
+
             <div className="userDetails">
+                <h1 className="userPageH1">{loggedInUser.username}'s page</h1>
+
                 <div className="col1">
                     <p>ORDERS: </p>
                     <Status loading={loading} error={error}/>
@@ -54,9 +58,9 @@ function UserPage() {
 
                 </div>
                 <div className="col2">
-                    <h1>Username:{loggedInUser.username}</h1>
-                    <h1>Email:{loggedInUser.email}</h1>
-                    <h1>Role:{loggedInUser.role}</h1>
+                    <h1><span>Username:&nbsp; </span> {loggedInUser.username}</h1>
+                    <h1><span>Email:&nbsp; </span> {loggedInUser.email}</h1>
+                    <h1><span>Role:&nbsp; </span> {loggedInUser.role}</h1>
                 </div>
             </div>
 

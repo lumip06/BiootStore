@@ -8,11 +8,11 @@ function OrderList({userOrders}) {
     return (
         <table border="1" cellPadding={20}>
             <thead >
-            <tr >
+            <tr>
                 <th>User ID</th>
                 <th>Date</th>
                 <th>Items</th>
-                {/*<th>Total Price</th>*/}
+
             </tr>
             </thead>
             <tbody>

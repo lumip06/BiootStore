@@ -4,7 +4,7 @@ import {placeOrder} from "../../api/OrderAPI";
 import {Modal} from "react-responsive-modal";
 import {Navigate} from "react-router-dom";
 import {calculateTotalPrice} from './CartUtils.js';
-
+import "./../../styles/OrderPlacement.css"
 
 function OrderPlacement({bookInfos}) {
 
@@ -21,7 +21,7 @@ function OrderPlacement({bookInfos}) {
     };
     const handlePlaceOrder = () => {
 
-        placeOrder(cartBooks, bookInfos);
+        placeOrder(cartBooks);
         updateSelectedBooksStock( );
         emptyBookCart();
         onOpenOrderSuccessModal();
@@ -32,7 +32,7 @@ function OrderPlacement({bookInfos}) {
     }
 
     return (
-        <div style={{marginTop: "20px", textAlign: "right", padding: "50px"}}>
+        <div className="order-placement">
             <h1>TOTAL: ${totalPrice} </h1>
             <button
                 onClick={handlePlaceOrder}
@@ -41,12 +41,12 @@ function OrderPlacement({bookInfos}) {
                 Order books
             </button>
             {!loggedInUser && (
-                <span style={{color: 'red', fontSize: 'small', marginTop: '5px', display: 'block'}}>
+                <span className="order-placement-span">
                     You need to be logged in to place an order.
                 </span>
             )}
             <Modal open={open} onClose={handleCloseOrderSuccessModal} center>
-                <div style={{ padding: "50px"}}>
+                <div className="order-placement-div">
                     <h1>Order placed successfully! :D</h1>
                 </div>
             </Modal>

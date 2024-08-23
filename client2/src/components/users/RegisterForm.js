@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link, useNavigate} from "react-router-dom";
-import {loginUser, registerUser} from "../../api/UserAPI";
+import { registerUser} from "../../api/UserAPI";
 import {useBoundStore} from "../../stores/BoundStore";
 
 function RegisterForm() {

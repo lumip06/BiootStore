@@ -2,7 +2,7 @@ import '../App.css';
 
 
 import BookFilter from "../components/books/BookFilter";
-
+import './../styles/Home.css'
 import '../styles/MainPage.css'
 import BookList from "../components/books/BookList";
 
@@ -15,9 +15,9 @@ class Home extends React.Component {
 
     render() {
 
-        return <div className="Home" style={{backgroundColor: "#496F5D"}}>
+        return <div className="Home" >
 
-            <h1 style={{paddingTop: "150px", color: "#C9D5B5"}}>Welcome to BiootStore!</h1>
+            <h1 className="h1Home">Welcome to BiootStore!</h1>
 
             <div id="content-area">
 

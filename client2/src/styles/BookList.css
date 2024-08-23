@@ -1,0 +1,20 @@
+#filterCounter{
+    justify-content: flex-start;
+    padding: 15px;
+    margin-right: 350px;
+}
+#filterCounter h2{
+    font-style: italic;
+    color:#C9D5B5;
+    background-color:#533745;
+    border: 2px solid #533745;
+    border-radius: 25px;
+    padding: 10px;
+}
+.bookListButtons{
+    justify-content: flex-end;
+    padding: 15px;
+}
+#viewChanger{
+    display: flex;
+}

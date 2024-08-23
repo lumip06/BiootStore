@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import BookItem from "../books/BookItem";
 import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
-import "../../styles/BookItem.css"
+import "../../styles/OrderDetails.css"
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderDetails({order}) {
@@ -35,7 +35,7 @@ function OrderDetails({order}) {
                     requestBody,
                     [
                         (booksData) => {
-                            // console.log(booksData)
+
                             processBooksData(booksData, setBookInfos);
                         }
                     ],
@@ -51,18 +51,18 @@ function OrderDetails({order}) {
     console.log("BOOK INFOS",bookInfos)
     const getQuantityForBookId = (bookId) => {
         const item = order.items.find(item => item.bookId === bookId);
-        return item ? item.quantity : 0; // Return 0 if the bookId is not found
+        return item ? item.quantity : 0;
     };
     return (
         <div className="orderDetails">
             <div className="col1">
-                <p>Order: {id}</p>
-                <p>Date:{new Date(order.date).toLocaleDateString()}</p>
-                <p>Placed by user:{order.userId}</p>
-                <p>Total price:${calculateTotalPrice(bookQuantities, bookInfos).toFixed(2)}</p>
+                <p><span>Order:</span> {id}</p>
+                <p><span>Date:</span>{new Date(order.date).toLocaleDateString()}</p>
+                <p><span>Placed by user:</span>{order.userId}</p>
+                <p><span>Total price:</span>${calculateTotalPrice(bookQuantities, bookInfos).toFixed(2)}</p>
             </div>
             <div className="col2">
-                <h1>Books ordered:</h1>
+                <h1 className="orderDetailsH1">Books ordered:</h1>
                 <div className={`miniViewContainer`}>
 
                     {Object.keys(bookInfos).length > 0 ? (

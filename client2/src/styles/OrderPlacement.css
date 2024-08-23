@@ -1,0 +1,14 @@
+.order-placement {
+    margin-top: 20px;
+    text-align: right;
+    padding: 50px;
+}
+.order-placement-span{
+    color: red;
+    font-size:medium;
+    margin-top: 5px;
+    display: block;
+}
+.order-placement-div{
+    padding: 50px;
+}

@@ -66,7 +66,7 @@ function UserActions() {
 
             {(loggedInUser?.role === "client" || !loggedInUser) && (
                 <div style={{marginLeft: "20px"}}>
-                    <div className="button-container">
+                    <div className="button-container-nav">
                         <button onClick={onOpenCartModal} className="btn btn-outline-light btn-lg">
 
                             <svg viewBox="0 0 1024 1024" className="icon" version="1.1"

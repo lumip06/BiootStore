@@ -1,8 +1,17 @@
 
 #cartModal{
     background-color: #486e5c;
-
+    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
     color: #c7d3b4;
+}
+#cartModal h3{
+    padding-right: 50px;
+}
+#cartModal p{
+    font-size: 50px;
 }
 hr.solid {
     border-top: 3px solid #bbb;

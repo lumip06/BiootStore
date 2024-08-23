@@ -6,7 +6,7 @@ import {checkBookInCart} from "../orders/CartUtils";
 import BookItem from "./BookItem";
 
 function BookInfo() {
-    const {  cartBooks ,selectedBook, selectBook ,loggedInUser} = useBoundStore();
+    const {  cartBooks ,selectedBook, selectBook } = useBoundStore();
     const { id } = useParams();
     const [inCart, setInCart] = useState(false);
     const [quantityInCart, setQuantityInCart] = useState(0);

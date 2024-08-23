@@ -20,6 +20,12 @@
     width: auto;
 
 }
+.container-button{
+    display: flex;
+    justify-content: flex-start;
+    padding: 15px;
+    margin-right: 150px;
+}
 .blankarea {
     grid-area: blankarea;
 }
