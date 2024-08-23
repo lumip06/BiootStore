@@ -1,18 +1,20 @@
 import React, {useState} from "react";
 import {useBoundStore} from "../../stores/BoundStore";
-import {placeOrder} from "../../api/OrderAPI";
 import {Modal} from "react-responsive-modal";
 import {Navigate} from "react-router-dom";
-import {calculateTotalPrice} from './CartUtils.js';
+import {calculateTotalPrice, processBooksData} from './CartUtils.js';
 import "./../../styles/OrderPlacement.css"
+import {createOrderItems} from "../../api/APIUtils";
+import {useFetchRequest} from "../../api/CustomHook";
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderPlacement({bookInfos}) {
 
-    const {cartBooks, emptyBookCart,loggedInUser,updateSelectedBooksStock} = useBoundStore();
+    const {cartBooks, emptyBookCart, loggedInUser, updateSelectedBooksStock} = useBoundStore();
     const [open, setOpen] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
-
+    const {apiCall, loading, error} = useFetchRequest();
     const onOpenOrderSuccessModal = () => setOpen(true);
     const onCloseOrderSuccessModal = () => setOpen(false);
     const handleCloseOrderSuccessModal = () => {
@@ -20,11 +22,30 @@ function OrderPlacement({bookInfos}) {
         setOrderPlaced(true);
     };
     const handlePlaceOrder = () => {
+        const items = createOrderItems(cartBooks);
+        console.log(items);
 
-        placeOrder(cartBooks);
-        updateSelectedBooksStock( );
-        emptyBookCart();
-        onOpenOrderSuccessModal();
+
+
+        apiCall(
+            `${serverUrl}orders`,
+            'POST',
+            {
+                items,
+            },
+            [
+                () => {
+                    updateSelectedBooksStock();
+
+                }
+            ],
+            [console.error]
+        ).finally(() => {
+
+            onOpenOrderSuccessModal();
+            emptyBookCart();
+        });
+
     };
 
     if (orderPlaced) {

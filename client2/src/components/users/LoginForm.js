@@ -4,13 +4,17 @@ import {Link} from "react-router-dom";
 import {loginUser} from "../../api/UserAPI";
 import {useBoundStore} from "../../stores/BoundStore";
 import { useNavigate } from 'react-router-dom';
+import {useFetchRequest} from "../../api/CustomHook";
 function LoginForm() {
-    const {setLoggedInUser}=useBoundStore();
+    const {setLoggedInUser,setWishlistBooks}=useBoundStore();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         remember: false,
     });
+    const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+    const {apiCall} = useFetchRequest();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const handleChange = (e) => {
@@ -56,6 +60,18 @@ function LoginForm() {
                         role:response.user.role
                     }, response.token);
 
+                // Fetch wishlist books after setting the user
+                await apiCall(
+                    `${serverUrl}wishlists`,
+                    'GET',
+                    null,
+                    [
+                        (responseData) => {
+                            setWishlistBooks(responseData);
+                        }
+                    ],
+                    [console.error]
+                );
             }
             navigate("/");
 
@@ -72,8 +88,8 @@ function LoginForm() {
             <svg viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  fill="#000000" width="48"
                  height="48">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
                     <path
                         d="M645.3 656.8c12.6-2.7 21.4-13.6 22.5-26.1h0.1c0.6-6.7 1.7-13.3 3.3-19.8h-0.2c1.3-4.6 1.5-9.6 0.4-14.7-3.5-16.2-19.1-26.5-34.7-23.1-11.9 2.6-20.5 12.4-22.3 24.1-0.1 0.7-0.2 1.3-0.4 2-1.7 7.5-3 15.2-3.7 23-0.6 3.7-0.5 7.6 0.3 11.6 3.5 16.1 19 26.4 34.7 23zM513 753.6c-86.7 0-157.2-70.5-157.2-157.2 0-15.9 2.4-31.5 7-46.5 4.9-15.8 21.7-24.7 37.5-19.8 15.8 4.9 24.7 21.7 19.8 37.5-2.9 9.3-4.3 19-4.3 28.8 0 53.6 43.6 97.2 97.2 97.2 19.5 0 38.3-5.7 54.3-16.6 13.7-9.3 32.4-5.7 41.7 8.1 9.3 13.7 5.7 32.4-8.1 41.7-26 17.5-56.4 26.8-87.9 26.8z"

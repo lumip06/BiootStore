@@ -26,22 +26,14 @@ export const createBookStore = ((set, get) => ({
 
         getCartBookIds: () => {
 
-            // if (!Array.isArray(idsToIgnore)) {
-            //     console.error('idsToIgnore should be an array. Received:', idsToIgnore);
-            //     idsToIgnore = [];
-            // }
+
 
             const { cartBooks } = get();
             const cartBookIds = Object.keys(cartBooks);
 
-            // Filter out the IDs that are in idsToIgnore
-            // const filteredIds = cartBookIds.filter(id => !idsToIgnore.includes(id));
 
             console.log("Cart Book IDs:", cartBookIds);
-            // console.log("IDs to Ignore:", idsToIgnore);
-            // console.log("Filtered IDs:", filteredIds);
-            //
-            // return filteredIds;
+
             return cartBookIds;
         },
         nextPage: () => set((state) => {

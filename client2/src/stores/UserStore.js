@@ -1,35 +1,36 @@
-import { jwtDecode as jwt_decode } from 'jwt-decode';
-import {isTokenExpired, loadUserFromLocalStorage, saveUserToLocalStorage} from "./FromLocalStorage";
+import {jwtDecode as jwt_decode} from 'jwt-decode';
+import { loadUserFromLocalStorage, saveUserToLocalStorage} from "./FromLocalStorage";
 
-
-
+import {useFetchRequest} from "../api/CustomHook";
 
 
 export const createUserStore = ((set, get) => ({
     loggedInUser: loadUserFromLocalStorage(),
-
-    setLoggedInUser: (newLoggedInUser, token) => set((state) => {
-        set({ loggedInUser: newLoggedInUser });
+    wishlistBooks: [],
+    setLoggedInUser: (newLoggedInUser, token) => set(async (state) => {
+        set({loggedInUser: newLoggedInUser});
         console.log(newLoggedInUser);
         const decodedToken = jwt_decode(token);
-        console.log("new user in store:",newLoggedInUser)
+        console.log("new user in store:", newLoggedInUser)
         console.log("Decoded Token:", decodedToken);
         saveUserToLocalStorage(newLoggedInUser, token);
-        return { loggedInUser: newLoggedInUser };
+
+
+        return {loggedInUser: newLoggedInUser};
     }),
 
     logoutUser: () => set(state => {
         const emptyUser = null;
-        set({ loggedInUser: emptyUser });
+        set({loggedInUser: emptyUser});
         console.log("logout");
         saveUserToLocalStorage(emptyUser);
-        return { loggedInUser: emptyUser };
+        return {loggedInUser: emptyUser};
     }),
 
     getToken: () => {
         const token = localStorage.getItem('token');
         // if (token && !isTokenExpired(token)) {
-        if(token){
+        if (token) {
             return token;
         } else {
             get().logoutUser();
@@ -42,7 +43,7 @@ export const createUserStore = ((set, get) => ({
 
 
         // if (token && !isTokenExpired(token)) {
-        if(token){
+        if (token) {
             const decodedToken = jwt_decode(token);
             console.log("Decoded Token:", decodedToken);
 
@@ -51,6 +52,12 @@ export const createUserStore = ((set, get) => ({
             get().logoutUser();
         }
 
-        return { token };
-    })
+        return {token};
+    }),
+    setWishlistBooks: (newWishlist) => {
+        set((state) => ({
+            wishlistBooks: newWishlist,
+        }));
+        console.log(newWishlist)
+    },
 }));

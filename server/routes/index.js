@@ -6,6 +6,7 @@ const router = express.Router();
 const bookController = require("../controllers/bookController");
 const userController=require("../controllers/userController");
 const orderController=require("../controllers/orderController");
+const wishlistController=require("../controllers/wishlistController");
 const {validateToken} = require("../middleware/ValidateToken");
 
 //USER ROUTES
@@ -65,5 +66,15 @@ router.get("/orders/:id", orderController.orderGetOne);
 
 // POST request for creating order.
 router.post("/orders", validateToken,orderController.orderCreatePost);
+
+
+//WISHLIST ROUTES
+
+//GET all wishlists for admin ,for client get client's wishlist
+router.get("/wishlists",validateToken,wishlistController.wishlistList);
+
+//CREATE wishlist ,if wishlist exists,update
+router.post("/wishlists",validateToken,wishlistController.wishlistCreatePost);
+
 
 module.exports = router

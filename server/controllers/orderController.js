@@ -50,26 +50,6 @@ exports.orderGetOne = asyncHandler(async (req, res, next) => {
         res.status(500).json({message: err.message});
     }
 });
-// exports.orderListByUser = asyncHandler(async (req, res, next) => {
-//
-//     console.log("Incoming Request:", req.method, req.url);
-//     console.log("Request Headers:", req.headers);
-//
-//     const { userId } = req.params;
-//     console.log(userId);
-//
-//     try {
-//         const orders = await Order.find({ userId });
-//
-//         if (!orders || orders.length === 0) {
-//             return res.status(404).json({ message: 'No orders found for this user' });
-//         }
-//
-//         res.json(orders); // Return the found orders
-//     } catch (err) {
-//         res.status(500).json({ message: 'Server error: ' + err.message });
-//     }
-// });
 
 // Handle order create on POST.
 exports.orderCreatePost = asyncHandler(async (req, res, next) => {
