@@ -76,5 +76,7 @@ router.get("/wishlists",validateToken,wishlistController.wishlistList);
 //CREATE wishlist ,if wishlist exists,update
 router.post("/wishlists",validateToken,wishlistController.wishlistCreatePost);
 
+//DELETE FROM WISHLIST
+router.delete("/wishlists",validateToken,wishlistController.wishlistDeleteItems);
 
 module.exports = router

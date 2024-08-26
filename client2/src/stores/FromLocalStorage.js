@@ -42,3 +42,21 @@ export const saveUserToLocalStorage = (loggedInUser, token) => {
         localStorage.removeItem('token');
     }
 };
+export const loadWishlistFromLocalStorage = () => {
+    const wishlistBooks = localStorage.getItem('wishlistBooks');
+    try {
+        return wishlistBooks ? JSON.parse(wishlistBooks) : [];
+    } catch (error) {
+        console.error("Error parsing wishlist JSON from localStorage", error);
+        return [];
+    }
+};
+
+
+export const saveWishlistToLocalStorage = (wishlistBooks) => {
+    try {
+        localStorage.setItem('wishlistBooks', JSON.stringify(wishlistBooks));
+    } catch (error) {
+        console.error("Error saving wishlist to localStorage", error);
+    }
+};
