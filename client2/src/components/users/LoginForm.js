@@ -60,18 +60,7 @@ function LoginForm() {
                         role:response.user.role
                     }, response.token);
 
-                // Fetch wishlist books after setting the user
-                await apiCall(
-                    `${serverUrl}wishlists`,
-                    'GET',
-                    null,
-                    [
-                        (responseData) => {
-                            setWishlistBooks(responseData);
-                        }
-                    ],
-                    [console.error]
-                );
+
             }
             navigate("/");
 

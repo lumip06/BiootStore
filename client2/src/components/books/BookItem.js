@@ -5,7 +5,7 @@ import "./../../styles/BookItem.css"
 import {useBoundStore} from "../../stores/BoundStore";
 
 function BookItem({book, index, view, inCart = false}) {
-    const {addBookToCart, loggedInUser} = useBoundStore();
+    const {addBookToCart, loggedInUser,wishlistBooks,setWishlistBooks} = useBoundStore();
     const [quantityInCart, setQuantityInCart] = useState(0); //sa iau cate am in cart
 
     const stock = book.stock;
@@ -17,6 +17,15 @@ function BookItem({book, index, view, inCart = false}) {
         setQuantityInCart(prevQuantity => prevQuantity + 1);
     };
     const handleAddToWishlist = () => {
+        const item = wishlistBooks.items.find(item => item.bookId === book._id);
+
+        if (item) {
+            console.log("Found item,removing from wishlist", item);
+            setWishlistBooks([book._id],'remove');
+        } else {
+            console.log("Item not found,adding to wishlist");
+            setWishlistBooks(book,'add');
+        }
 
     };
     return (
@@ -109,7 +118,7 @@ function BookItem({book, index, view, inCart = false}) {
                                     onClick={handleAddToCart}>
                                 ADD to Cart
                             </button>
-                            <button className="btn btn-outline-light btn-lg">
+                            <button className="btn btn-outline-light btn-lg" onClick={handleAddToWishlist}>
                                 <svg viewBox="0 0 1024 1024" className="icon" version="1.1"
                                      xmlns="http://www.w3.org/2000/svg" fill="#000000" height="20px">
                                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
