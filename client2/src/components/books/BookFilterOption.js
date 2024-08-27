@@ -1,12 +1,14 @@
 import React from 'react';
 import "../../styles/Filter.css"
 import {useBoundStore} from "../../stores/BoundStore";
+import Status from "../common/Status";
 
 function BookFilterOption({bookAttribute,filterOptionValue}) {
     const {toggleFilter, filterOptions} = useBoundStore();
 
 
     return (
+
         <div className="bookFilterOption">
             <div key={filterOptionValue}>
                 <input
@@ -21,6 +23,7 @@ function BookFilterOption({bookAttribute,filterOptionValue}) {
                 <label htmlFor={filterOptionValue}>{filterOptionValue}</label>
             </div>
         </div>
+
     )
 }
 

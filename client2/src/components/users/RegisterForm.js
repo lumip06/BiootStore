@@ -3,9 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {Link, useNavigate} from "react-router-dom";
 import { registerUser} from "../../api/UserAPI";
 import {useBoundStore} from "../../stores/BoundStore";
+import Status from "../common/Status";
 
 function RegisterForm() {
     const {setLoggedInUser}=useBoundStore();
+    const { loadingUser, errorUser, setLoadingUser, setErrorUser } = useBoundStore();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -56,19 +58,21 @@ function RegisterForm() {
     }
 
     const handleRegisterSubmit = async (e) => {
+       setLoadingUser(true);setErrorUser(null);
         e.preventDefault();
 
 
         const newErrors = validateRegisterForm();
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
+            setLoadingUser(false);
             return;
         }
 
         try {
 
             const response = await registerUser(formData);
-            const { user: loggedUser, token } = response;
+            const { user:   loggedUser, token } = response;
 
 
             if (loggedUser && token) {
@@ -88,15 +92,17 @@ function RegisterForm() {
                 navigate("/");
             } else {
                 setErrors({ general: 'Registration successful, but unable to retrieve user details. Please try again.' });
+                setLoadingUser(false);setErrorUser('Registration successful, but unable to retrieve user details. Please try again.');
             }
         } catch (error) {
-            console.error('Registration failed:', error.response ? error.response.data : error.message);
-
-            setErrors({ general: 'Registration failed. Please try again.' });
+            // console.error('Registration failed:', error.response ? error.response.data : error.message);
+            setLoadingUser(false);setErrorUser( error.message);
+            // setErrors({ general: 'Registration failed. Please try again.' });
         }
+        setLoadingUser(false);
     };
     return (
-
+        <Status loading={loadingUser} error={errorUser}>
         <form id="register-form" onSubmit={handleRegisterSubmit} autoComplete="on">
             <svg viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  fill="#000000" width="48"
@@ -161,6 +167,7 @@ function RegisterForm() {
                 <Link to="/login" className="btn btn-outline-light btn-lg" id="new-user-button">Already a User?</Link>
             </div>
         </form>
+        </Status>
     );
 
 }

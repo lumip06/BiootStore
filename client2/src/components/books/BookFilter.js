@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import BookFilterOption from "./BookFilterOption";
 import {useFetchRequest} from "../../api/CustomHook";
 import Status from "../common/Status";
+import {useBoundStore} from "../../stores/BoundStore";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const BookFilter = () => {
@@ -13,11 +14,18 @@ const BookFilter = () => {
     const bookAttributes = ["genres", "prices", "publishers", "covers"];
     const [error, setError] = useState(null);
     const {apiCall, loading} = useFetchRequest();
+    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
 
 
     useEffect(() => {
+        setLoadingBooks(true);setErrorBooks(null);
         const fetchBookFilters = () => {
-            apiCall(`${serverUrl}books/properties`, 'GET', null, [setBookProperties], [setError]);
+            apiCall(`${serverUrl}books/properties`,
+                'GET',
+                null,
+                [setBookProperties],
+                [setErrorBooks],
+                [setLoadingBooks]);
         };
 
         fetchBookFilters();
@@ -26,14 +34,15 @@ const BookFilter = () => {
 
 
     return (
+
         <div id="filter-area">
             <div className="form-check">
-                <Status loading={loading} error={error} />
+
                 {bookAttributes.map((bookAttribute) => {
                     const category = bookAttribute.charAt(0).toUpperCase() + bookAttribute.slice(1);
 
                     return <div key={bookAttribute}>
-
+                        <Status loading={loadingBooks} error={errorBooks}>
                         <p className="fs-1">{category}</p>
 
                         {Array.isArray(bookProperties[bookAttribute]) && bookProperties[bookAttribute].map((filterOptionValue, index) => {
@@ -45,6 +54,7 @@ const BookFilter = () => {
                                 filterOptionValue={filterOptionValue}
                             />;
                         })}
+                        </Status>
                     </div>
                 })
 
@@ -53,6 +63,7 @@ const BookFilter = () => {
 
             </div>
         </div>
+
     );
 };
 

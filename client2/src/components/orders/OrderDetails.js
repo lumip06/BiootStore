@@ -5,9 +5,12 @@ import BookItem from "../books/BookItem";
 import {calculateTotalPrice, processBooksData} from "./CartUtils";
 import {useFetchRequest} from "../../api/CustomHook";
 import "../../styles/OrderDetails.css"
+import {useBoundStore} from "../../stores/BoundStore";
+import Status from "../common/Status";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderDetails({order}) {
+    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
 
     const { id } = useParams();
     const [bookInfos, setBookInfos] = useState({});
@@ -18,6 +21,7 @@ function OrderDetails({order}) {
     }, {});
     useEffect(() => {
         const fetchBookInfos = () => {
+            setLoadingOrders(true);setErrorOrders(null);
             const itemIds = [];
 
             for (let i = 0; i < order.items.length; i++) {
@@ -39,11 +43,14 @@ function OrderDetails({order}) {
                             processBooksData(booksData, setBookInfos);
                         }
                     ],
-                    [console.error]
+                    [setErrorOrders],
+                    [setLoadingOrders],
                 );
             } else {
                 setBookInfos({});
+                setLoadingOrders(false);
             }
+
         };
 
         fetchBookInfos();
@@ -55,16 +62,19 @@ function OrderDetails({order}) {
     };
     return (
         <div className="orderDetails">
+
             <div className="col1">
+                <Status loading={loadingOrders} error={errorOrders}>
                 <p><span>Order:</span> {id}</p>
                 <p><span>Date:</span>{new Date(order.date).toLocaleDateString()}</p>
                 <p><span>Placed by user:</span>{order.userId}</p>
                 <p><span>Total price:</span>${calculateTotalPrice(bookQuantities, bookInfos).toFixed(2)}</p>
+                </Status>
             </div>
             <div className="col2">
                 <h1 className="orderDetailsH1">Books ordered:</h1>
                 <div className={`miniViewContainer`}>
-
+                    <Status loading={loadingOrders} error={errorOrders}>
                     {Object.keys(bookInfos).length > 0 ? (
                         Object.entries(bookInfos).map(([id, book]) => (
                             <div key={id}>
@@ -75,9 +85,10 @@ function OrderDetails({order}) {
                     ) : (
                         <p>No books available.</p>
                     )}
-
+                    </Status>
                 </div>
             </div>
+
         </div>
     )
 }

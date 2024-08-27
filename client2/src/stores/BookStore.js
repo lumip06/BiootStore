@@ -11,8 +11,19 @@ export const createBookStore = ((set, get) => ({
         filters: {},
         limit: 12,
         selectedBook: {},
+        loadingBooks: false,
+        errorBooks: null,
+        // Method to set loading state
+        setLoadingBooks: (loading) => set({ loadingBooks: loading }),
 
+        // Method to set error state
+        setErrorBooks: (error) => set({ errorBooks: error }),
 
+        // Method to get loading state
+        getLoadingBooks: () => get().loadingBooks,
+
+        // Method to get error state
+        getErrorBooks: () => get().errorBooks,
         filterCount: () => {
             const {filterOptions: filterOptions} = get();
             return Object.values(filterOptions).filter(Boolean).length;
@@ -60,6 +71,7 @@ export const createBookStore = ((set, get) => ({
         }),
 
         fetchBooks: () => set(async (state) => {
+            set({ loadingBooks: true, errorBooks: null });
             try {
                 const filters = {...state.filters};
                 delete filters["skip"];
@@ -71,13 +83,14 @@ export const createBookStore = ((set, get) => ({
 
 
                 set({books: newBooks, booksTotal: booksTotal});
-
+                set({ loadingBooks: false });
                 return {
                     books: newBooks,
                     booksTotal: booksTotal,
                 };
             } catch (error) {
-                console.error('Failed to fetch books:', error);
+                // console.error('Failed to fetch books:', error);
+                set({ errorBooks: error.message, loadingBooks: false });
             }
         }),
         selectBook: (id) => set(async (state) => {

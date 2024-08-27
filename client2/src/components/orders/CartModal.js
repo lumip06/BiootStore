@@ -10,7 +10,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function CartModal({onCloseModal}) {
-
+    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
     const {cartBooks, removeBookFromCart, getCartBookIds, getToken} = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
@@ -21,7 +21,7 @@ function CartModal({onCloseModal}) {
 
 
         const fetchBookInfos = () => {
-
+            setLoadingOrders(true);setErrorOrders(null);
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
@@ -37,10 +37,12 @@ function CartModal({onCloseModal}) {
                             processBooksData(booksData, setBookInfos);
                         }
                     ],
-                    [console.error]
+                    [setErrorOrders],
+                    [setLoadingOrders],
                 );
             } else {
                 setBookInfos({});
+                setLoadingOrders(false);
             }
         };
 
@@ -51,8 +53,8 @@ function CartModal({onCloseModal}) {
     return (
 
         <div id="cartModal">
+            <Status loading={loadingOrders} error={errorOrders}>
 
-            <Status loading={loading} error={error}/>
 
             {Object.keys(cartBooks).length > 0 ? (
                 Object.entries(cartBooks).map(([bookId, quantity], index) => {
@@ -67,8 +69,9 @@ function CartModal({onCloseModal}) {
                     }
 
                     return (
+
                         <div className="cartItem" key={index}>
-                            <h3 >
+                            <h3>
                                 {quantity} X {bookInfo.title} by {bookInfo.author} Price: {bookInfo.price}
                             </h3>
                             <button
@@ -86,7 +89,7 @@ function CartModal({onCloseModal}) {
             <h1>TOTAL: ${totalPrice} </h1>
 
             <Link to="/orders" onClick={onCloseModal} className="btn btn-outline-light btn-lg">Finalize Order</Link>
-
+            </Status>
 
         </div>
 

@@ -11,6 +11,8 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function OrderInfo() {
+    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
+
     const {cartBooks, getCartBookIds} = useBoundStore();
     const {apiCall, loading, error} = useFetchRequest();
     const [bookInfos, setBookInfos] = useState({});
@@ -18,6 +20,7 @@ function OrderInfo() {
 
     useEffect(() => {
         const fetchBookInfos = () => {
+            setLoadingOrders(true);setErrorOrders(null);
             const cartBookIds = getCartBookIds();
 
             if (cartBookIds.length > 0) {
@@ -33,10 +36,12 @@ function OrderInfo() {
                             processBooksData(booksData, setBookInfos);
                         }
                     ],
-                    [console.error]
+                    [setErrorOrders],
+                    [setLoadingOrders],
                 );
             } else {
                 setBookInfos({});
+                setLoadingOrders(false);
             }
         };
 
@@ -56,17 +61,13 @@ function OrderInfo() {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td colSpan="5">
-                        <Status loading={loading} error={error}/>
-                    </td>
-                </tr>
                 {Object.keys(cartBooks).length > 0 ? (
                     Object.entries(cartBooks).map(([bookId, quantity], index) => {
                         const bookInfo = bookInfos[bookId];
 
                         if (!bookInfo) {
                             return (
+
                                 <OrderTableRow
                                     id={bookId}
                                     title="Loading..."
@@ -99,6 +100,7 @@ function OrderInfo() {
                         </td>
                     </tr>
                 )}
+
                 </tbody>
             </table>
             <OrderPlacement bookInfos={bookInfos}/>
