@@ -25,16 +25,16 @@ export const createUserStore = ((set, get) => ({
 
     getWishlist: () => get().wishlistBooks || [],
 
-    // Method to set loading state
+
     setLoadingUser: (loading) => set({ loadingUser: loading }),
 
-    // Method to set error state
+
     setErrorUser: (error) => set({ errorUser: error }),
 
-    // Method to get loading state
+
     getLoadingUser: () => get().loadingUser,
 
-    // Method to get error state
+
     getErrorUser: () => get().errorUser,
 
     setLoggedInUser: (newLoggedInUser, token) => set(async (state) => {

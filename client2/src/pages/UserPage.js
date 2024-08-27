@@ -139,7 +139,7 @@ function UserPage() {
 
                                         <div key={id}>
 
-                                            <BookItem book={book} view={"miniView"}/>
+                                            <BookItem id={book._id} view={"miniView"}/>
                                         </div>
                                     ))
                                 ) : (

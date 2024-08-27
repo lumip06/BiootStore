@@ -79,7 +79,7 @@ function OrderDetails({order}) {
                         Object.entries(bookInfos).map(([id, book]) => (
                             <div key={id}>
                                 <h3>{getQuantityForBookId(id)} X </h3>
-                                <BookItem book={book} view={"miniView"}/>
+                                <BookItem id={id} view={"miniView"}/>
                             </div>
                         ))
                     ) : (

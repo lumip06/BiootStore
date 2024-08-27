@@ -60,3 +60,23 @@ export const saveWishlistToLocalStorage = (wishlistBooks) => {
         console.error("Error saving wishlist to localStorage", error);
     }
 };
+
+//====================
+export const loadSelectedBookFromLocalStorage = () => {
+    try {
+        const serializedData = localStorage.getItem('selectedBook');
+        return serializedData ? JSON.parse(serializedData) : {};
+    } catch (error) {
+        console.error("Error loading selected book from local storage", error);
+        return {};
+    }
+};
+
+export const saveSelectedBookToLocalStorage = (selectedBook) => {
+    try {
+        const serializedData = JSON.stringify(selectedBook);
+        localStorage.setItem('selectedBook', serializedData);
+    } catch (error) {
+        console.error("Error saving selected book to local storage", error);
+    }
+};

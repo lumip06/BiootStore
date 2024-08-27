@@ -1,6 +1,8 @@
 
 
 import {filterBooks, getOneBook} from "../api/BookAPI";
+import {loadSelectedBookFromLocalStorage, saveSelectedBookToLocalStorage} from "./FromLocalStorage";
+import Login from "../pages/Login";
 
 
 export const createBookStore = ((set, get) => ({
@@ -10,19 +12,19 @@ export const createBookStore = ((set, get) => ({
         filterOptions: {},
         filters: {},
         limit: 12,
-        selectedBook: {},
+        selectedBook:  loadSelectedBookFromLocalStorage() ||{},
         loadingBooks: false,
         errorBooks: null,
-        // Method to set loading state
+
         setLoadingBooks: (loading) => set({ loadingBooks: loading }),
 
-        // Method to set error state
+
         setErrorBooks: (error) => set({ errorBooks: error }),
 
-        // Method to get loading state
+
         getLoadingBooks: () => get().loadingBooks,
 
-        // Method to get error state
+
         getErrorBooks: () => get().errorBooks,
         filterCount: () => {
             const {filterOptions: filterOptions} = get();
@@ -108,6 +110,9 @@ export const createBookStore = ((set, get) => ({
                         [id]: newBook
                     }
                 }));
+                const updatedSelectedBook = get().selectedBook;
+                saveSelectedBookToLocalStorage(updatedSelectedBook);
+
             } catch (error) {
                 console.error('Failed to fetch books:', error);
             }
@@ -140,14 +145,18 @@ export const createBookStore = ((set, get) => ({
             const { cartBooks } = get();
             const cartBookIds = Object.keys(cartBooks);
             const updatedSelectedBook = { ...state.selectedBook };
-
+            console.log(    "cartbooks");
+            console.log(cartBooks)
+            console.log("UPDATE STOCK")
             cartBookIds.forEach(id => {
 
                 if (updatedSelectedBook[id] && cartBooks[id]) {
-                    updatedSelectedBook[id].quantity -= cartBooks[id].quantity;
+
+                    updatedSelectedBook[id].stock = updatedSelectedBook[id].stock -cartBooks[id];
                 }
             });
-
+            set({selectedBook: updatedSelectedBook});
+            saveSelectedBookToLocalStorage(updatedSelectedBook);
             return {
                 selectedBook: updatedSelectedBook,
             };

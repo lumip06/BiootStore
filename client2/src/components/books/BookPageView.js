@@ -1,15 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Status from "../common/Status";
 import {useBoundStore} from "../../stores/BoundStore";
 import {handleAddToCart, handleAddToWishlist} from "./BookUtils";
+import {checkBookInCart} from "../orders/CartUtils";
 
 
-function BookPageView({book, index, view, inCart = false,stock,availableQuantity,isButtonDisabled, quantityInCart,
-                          setQuantityInCart}){
+function BookPageView({book,  view, inCart = false,stock,isButtonDisabled, quantityInCart, setQuantityInCart}){
     const {addBookToCart, loggedInUser,wishlistBooks,getRole,setWishlistBooks} = useBoundStore();
 
     const { loadingBooks, errorBooks } = useBoundStore();
-
+    const availableQuantity = stock - quantityInCart;
 
 
     return (

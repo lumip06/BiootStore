@@ -24,8 +24,6 @@ function BookList() {
 
                 <Counters/>
 
-
-
                 {(getRole() ==="admin")&&(
                     <div className="bookListButtons">
                         <Link to="/book" id="buttonNewBook" className="btn btn-outline-dark">
@@ -56,7 +54,7 @@ function BookList() {
                 {books?.length > 0 ? (
                     books.map((book, index) => (
                         <div key={index}>
-                            <BookItem book={book} index={index} view={viewType.toLowerCase() + "View"}/>
+                            <BookItem  id={book._id} view={viewType.toLowerCase() + "View"}/>
                         </div>
                     ))
                 ) : (
