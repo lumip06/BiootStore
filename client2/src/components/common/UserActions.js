@@ -8,7 +8,7 @@ import {countBooksInCart} from "../orders/CartUtils";
 import {useBoundStore} from "../../stores/BoundStore";
 
 function UserActions() {
-    const {cartBooks, loggedInUser, logoutUser} = useBoundStore()
+    const {cartBooks, loggedInUser, logoutUser,getRole} = useBoundStore()
     const handleLogout = () => {
         logoutUser();
         navigate("/");
@@ -65,7 +65,7 @@ function UserActions() {
             )}
 
 
-            {(loggedInUser?.role === "client" || !loggedInUser) && (
+            {(getRole() === "client" || !loggedInUser) && (
                 <div style={{marginLeft: "20px"}}>
                     <div className="button-container-nav">
                         <button onClick={onOpenCartModal} className="btn btn-outline-light btn-lg">

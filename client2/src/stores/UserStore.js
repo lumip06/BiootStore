@@ -7,39 +7,63 @@ import {
     saveWishlistToLocalStorage
 } from "./FromLocalStorage";
 
-import {useFetchRequest} from "../api/CustomHook";
-import data from "bootstrap/js/src/dom/data";
+
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 export const createUserStore = ((set, get) => ({
     loggedInUser: loadUserFromLocalStorage(),
     wishlistBooks: loadWishlistFromLocalStorage() || [],
+    loadingUser: false,
+    errorUser: null,
+    // Getters for loggedInUser properties
+    getUsername: () => get().loggedInUser?.username || '',
+    getEmail: () => get().loggedInUser?.email || '',
+    getUserId: () => get().loggedInUser?.userId|| '',
+    getRole: () => get().loggedInUser?.role || '',
+
+
+    getWishlist: () => get().wishlistBooks || [],
+
+
+    setLoadingUser: (loading) => set({ loadingUser: loading }),
+
+
+    setErrorUser: (error) => set({ errorUser: error }),
+
+
+    getLoadingUser: () => get().loadingUser,
+
+
+    getErrorUser: () => get().errorUser,
+
     setLoggedInUser: (newLoggedInUser, token) => set(async (state) => {
+        set({ loadingUser: true, errorUser: null });
         try {
-            // Update loggedInUser state
+
             set({loggedInUser: newLoggedInUser});
             console.log(newLoggedInUser);
 
-            // Decode token and log info
+
             const decodedToken = jwt_decode(token);
             console.log("new user in store:", newLoggedInUser);
             console.log("Decoded Token:", decodedToken);
 
-            // Save user to local storage
+
             saveUserToLocalStorage(newLoggedInUser, token);
 
-            // Fetch wishlist books from server
+
             const response = await fetch(`${serverUrl}wishlists`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Add token if needed
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                // throw new Error(`HTTP error! Status: ${response.status}`);
+                set({ errorUser: response.status, loadingUser: false });
             }
 
             const responseData = await response.json();
@@ -49,9 +73,10 @@ export const createUserStore = ((set, get) => ({
             // Log wishlistBooks after updating state
             saveWishlistToLocalStorage(responseData);
             console.log("Fetched wishlistBooks:", responseData);
-
+            set({ loadingUser: false });
         } catch (error) {
-            console.error("Error setting user or fetching wishlist:", error);
+            // console.error("Error setting user or fetching wishlist:", error);
+            set({ errorUser: error.message, loadingUser: false });
         }
 
     }),
@@ -67,7 +92,7 @@ export const createUserStore = ((set, get) => ({
 
     getToken: () => {
         const token = localStorage.getItem('token');
-        // if (token && !isTokenExpired(token)) {
+
         if (token) {
             return token;
         } else {
@@ -85,14 +110,15 @@ export const createUserStore = ((set, get) => ({
             console.log("Decoded Token:", decodedToken);
 
         } else {
-            console.error("Token is expired or invalid");
+            // console.error("Token is expired or invalid");
+            set({ errorUser: "Token is expired or invalid", loadingUser: false });
             get().logoutUser();
         }
 
         return {token};
     }),
     setWishlistBooks: (newBook, action = 'set') => {
-
+        set({ loadingUser: true, errorUser: null });
         set(async (state) => {
 
             const currentWishlist = state.wishlistBooks || {userId: null, items: []};
@@ -127,7 +153,8 @@ export const createUserStore = ((set, get) => ({
                                 });
 
                                 if (response.status !== 200) {
-                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                    // throw new Error(`HTTP error! Status: ${response.status}`);
+                                    set({ errorUser: response.status, loadingUser: false });
                                 }
 
 
@@ -135,13 +162,16 @@ export const createUserStore = ((set, get) => ({
                                 console.log("RETURNED:",responseData);
                                 set({wishlistBooks: responseData});
                                 saveWishlistToLocalStorage(responseData);
+                                set({ loadingUser: false });
                                 return { wishlistBooks: responseData };
 
                             } catch (error) {
-                                console.error("Error updating wishlist:", error);
+                                // console.error("Error updating wishlist:", error);
+                                set({ errorUser: error.message, loadingUser: false });
                             }
                         } else {
-                            console.log("Book ID already in wishlist, not adding:", bookId);
+                            // console.log("Book ID already in wishlist, not adding:", bookId);
+                            set({ errorUser: "Book ID already in wishlist, not adding", loadingUser: false });
                         }
                     }
                     break;
@@ -150,14 +180,14 @@ export const createUserStore = ((set, get) => ({
                     if (newBook) {
                         console.log("Removing book ID from wishlist:");
                         try {
-                            const token = get().getToken(); // Get the token from your store or context
+                            const token = get().getToken();
 
-                            // Create the request body with the book IDs
+
                             const requestBody = { items:newBook.map(bookId => ({ bookId })) };
 
-                            // Send DELETE request with Axios
+
                             const response = await axios.delete(`${serverUrl}wishlists`, {
-                                data: requestBody, // Pass the body using the 'data' field
+                                data: requestBody,
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'Authorization': `Bearer ${token}`
@@ -170,12 +200,15 @@ export const createUserStore = ((set, get) => ({
 
                                 set({wishlistBooks: response.data});
                                 saveWishlistToLocalStorage(response.data);
+                                set({ loadingUser: false });
                                 return { wishlistBooks: response.data };
                             } else {
-                                console.error("Failed to remove items:", response.status);
+                                // console.error("Failed to remove items:", response.status);
+                                set({ errorUser:  response.status, loadingUser: false });
                             }
                         } catch (error) {
-                            console.error("Error removing items from wishlist:", error);
+                            // console.error("Error removing items from wishlist:", error);
+                            set({ errorUser: error.message, loadingUser: false });
                         }
                     }
                     break;
@@ -184,6 +217,7 @@ export const createUserStore = ((set, get) => ({
                     return state;
             }
             set({ wishlistBooks:updatedItems });
+            set({ loadingUser: false });
             return { wishlistBooks: updatedItems };
         });
 

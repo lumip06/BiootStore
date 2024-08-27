@@ -6,10 +6,10 @@ export const invokeFunctions = (functionArray, args) => {
 }
 
 export const useFetchRequest = () => {
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const { getToken} = useBoundStore();
-    const apiCall = async (url, method, body, successCallbacks, errorCallbacks, token = getToken()) => {
-        setLoading(true);
+    const apiCall = async (url, method, body, successCallbacks, errorCallbacks,finallyCallbacks, token = getToken()) => {
+        // setLoading(true);
         try {
 
             const headers = {
@@ -42,9 +42,13 @@ export const useFetchRequest = () => {
                 invokeFunctions(errorCallbacks, err);
             }
         } finally {
-            setLoading(false);
+            if (finallyCallbacks && finallyCallbacks.length) {
+                invokeFunctions(finallyCallbacks, false);
+            }
+            // setLoading(false);
         }
     };
 
-    return { apiCall, loading };
+    // return { apiCall, loading };
+    return { apiCall};
 }

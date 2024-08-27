@@ -5,10 +5,11 @@ import {useBoundStore} from "../../stores/BoundStore";
 import Counters from "./Counters";
 import {Link} from "react-router-dom";
 import "./../../styles/BookList.css"
+import Status from "../common/Status";
 
 function BookList() {
-
-    const {filters, books, fetchBooks, limit, page, loggedInUser} = useBoundStore();
+    const { loadingBooks, errorBooks } = useBoundStore();
+    const {filters, books, fetchBooks, limit, page,getRole} = useBoundStore();
     const [viewType, setViewType] = useState('card');
 
     useEffect(() => {
@@ -17,13 +18,13 @@ function BookList() {
 
 
     return (
+
         <div className="container-fluid">
             <div id="viewChanger">
 
                 <Counters/>
 
-
-                {(loggedInUser?.role === "admin") && (
+                {(getRole() ==="admin")&&(
                     <div className="bookListButtons">
                         <Link to="/book" id="buttonNewBook" className="btn btn-outline-dark">
                             Add new book
@@ -53,14 +54,17 @@ function BookList() {
                 {books?.length > 0 ? (
                     books.map((book, index) => (
                         <div key={index}>
-                            <BookItem book={book} index={index} view={viewType.toLowerCase() + "View"}/>
+                            <BookItem  id={book._id} view={viewType.toLowerCase() + "View"}/>
                         </div>
                     ))
                 ) : (
+                    <Status loading={loadingBooks} error={errorBooks}>
                     <p>No books available.</p>
+                    </Status>
                 )}
             </div>
         </div>
+
     );
 }
 

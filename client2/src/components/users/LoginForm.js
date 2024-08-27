@@ -5,16 +5,15 @@ import {loginUser} from "../../api/UserAPI";
 import {useBoundStore} from "../../stores/BoundStore";
 import { useNavigate } from 'react-router-dom';
 import {useFetchRequest} from "../../api/CustomHook";
+import Status from "../common/Status";
 function LoginForm() {
-    const {setLoggedInUser,setWishlistBooks}=useBoundStore();
+    const {setLoggedInUser}=useBoundStore();
+    const { loadingUser, errorUser, setLoadingUser, setErrorUser } = useBoundStore();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         remember: false,
     });
-    const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-    const {apiCall} = useFetchRequest();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const handleChange = (e) => {
@@ -38,13 +37,14 @@ function LoginForm() {
         return newErrors;
     }
     const handleLoginSubmit =  async (e) => {
-
+        setLoadingUser(true);setErrorUser(null);
         e.preventDefault();
         const newErrors = validateLoginForm()
 
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
+            setLoadingUser(false);
             return;
         }
 
@@ -66,13 +66,16 @@ function LoginForm() {
 
         } catch (error) {
             console.error('Login failed:', error);
+
             const newErrors = {};
             newErrors.notFound="User does not exist";
-            setErrors(newErrors);
+            // setErrors(newErrors);
+            setLoadingUser(false);setErrorUser("User does not exist");
         }
-
+        setLoadingUser(false);
     };
     return (
+        <Status loading={loadingUser} error={errorUser}>
         <form id="login-form" onSubmit={handleLoginSubmit} autoComplete="on">
             <svg viewBox="0 0 1024 1024" className="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  fill="#000000" width="48"
@@ -142,6 +145,7 @@ function LoginForm() {
 
             </div>
         </form>
+        </Status>
     );
 
 }

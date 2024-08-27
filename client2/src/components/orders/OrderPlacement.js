@@ -6,9 +6,11 @@ import {calculateTotalPrice, processBooksData} from './CartUtils.js';
 import "./../../styles/OrderPlacement.css"
 import {createOrderItems} from "../../api/APIUtils";
 import {useFetchRequest} from "../../api/CustomHook";
+import Status from "../common/Status";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderPlacement({bookInfos}) {
+    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
 
     const {cartBooks, emptyBookCart, loggedInUser, updateSelectedBooksStock} = useBoundStore();
     const [open, setOpen] = useState(false);
@@ -22,10 +24,9 @@ function OrderPlacement({bookInfos}) {
         setOrderPlaced(true);
     };
     const handlePlaceOrder = () => {
+        setLoadingOrders(true);setErrorOrders(null);
         const items = createOrderItems(cartBooks);
         console.log(items);
-
-
 
         apiCall(
             `${serverUrl}orders`,
@@ -39,7 +40,8 @@ function OrderPlacement({bookInfos}) {
 
                 }
             ],
-            [console.error]
+            [setErrorOrders],
+            [setLoadingOrders],
         ).finally(() => {
 
             onOpenOrderSuccessModal();
@@ -52,8 +54,9 @@ function OrderPlacement({bookInfos}) {
         return <Navigate to="/" replace/>;
     }
 
-    return (
+    return (  <Status loading={loadingOrders} error={errorOrders}>
         <div className="order-placement">
+
             <h1>TOTAL: ${totalPrice} </h1>
             <button
                 onClick={handlePlaceOrder}
@@ -73,6 +76,7 @@ function OrderPlacement({bookInfos}) {
             </Modal>
 
         </div>
+        </Status>
     );
 }
 

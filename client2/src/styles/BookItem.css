@@ -187,4 +187,10 @@ label {
     justify-content: right;
     padding: 50px;
 }
+.tool-tip {
+    display: inline-block;
+}
 
+.tool-tip [disabled] {
+    pointer-events: none;
+}

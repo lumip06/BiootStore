@@ -13,14 +13,16 @@ import {processBooksData} from "../components/orders/CartUtils";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function UserPage() {
-    const {loggedInUser, getToken, wishlistBooks=[]} = useBoundStore();
+    const {loggedInUser, getToken, wishlistBooks = [],getUserId,getRole,getUsername,getEmail} = useBoundStore();
+    const { loadingUser, errorUser, setLoadingUser, setErrorUser,loadingBooks,errorBooks,loadingOrders,errorOrders } = useBoundStore();
     const [userOrders, setUserOrders] = useState([]);
-    const {apiCall, loading, error} = useFetchRequest();
+    const {apiCall} = useFetchRequest();
     const navigate = useNavigate();
     const [bookInfos, setBookInfos] = useState({});
     useEffect(() => {
         const fetchUserOrders = () => {
-            if (loggedInUser.userId) {
+            setLoadingUser(true);setErrorUser(null);
+            if (getUserId()) {
 //get orders
                 apiCall(
                     `${serverUrl}orders/`,
@@ -32,7 +34,8 @@ function UserPage() {
                             setUserOrders(data);
                         }
                     ],
-                    [console.error]
+                    [setErrorUser],
+                    [setLoadingUser]
                 );
 
 
@@ -41,10 +44,10 @@ function UserPage() {
         };
 
         const fetchUserWishlist = () => {
-            if (loggedInUser.userId) {
+            setLoadingUser(true);setErrorUser(null);
+            if (getUserId() && getRole() === 'client') {
                 const itemIds = [];
-                console.log("WISHLIST:", wishlistBooks);
-                console.log("ITEMS",wishlistBooks.items.length)
+
                 for (let i = 0; i < wishlistBooks.items.length; i++) {
 
                     if (wishlistBooks.items[i] && wishlistBooks.items[i].bookId) {
@@ -52,37 +55,37 @@ function UserPage() {
                     }
                 }
 
-                    console.log("WISHLIST:", wishlistBooks);
-                    console.log("ITEM IDS:", itemIds);
 
-                    if (itemIds.length > 0) {
-                        const requestBody = { ids: itemIds };
+                if (itemIds.length > 0) {
+                    const requestBody = {ids: itemIds};
 
-                        // Fetch book info
-                        apiCall(
-                            `${serverUrl}books/infos`,
-                            'POST',
-                            requestBody,
-                            [
-                                (booksData) => {
-                                    processBooksData(booksData, setBookInfos);
-                                }
-                            ],
-                            [console.error]
-                        );
-                    } else {
+                    // Fetch book info
+                    apiCall(
+                        `${serverUrl}books/infos`,
+                        'POST',
+                        requestBody,
+                        [
+                            (booksData) => {
+                                processBooksData(booksData, setBookInfos);
+                            }
+                        ],
+                        [setErrorUser],
+                        [setLoadingUser]
+                    );
+                } else {
 
-                        setBookInfos({});
-                    }
+                    setBookInfos({});
+                }
 
             }
         };
         fetchUserOrders();
         fetchUserWishlist();
-    }, [loggedInUser.userId,wishlistBooks]);
+    }, [getUserId(), wishlistBooks]);
 
 
     return (
+
         <div className="userPage">
             <div className="button-container">
                 <button onClick={() => navigate(-1)} className="btn btn-outline-dark btn-lg"> goBack</button>
@@ -109,40 +112,54 @@ function UserPage() {
                                 fill="#468b74"></path>
                         </g>
                     </svg>
-                    <h1 className="userPageH1">{loggedInUser.username}'s page</h1>
+                    <h1 className="userPageH1">{getUsername()}'s page</h1>
                 </div>
 
                 <div className="col1">
                     <p>ORDERS: </p>
-                    <Status loading={loading} error={error}/>
+                    <Status loading={loadingOrders} error={errorOrders}>
                     <OrderList userOrders={userOrders}/>
+                    </Status>
 
                 </div>
                 <div className="col2">
-                    <h1><span>Username:&nbsp; </span> {loggedInUser.username}</h1>
-                    <h1><span>Email:&nbsp; </span> {loggedInUser.email}</h1>
-                    <h1><span>Role:&nbsp; </span> {loggedInUser.role}</h1>
-                    <h1><span>Wishlist:&nbsp; </span></h1>
+                    <Status loading={loadingUser} error={errorUser}>
+                    <h1><span>Username:&nbsp; </span> {getUsername()}</h1>
+                    <h1><span>Email:&nbsp; </span> {getEmail()}</h1>
+                    <h1><span>Role:&nbsp; </span> {getRole()}</h1>
+                    </Status>
+                    {(getRole() === 'client') && (<div>
+                            <Status loading={loadingBooks} error={errorBooks}>
+                            <h1><span>Wishlist:&nbsp; </span></h1>
 
-                    <div className={`miniViewContainer`}>
+                            <div className={`miniViewContainer`}>
 
-                        {Object.keys(bookInfos).length > 0 ? (
-                            Object.entries(bookInfos).map(([id, book]) => (
-                                <div key={id}>
-                                    <BookItem book={book} view={"miniView"}/>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No books available.</p>
-                        )}
+                                {Object.keys(bookInfos).length > 0 ? (
+                                    Object.entries(bookInfos).map(([id, book]) => (
 
-                    </div>
+                                        <div key={id}>
+
+                                            <BookItem id={book._id} view={"miniView"}/>
+                                        </div>
+                                    ))
+                                ) : (
+
+                                    <p>No books available.</p>
+
+                                )}
+
+                            </div>
+                            </Status>
+                        </div>
+                    )}
+
 
                 </div>
             </div>
 
 
         </div>
+
     );
 }
 

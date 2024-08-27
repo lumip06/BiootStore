@@ -3,7 +3,11 @@ import {useLocation, useNavigate} from "react-router-dom";
 import React from "react";
 import OrderDetails from "../components/orders/OrderDetails";
 import '../styles/OrderPage.css'
+import {useBoundStore} from "../stores/BoundStore";
+import Status from "../components/common/Status";
 function OrderPage() {
+    const { loadingOrders,errorOrders } = useBoundStore();
+
     const navigate = useNavigate();
     const location = useLocation();
     const order = location.state?.order;
@@ -16,11 +20,13 @@ function OrderPage() {
             </div>
 
             <div className="container">
+                <Status loading={loadingOrders} error={errorOrders}>
                 {order ? (
                     <OrderDetails order={order}/>
                 ) : (
                     <p>Loading order details...</p>
                 )}
+                </Status>
             </div>
 
 
