@@ -12,7 +12,7 @@ export const registerUser = async (formData) => {
         role:formData.role
     };
 
-    try {
+
         console.log('Sending user data for registration:', user);
 
         const response = await axios.post(`${serverUrl}users/`, user, {
@@ -27,10 +27,7 @@ export const registerUser = async (formData) => {
 
         console.log('User registered successfully:', registeredUser);
         return { user: registeredUser ,token};
-    } catch (error) {
-        console.error('Error creating user:', error);
 
-    }
 };
 
 

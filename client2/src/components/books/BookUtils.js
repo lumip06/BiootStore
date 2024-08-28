@@ -1,5 +1,5 @@
 export const handleAddToCart = (bookId, setQuantityInCart, addBookToCart) => {
-    // debugger
+
     addBookToCart(bookId);
     setQuantityInCart(prevQuantity => prevQuantity + 1);
 };

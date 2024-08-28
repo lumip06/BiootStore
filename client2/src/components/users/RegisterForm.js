@@ -72,32 +72,40 @@ function RegisterForm() {
         try {
 
             const response = await registerUser(formData);
-            const { user:   loggedUser, token } = response;
+
+                const { user: loggedUser, token } = response;
+
+                 if (loggedUser && token) {
+                    setLoggedInUser(
+                        {
+                            userId: loggedUser._id,
+                            username: loggedUser.username,
+                            email: loggedUser.email,
+                            role: loggedUser.role
+                        },
+                        token
+                    );
+
+                    localStorage.setItem('token', token);
+
+                    navigate("/");
+                 }
 
 
-            if (loggedUser && token) {
-
-                setLoggedInUser(
-                    {
-                        userId: loggedUser._id,
-                        username: loggedUser.username,
-                        email: loggedUser.email,
-                        role:loggedUser.role
-                    },
-                    token
-                );
-
-                localStorage.setItem('token', token);
-
-                navigate("/");
-            } else {
-                setErrors({ general: 'Registration successful, but unable to retrieve user details. Please try again.' });
-                setLoadingUser(false);setErrorUser('Registration successful, but unable to retrieve user details. Please try again.');
-            }
         } catch (error) {
-            // console.error('Registration failed:', error.response ? error.response.data : error.message);
-            setLoadingUser(false);setErrorUser( error.message);
-            // setErrors({ general: 'Registration failed. Please try again.' });
+            setLoadingUser(false);
+
+            if (error.response) {
+
+                if (error.response.data && error.response.data.message) {
+                    console.error('Validation Error:', error.response.data.message);
+                    setErrorUser(error.response.data.message);
+                } else {
+                    console.error('Server Error:', error.response.status);
+                    setErrorUser(`Server error: ${error.response.status}`);
+                }
+            }
+
         }
         setLoadingUser(false);
     };

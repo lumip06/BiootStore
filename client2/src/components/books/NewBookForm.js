@@ -2,8 +2,11 @@ import React, {useState} from "react";
 import "../../styles/NewBookPage.css"
 import {addNewBook} from "../../api/BookAPI";
 import {Modal} from "react-responsive-modal";
+import {useBoundStore} from "../../stores/BoundStore";
+import Status from "../common/Status";
 
 function NewBookForm() {
+    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
     const [errors, setErrors] = useState({});
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
@@ -70,6 +73,7 @@ function NewBookForm() {
 
     };
     const handleBookForm = async (e) => {
+        setLoadingBooks(true);setErrorBooks(null);
         e.preventDefault();
         const newErrors = validateBookForm();
         if (Object.keys(newErrors).length > 0) {
@@ -78,11 +82,23 @@ function NewBookForm() {
         }
         try {
             const response = await addNewBook(formData);
+            onOpenBookSuccessModal();
         } catch (error) {
-            console.error('book add failed:', error.response ? error.response.data : error.message);
+            setLoadingBooks(false);
+            // console.error('book add failed:', error.response ? error.response.data : error.message);
+            if (error.response) {
 
+                if (error.response.data && error.response.data.message) {
+                    console.error('Validation Error:', error.response.data.message);
+                    setErrorBooks(error.response.data.message);
+                } else {
+                    console.error('Server Error:', error.response.status);
+                    setErrorBooks(`Server error: ${error.response.status}`);
+                }
+            }
         }
-        onOpenBookSuccessModal();
+        setLoadingBooks(false);
+
     }
     return (
         <div className="newBookPage">
@@ -91,7 +107,7 @@ function NewBookForm() {
                 <h1>ADD A NEW BOOK:</h1>
 
                 <div className="container">
-
+                    <Status loading={loadingBooks} error={errorBooks}>
                     <form id="book-form" autoComplete="on" onSubmit={handleBookForm}>
 
                             <svg viewBox="0 0 1024 1024" className="icon" version="1.1"
@@ -173,6 +189,7 @@ function NewBookForm() {
                                 </Modal>
                             </div>
                     </form>
+                    </Status>
                 </div>
             </div>
 
