@@ -50,16 +50,35 @@ exports.userGetLogin = asyncHandler(async (req, res, next) => {
 });
 // Create a New User (POST /users)
 exports.userCreatePost = asyncHandler(async (req, res, next) => {
+
     const { username, email, password1,password2,role } = req.body;
 
-    if(password1!==password2)
-    {
-        throw new Error("Passwords do not match");
-    }
+    // if(password1!==password2)
+    // {
+    //     throw new Error("Passwords do not match");
+    // }
+
+    // const userData = {
+    //     username,
+    //     email,
+    //     password: password1, // Use the plain password for validation
+    //     role
+    // };
+    //
+    // // Validate the input data using Joi
+    // const { error } = new User().joiValidate(userData);
+    // if (error) {
+    //   //  console.log(error.details[0].message)
+    //      res.status(400).json({  message: error.details[0].message});
+    //
+    //     // throw new Error(error.details[0].message);
+    // }
+
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password1, salt);
 
-
+    try {
     const newUser = new User({
         username,
         email,
@@ -67,7 +86,7 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
         role
     });
 
-    try {
+
 
         const savedUser = await newUser.save();
 

@@ -5,7 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const path = require('path');
-
+const mongoSanitize = require('express-mongo-sanitize');
 
 
 require('dotenv').config();
@@ -34,7 +34,11 @@ async function main() {
     app.use(cors({origin: true, credentials: true}));
     app.use(bodyParser.json({limit: "400mb"}));
     app.use(bodyParser.urlencoded({limit: "400mb", extended: true}));
-
+    app.use(
+        mongoSanitize({
+            replaceWith: '_',
+        }),
+    );
     app.use(express.static(path.join(__dirname, 'public')));
 
     app.use("/", indexRouter);

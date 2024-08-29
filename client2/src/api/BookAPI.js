@@ -67,7 +67,7 @@ export const addNewBook = async (formData) => {
         img:formData.img
     };
 
-    try {
+    // try {
         console.log('Sending book data :', book);
 
         const response = await axios.post(`${serverUrl}books/`, [book], {
@@ -77,8 +77,8 @@ export const addNewBook = async (formData) => {
         });
 
         return response.data;
-    } catch (error) {
-        console.error('Error creating user:', error);
-
-    }
+    // } catch (error) {
+    //     console.error('Error creating user:', error);
+    //
+    // }
 };
