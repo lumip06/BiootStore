@@ -10,7 +10,7 @@ export const saveCartToLocalStorage = (cartBooks) => {
 }
 export const isTokenExpired = (token) => {
     const decodedToken = jwt_decode(token);
-    const currentTime = Date.now() / 1000; // Convert to seconds
+    const currentTime = Date.now() / 1000;
     return decodedToken.exp < currentTime;
 };
 export const loadUserFromLocalStorage = () => {
@@ -54,29 +54,10 @@ export const loadWishlistFromLocalStorage = () => {
 
 
 export const saveWishlistToLocalStorage = (wishlistBooks) => {
-    try {
+    // try {
         localStorage.setItem('wishlistBooks', JSON.stringify(wishlistBooks));
-    } catch (error) {
-        console.error("Error saving wishlist to localStorage", error);
-    }
+    // } catch (error) {
+    //     console.error("Error saving wishlist to localStorage", error);
+    // }
 };
 
-//====================
-export const loadSelectedBookFromLocalStorage = () => {
-    try {
-        const serializedData = localStorage.getItem('selectedBook');
-        return serializedData ? JSON.parse(serializedData) : {};
-    } catch (error) {
-        console.error("Error loading selected book from local storage", error);
-        return {};
-    }
-};
-
-export const saveSelectedBookToLocalStorage = (selectedBook) => {
-    try {
-        const serializedData = JSON.stringify(selectedBook);
-        localStorage.setItem('selectedBook', serializedData);
-    } catch (error) {
-        console.error("Error saving selected book to local storage", error);
-    }
-};

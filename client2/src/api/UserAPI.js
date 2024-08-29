@@ -9,40 +9,29 @@ export const registerUser = async (formData) => {
         email: formData.email,
         password1: formData.password1,
         password2: formData.password2,
-        role:formData.role
+        role: formData.role
     };
 
+    const response = await axios.post(`${serverUrl}users/`, user, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
 
-        console.log('Sending user data for registration:', user);
+    const {user: registeredUser, token} = response.data;
 
-        const response = await axios.post(`${serverUrl}users/`, user, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-
-        const { user: registeredUser, token } = response.data;
-
-
-        console.log('User registered successfully:', registeredUser);
-        return { user: registeredUser ,token};
+    return {user: registeredUser, token};
 
 };
 
 
 export const loginUser = async (username, password) => {
-    try {
 
-        const response = await axios.post(`${serverUrl}users/login`, {
-            username,
-            password
-        });
+    const response = await axios.post(`${serverUrl}users/login`, {
+        username,
+        password
+    });
 
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        console.error('Error details:', error.response ? error.response.data : error.message);
+    return response.data;
 
-    }
 };

@@ -11,14 +11,14 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function OrderDetails({order}) {
     const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
-
     const { id } = useParams();
     const [bookInfos, setBookInfos] = useState({});
-    const { apiCall, loading, error } = useFetchRequest();
+    const { apiCall } = useFetchRequest();
     const bookQuantities = order.items.reduce((acc, item) => {
         acc[item.bookId] = item.quantity;
         return acc;
     }, {});
+
     useEffect(() => {
         const fetchBookInfos = () => {
             setLoadingOrders(true);setErrorOrders(null);
@@ -26,9 +26,8 @@ function OrderDetails({order}) {
 
             for (let i = 0; i < order.items.length; i++) {
                 itemIds.push(order.items[i].bookId);
-                console.log(order.items[i].bookId)
             }
-            console.log(itemIds)
+
             if (itemIds.length > 0) {
 
                 const requestBody = { ids: itemIds };
@@ -55,11 +54,13 @@ function OrderDetails({order}) {
 
         fetchBookInfos();
     }, []);
-    console.log("BOOK INFOS",bookInfos)
+
+
     const getQuantityForBookId = (bookId) => {
         const item = order.items.find(item => item.bookId === bookId);
         return item ? item.quantity : 0;
     };
+
     return (
         <div className="orderDetails">
 
@@ -79,7 +80,7 @@ function OrderDetails({order}) {
                         Object.entries(bookInfos).map(([id, book]) => (
                             <div key={id}>
                                 <h3>{getQuantityForBookId(id)} X </h3>
-                                <BookItem id={id} view={"miniView"}/>
+                                <BookItem book={book} view={"miniView"}/>
                             </div>
                         ))
                     ) : (

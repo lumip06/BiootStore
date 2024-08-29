@@ -1,7 +1,7 @@
 
 
 import {filterBooks, getOneBook} from "../api/BookAPI";
-import {loadSelectedBookFromLocalStorage, saveSelectedBookToLocalStorage} from "./FromLocalStorage";
+
 import Login from "../pages/Login";
 
 
@@ -12,7 +12,7 @@ export const createBookStore = ((set, get) => ({
         filterOptions: {},
         filters: {},
         limit: 12,
-        selectedBook:  loadSelectedBookFromLocalStorage() ||{},
+        selectedBook:  {},
         loadingBooks: false,
         errorBooks: null,
 
@@ -73,8 +73,9 @@ export const createBookStore = ((set, get) => ({
         }),
 
         fetchBooks: () => set(async (state) => {
-            set({ loadingBooks: true, errorBooks: null });
+
             try {
+               // set({ loadingBooks: true, errorBooks: null });
                 const filters = {...state.filters};
                 delete filters["skip"];
 
@@ -85,14 +86,14 @@ export const createBookStore = ((set, get) => ({
 
 
                 set({books: newBooks, booksTotal: booksTotal});
-                set({ loadingBooks: false });
+              //  set({ loadingBooks: false });
                 return {
                     books: newBooks,
                     booksTotal: booksTotal,
                 };
             } catch (error) {
-                // console.error('Failed to fetch books:', error);
-                set({ errorBooks: error.message, loadingBooks: false });
+                 console.error('Failed to fetch books:', error);
+              //  set({ errorBooks: error.message, loadingBooks: false });
             }
         }),
         selectBook: (id) => set(async (state) => {
@@ -111,7 +112,7 @@ export const createBookStore = ((set, get) => ({
                     }
                 }));
                 const updatedSelectedBook = get().selectedBook;
-                saveSelectedBookToLocalStorage(updatedSelectedBook);
+
 
             } catch (error) {
                 console.error('Failed to fetch books:', error);
@@ -156,7 +157,7 @@ export const createBookStore = ((set, get) => ({
                 }
             });
             set({selectedBook: updatedSelectedBook});
-            saveSelectedBookToLocalStorage(updatedSelectedBook);
+
             return {
                 selectedBook: updatedSelectedBook,
             };

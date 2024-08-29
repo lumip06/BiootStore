@@ -4,8 +4,6 @@ const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
 
 
-
-
 // Display list of all books.
 exports.bookList = asyncHandler(async (req, res, next) => {
     try {
@@ -19,10 +17,8 @@ exports.bookList = asyncHandler(async (req, res, next) => {
 // Display list of all books sorted by criteria
 exports.bookSorted = asyncHandler(async (req, res, next) => {
     try {
-
         const books = await Book.find();
         books.sort((a,b)=>{
-
             if (a.title > b.title)
                 return 1
             if (a.title < b.title)
@@ -36,14 +32,14 @@ exports.bookSorted = asyncHandler(async (req, res, next) => {
 });
 // GET one book
 exports.bookGetOne = asyncHandler(async (req, res, next) => {
-    const { id } = req.params; // Extracting ID from the request parameters
+    const { id } = req.params;
 
     try {
         const book = await Book.findById(id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        res.json(book); // Return the found book
+        res.json(book);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -88,7 +84,6 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
 
         let books =  await Book.find(query).sort({ [sortBy]: sortOrder }).limit(limit).skip(offset);
         const booksTotal = await Book.countDocuments(query);
-        // console.log({ books, booksTotal })
         res.json({ books, booksTotal });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -98,12 +93,11 @@ exports.bookSearch = asyncHandler(async (req, res, next) => {
 // Handle book create on POST.
 exports.bookCreatePost = asyncHandler(async (req, res, next) => {
     try {
-        // Ensure req.body is an array
+
         if (!Array.isArray(req.body)) {
             return res.status(400).send({ message: "Request body must be an array" });
         }
 
-        // Validate each book object in the array
         const books = req.body.map(book => {
             const { title, author, publishedYear, genre, publisher, cover, price, stock, img } = book;
             if (!title || !author || !publishedYear || !publisher || !cover || !price || !stock || !img) {
@@ -112,7 +106,7 @@ exports.bookCreatePost = asyncHandler(async (req, res, next) => {
             return new Book(book);
         });
 
-        // Save all books to the database
+
         const savedBooks = await Book.insertMany(books);
         res.status(201).send(savedBooks);
     } catch (error) {
@@ -140,19 +134,16 @@ exports.bookDelete = asyncHandler(async (req, res, next) => {
     }
 });
 
-
 // GET one book
 exports.getBookProperties = asyncHandler(async (req, res, next) => {
 
     try {
-        // Get distinct genres, authors, and publishers from the database
+
         const genres = await Book.distinct('genre');
         const prices = await Book.distinct('price');
         const publishers = await Book.distinct('publisher');
         const covers = await Book.distinct('cover');
 
-
-        // Send response with properties
         res.status(200).json({  genres, prices, publishers, covers });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -162,8 +153,6 @@ exports.getBookProperties = asyncHandler(async (req, res, next) => {
 
 exports.updateBookStock = asyncHandler(async (req, res, next) => {
     try {
-        console.log("Processing updateBookStock request");
-
 
         if (!Array.isArray(req.body.items)) {
             return res.status(400).json({ message: "Request body must contain an array of items" });

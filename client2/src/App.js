@@ -1,17 +1,11 @@
 import './App.css';
-
-
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-
 import Login from "./pages/Login"
-
 import Register from "./pages/Register";
 import AppNavbar from "./components/common/AppNavbar";
-
 import React from "react";
 import Footer from "./components/common/Footer";
 import BookPage from "./pages/BookPage";
-
 import Home from "./pages/Home";
 import CartPage from "./pages/CartPage";
 import UserPage from "./pages/UserPage";

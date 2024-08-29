@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import BookItem from './BookItem';
 import {useBoundStore} from "../../stores/BoundStore";
 import Counters from "./Counters";
@@ -8,12 +7,14 @@ import "./../../styles/BookList.css"
 import Status from "../common/Status";
 
 function BookList() {
-    const { loadingBooks, errorBooks } = useBoundStore();
     const {filters, books, fetchBooks, limit, page,getRole} = useBoundStore();
+    const { loadingBooks, errorBooks } = useBoundStore();
     const [viewType, setViewType] = useState('card');
 
     useEffect(() => {
+        console.log(books)
         fetchBooks();
+        console.log("after",books)
     }, [filters, limit, page]);
 
 
@@ -54,7 +55,7 @@ function BookList() {
                 {books?.length > 0 ? (
                     books.map((book, index) => (
                         <div key={index}>
-                            <BookItem  id={book._id} view={viewType.toLowerCase() + "View"}/>
+                            <BookItem  book={book} view={viewType.toLowerCase() + "View"}/>
                         </div>
                     ))
                 ) : (

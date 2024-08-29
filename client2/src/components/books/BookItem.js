@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import "./../../styles/BookItem.css"
-
 import {useBoundStore} from "../../stores/BoundStore";
 import Status from "../common/Status";
 import BookPageView from "./BookPageView";
@@ -9,23 +8,24 @@ import {handleAddToCart, handleAddToWishlist} from "./BookUtils";
 import {checkBookInCart} from "../orders/CartUtils";
 import {Spinner} from "react-bootstrap";
 
-function BookItem({id,view}) {
+function BookItem({book,view}) {
     const {addBookToCart, loggedInUser,wishlistBooks,setWishlistBooks,getRole ,cartBooks} = useBoundStore();
-    const [inCart, setInCart] = useState(false);
-    const [quantityInCart, setQuantityInCart] = useState(0);
     const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
     const { selectedBook, selectBook } = useBoundStore();
+    const [quantityInCart, setQuantityInCart] = useState(0);
+    const [inCart, setInCart] = useState(false);
+
 
     useEffect(() => {
         const fetchBook = async () => {
-            if (!selectedBook[id]) {
-                await selectBook(id);
+            if (!selectedBook[book._id]&&view==="pageView") {
+                await selectBook(book._id);
             }
-            console.log("SELECTED BOOK:",selectedBook[id]);
-            if (checkBookInCart(cartBooks, id)) {
+
+            if (checkBookInCart(cartBooks, book._id)) {
                 setInCart(true);
 
-                const quantity = cartBooks[id];
+                const quantity = cartBooks[book._id];
                 if (quantity) {
                     setQuantityInCart(quantity);
                 }
@@ -35,61 +35,62 @@ function BookItem({id,view}) {
             }
         };
 
-        if (id) {
-            setLoadingBooks(true);setErrorBooks(null);
+        if (book._id) {
+
             fetchBook();
-            setLoadingBooks(false);
+
         }
     }, [cartBooks,quantityInCart]);
 
 
-    if (!selectedBook[id]) {
+    if (!selectedBook[book._id]&&view==="pageView") {
 
         return  (
             <div className="bookDetails">
                 <Status loading={loadingBooks} error={errorBooks}>
                     <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        <p>Loading...</p>
                     </Spinner>
                 </Status>
             </div>
         );
 
     }
-    const stock = selectedBook[id].stock;
-    const isButtonDisabled = stock === 0 || (stock - quantityInCart) <= 0;
+
+    // const stock = selectedBook[book._id].stock;
+    const isButtonDisabled = book.stock === 0 || (book.stock - quantityInCart) <= 0;
+
+
     return (
 
         <div className={view}>
             {(view === "pageView") && (
-                <BookPageView book={selectedBook[id]}
+                <BookPageView book={selectedBook[book._id]}
                               view={view}
                               inCart={inCart}
-                              stock={selectedBook[id].stock}
-                              // availableQuantity={availableQuantity}
-                              isButtonDisabled={isButtonDisabled}
+                              stock={selectedBook[book._id].stock}
                               quantityInCart={quantityInCart}
                               setQuantityInCart={setQuantityInCart}></BookPageView>
                 )}
 
             {view !== "pageView" && (
 
-                <div>
-                    <Link to={`/books/${id}`} style={{textDecoration: 'none'}}>
+                <div>111
+                    <Link to={`/books/${book._id}`} style={{textDecoration: 'none'}}>
                         <div className={`wrapper${view}`}>
                             <Status loading={loadingBooks} error={errorBooks}>
                             {view !== 'miniView' && (
-                                <img className="card-img-top" src={selectedBook[id].img} alt="card" onError={event => {
+                                <img className="card-img-top" src={book.img} alt="card" onError={event => {
                                     event.target.src = "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1645580888i/60478042.jpg";
                                     event.onerror = null;
                                 }}/>
                             )}
 
-                            <p className={`text${view}`}>{id}</p>
-                            <p className={`text${view}`}>{selectedBook[id].title}</p>
-                            <p className={`text${view}`}>by {selectedBook[id].author}</p>
-                            {view !== "miniView" && (<p className={`text${view}`}>{selectedBook[id].genre}</p>)}
-                            <p className={`text${view}`}>Price: {selectedBook[id].price}</p>
+                            <p className={`text${view}`}>{book._id}</p>
+                            <p className={`text${view}`}>{book.title}</p>
+                            <p className={`text${view}`}>by {book.author}</p>
+                            {view !== "miniView" && (<p className={`text${view}`}>{book.genre}</p>)}
+                            <p className={`text${view}`}>Price: {book.price}</p>
                             </Status>
                         </div>
                     </Link>
@@ -97,13 +98,13 @@ function BookItem({id,view}) {
                         <div>
                             <button className="btn btn-outline-light btn-lg"
                                     disabled={isButtonDisabled}
-                                    onClick={() => handleAddToCart(id, setQuantityInCart, addBookToCart)} >
+                                    onClick={() => handleAddToCart(book._id, setQuantityInCart, addBookToCart)} >
                                 ADD to Cart
                             </button>
                             <span className="tool-tip" data-toggle="tooltip" data-placement="top"
                                   title="Need to login">
                             <button className="btn btn-outline-light btn-lg" disabled={!loggedInUser}
-                                    onClick={() => handleAddToWishlist(selectedBook[id], wishlistBooks, setWishlistBooks)}>
+                                    onClick={() => handleAddToWishlist(selectedBook[book._id], wishlistBooks, setWishlistBooks)}>
                                 <svg viewBox="0 0 1024 1024" className="icon" version="1.1"
                                      xmlns="http://www.w3.org/2000/svg" fill="#000000" height="20px">
                                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

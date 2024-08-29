@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {Alert, Button, Spinner} from 'react-bootstrap';
+import {Alert, Spinner} from 'react-bootstrap';
 
 function Status({loading, error, children}) {
     const [showError, setShowError] = useState(false);

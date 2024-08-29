@@ -6,8 +6,7 @@ import {useBoundStore} from "../../stores/BoundStore";
 import Status from "../common/Status";
 
 function RegisterForm() {
-    const {setLoggedInUser}=useBoundStore();
-    const { loadingUser, errorUser, setLoadingUser, setErrorUser } = useBoundStore();
+    const { loadingUser, errorUser, setLoadingUser, setErrorUser,setLoggedInUser } = useBoundStore();
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -24,6 +23,7 @@ function RegisterForm() {
         { label: 'Password', type: 'password', name: 'password1', placeholder: 'Password' },
         { label: 'Password once again', type: 'password', name: 'password2', placeholder: 'Password' }
     ];
+
     const handleAgreement = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
@@ -99,7 +99,7 @@ function RegisterForm() {
 
                 if (error.response.data && error.response.data.message) {
                     console.error('Validation Error:', error.response.data.message);
-                    setErrorUser(error.response.data.message);
+                    setErrorUser(`Server error: ${error.response.data.message}`);
                 } else {
                     console.error('Server Error:', error.response.status);
                     setErrorUser(`Server error: ${error.response.status}`);
