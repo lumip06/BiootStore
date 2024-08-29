@@ -13,17 +13,20 @@ import {processBooksData} from "../components/orders/CartUtils";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 function UserPage() {
-    const {loggedInUser, getToken, wishlistBooks = [],getUserId,getRole,getUsername,getEmail} = useBoundStore();
-    const { loadingUser, errorUser, setLoadingUser, setErrorUser,loadingBooks,errorBooks,loadingOrders,errorOrders } = useBoundStore();
+    const { wishlistBooks = [], getUserId, getRole,getUsername,getEmail} = useBoundStore();
+    const { loadingUser, errorUser, setLoadingUser, setErrorUser} = useBoundStore();
+    const {loadingBooks,errorBooks,loadingOrders,errorOrders } = useBoundStore();
     const [userOrders, setUserOrders] = useState([]);
-    const {apiCall} = useFetchRequest();
-    const navigate = useNavigate();
     const [bookInfos, setBookInfos] = useState({});
+    const navigate = useNavigate();
+    const {apiCall} = useFetchRequest();
+
+
     useEffect(() => {
         const fetchUserOrders = () => {
             setLoadingUser(true);setErrorUser(null);
             if (getUserId()) {
-//get orders
+
                 apiCall(
                     `${serverUrl}orders/`,
                     'GET',
@@ -37,7 +40,6 @@ function UserPage() {
                     [setErrorUser],
                     [setLoadingUser]
                 );
-
 
             }
 
@@ -55,11 +57,9 @@ function UserPage() {
                     }
                 }
 
-
                 if (itemIds.length > 0) {
                     const requestBody = {ids: itemIds};
 
-                    // Fetch book info
                     apiCall(
                         `${serverUrl}books/infos`,
                         'POST',
@@ -138,8 +138,7 @@ function UserPage() {
                                     Object.entries(bookInfos).map(([id, book]) => (
 
                                         <div key={id}>
-
-                                            <BookItem id={book._id} view={"miniView"}/>
+                                            <BookItem book={book} view={"miniView"}/>
                                         </div>
                                     ))
                                 ) : (
@@ -152,7 +151,6 @@ function UserPage() {
                             </Status>
                         </div>
                     )}
-
 
                 </div>
             </div>

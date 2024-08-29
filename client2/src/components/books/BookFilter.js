@@ -1,7 +1,5 @@
 import React, {useEffect,  useState} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
 import BookFilterOption from "./BookFilterOption";
 import {useFetchRequest} from "../../api/CustomHook";
 import Status from "../common/Status";
@@ -9,12 +7,10 @@ import {useBoundStore} from "../../stores/BoundStore";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const BookFilter = () => {
-
+    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
     const [bookProperties, setBookProperties] = useState({genres: [], prices: [], publishers: [], covers: []});
     const bookAttributes = ["genres", "prices", "publishers", "covers"];
-    const [error, setError] = useState(null);
-    const {apiCall, loading} = useFetchRequest();
-    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
+    const {apiCall} = useFetchRequest();
 
 
     useEffect(() => {
@@ -29,8 +25,8 @@ const BookFilter = () => {
         };
 
         fetchBookFilters();
+        setLoadingBooks(false);
     }, []);
-
 
 
     return (

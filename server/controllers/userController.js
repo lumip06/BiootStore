@@ -53,28 +53,6 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
 
     const { username, email, password1,password2,role } = req.body;
 
-    // if(password1!==password2)
-    // {
-    //     throw new Error("Passwords do not match");
-    // }
-
-    // const userData = {
-    //     username,
-    //     email,
-    //     password: password1, // Use the plain password for validation
-    //     role
-    // };
-    //
-    // // Validate the input data using Joi
-    // const { error } = new User().joiValidate(userData);
-    // if (error) {
-    //   //  console.log(error.details[0].message)
-    //      res.status(400).json({  message: error.details[0].message});
-    //
-    //     // throw new Error(error.details[0].message);
-    // }
-
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password1, salt);
 
@@ -86,10 +64,7 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
         role
     });
 
-
-
         const savedUser = await newUser.save();
-
 
         const token = jwt.sign(
             { userId: savedUser._id , role: savedUser.role},
@@ -103,9 +78,6 @@ exports.userCreatePost = asyncHandler(async (req, res, next) => {
         res.status(400).json({ message: err.message });
     }
 });
-
-
-
 
 // Delete a User by ID (DELETE /users/)
 exports.userDelete = asyncHandler(async (req, res, next) => {

@@ -1,20 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Status from "../common/Status";
 import {useBoundStore} from "../../stores/BoundStore";
 import {handleAddToCart, handleAddToWishlist} from "./BookUtils";
-import {checkBookInCart} from "../orders/CartUtils";
 
 
-function BookPageView({book,  view, inCart = false,stock,isButtonDisabled, quantityInCart, setQuantityInCart}){
+function BookPageView({book,  view, inCart = false,stock, quantityInCart, setQuantityInCart}){
     const {addBookToCart, loggedInUser,wishlistBooks,getRole,setWishlistBooks} = useBoundStore();
 
     const { loadingBooks, errorBooks } = useBoundStore();
     const availableQuantity = stock - quantityInCart;
-
+    const isButtonDisabled = stock === 0 || (stock - quantityInCart) <= 0;
 
     return (
 
-        <Status loading={loadingBooks} error={errorBooks}>
+         <Status loading={loadingBooks} error={errorBooks}>
             <div className={view}>
                 {(view === "pageView") && (
                     <div className={`pageViewContainer`}>
@@ -83,7 +82,7 @@ function BookPageView({book,  view, inCart = false,stock,isButtonDisabled, quant
                     </div>
                 )}
             </div>
-</Status>
+ </Status>
     // )}
     );
 }

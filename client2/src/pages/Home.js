@@ -1,11 +1,8 @@
 import '../App.css';
-
-
 import BookFilter from "../components/books/BookFilter";
 import './../styles/Home.css'
 import '../styles/MainPage.css'
 import BookList from "../components/books/BookList";
-
 import React from "react";
 import BookPagination from "../components/books/BookPagination";
 

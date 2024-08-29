@@ -1,7 +1,6 @@
 import React from 'react';
 import "../../styles/Filter.css"
 import {useBoundStore} from "../../stores/BoundStore";
-import Status from "../common/Status";
 
 function BookFilterOption({bookAttribute,filterOptionValue}) {
     const {toggleFilter, filterOptions} = useBoundStore();

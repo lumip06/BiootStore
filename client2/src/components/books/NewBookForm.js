@@ -6,7 +6,7 @@ import {useBoundStore} from "../../stores/BoundStore";
 import Status from "../common/Status";
 
 function NewBookForm() {
-    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
+    const {loadingBooks, errorBooks, setLoadingBooks, setErrorBooks} = useBoundStore();
     const [errors, setErrors] = useState({});
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
@@ -43,6 +43,7 @@ function NewBookForm() {
         {label: 'In Stock', type: 'number', name: 'stock', placeholder: 'Stock', min: "0"},
         {label: 'Book Cover Image', type: 'text', name: 'img', placeholder: 'Image'}
     ];
+
     const handleBookAddition = (e) => {
         const {name, value, type, checked} = e.target;
         setFormData({
@@ -73,7 +74,8 @@ function NewBookForm() {
 
     };
     const handleBookForm = async (e) => {
-        setLoadingBooks(true);setErrorBooks(null);
+        setLoadingBooks(true);
+        setErrorBooks(null);
         e.preventDefault();
         const newErrors = validateBookForm();
         if (Object.keys(newErrors).length > 0) {
@@ -81,11 +83,12 @@ function NewBookForm() {
             return;
         }
         try {
-            const response = await addNewBook(formData);
+            // const response = await addNewBook(formData);
+            await addNewBook(formData);
             onOpenBookSuccessModal();
         } catch (error) {
             setLoadingBooks(false);
-            // console.error('book add failed:', error.response ? error.response.data : error.message);
+
             if (error.response) {
 
                 if (error.response.data && error.response.data.message) {
@@ -108,10 +111,10 @@ function NewBookForm() {
 
                 <div className="container">
                     <Status loading={loadingBooks} error={errorBooks}>
-                    <form id="book-form" autoComplete="on" onSubmit={handleBookForm}>
+                        <form id="book-form" autoComplete="on" onSubmit={handleBookForm}>
 
                             <svg viewBox="0 0 1024 1024" className="icon" version="1.1"
-                                 xmlns="http://www.w3.org/2000/svg" fill="#000000" height="100px" >
+                                 xmlns="http://www.w3.org/2000/svg" fill="#000000" height="100px">
                                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                                 <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                                 <g id="SVGRepo_iconCarrier">
@@ -140,8 +143,7 @@ function NewBookForm() {
                                                     id={field.name}
                                                     name={field.name}
                                                     value={formData[field.name]}
-                                                    onChange={handleBookAddition}
-                                                >
+                                                    onChange={handleBookAddition}>
                                                     <option value="">{field.placeholder}</option>
                                                     {field.options.map((option, optIndex) => (
                                                         <option key={optIndex} value={option.value}>
@@ -161,8 +163,7 @@ function NewBookForm() {
                                                     {...(field.type === 'number' && {
                                                         min: field.min,
                                                         max: field.max,
-                                                    })}
-                                                />
+                                                    })}/>
                                             )}
                                             {errors[field.name] && (
                                                 <small className="text-danger">{errors[field.name]}</small>
@@ -178,8 +179,7 @@ function NewBookForm() {
                                     className="btn btn-outline-light btn-lg"
                                     value="Submit"
                                     id="submit"
-                                    style={{marginTop: "50px"}}
-                                >
+                                    style={{marginTop: "50px"}}>
                                     Add book
                                 </button>
                                 <Modal open={open} onClose={handleCloseBookSuccessModal} center>
@@ -188,14 +188,14 @@ function NewBookForm() {
                                     </div>
                                 </Modal>
                             </div>
-                    </form>
+                        </form>
                     </Status>
                 </div>
             </div>
 
 
         </div>
-);
+    );
 }
 
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {useBoundStore} from "../stores/BoundStore";
 
 export const invokeFunctions = (functionArray, args) => {
@@ -6,10 +5,10 @@ export const invokeFunctions = (functionArray, args) => {
 }
 
 export const useFetchRequest = () => {
-    // const [loading, setLoading] = useState(false);
+
     const { getToken} = useBoundStore();
     const apiCall = async (url, method, body, successCallbacks, errorCallbacks,finallyCallbacks, token = getToken()) => {
-        // setLoading(true);
+
         try {
 
             const headers = {
@@ -25,7 +24,6 @@ export const useFetchRequest = () => {
                 method,
                 headers,
             };
-
 
             if (method !== 'GET' && method !== 'HEAD') {
                 options.body = JSON.stringify(body);
@@ -45,10 +43,9 @@ export const useFetchRequest = () => {
             if (finallyCallbacks && finallyCallbacks.length) {
                 invokeFunctions(finallyCallbacks, false);
             }
-            // setLoading(false);
+
         }
     };
 
-    // return { apiCall, loading };
     return { apiCall};
 }

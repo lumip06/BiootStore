@@ -5,7 +5,7 @@ import 'reactjs-popup/dist/index.css';
 import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
 import {useFetchRequest} from "../../api/CustomHook";
-import Status from "../common/Status";
+
 import {processBooksData} from "./CartUtils";
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
