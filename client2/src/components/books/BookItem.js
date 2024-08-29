@@ -10,7 +10,7 @@ import {Spinner} from "react-bootstrap";
 
 function BookItem({book,view}) {
     const {addBookToCart, loggedInUser,wishlistBooks,setWishlistBooks,getRole ,cartBooks} = useBoundStore();
-    const { loadingBooks, errorBooks, setLoadingBooks, setErrorBooks } = useBoundStore();
+    const { loadingBooks, errorBooks } = useBoundStore();
     const { selectedBook, selectBook } = useBoundStore();
     const [quantityInCart, setQuantityInCart] = useState(0);
     const [inCart, setInCart] = useState(false);
@@ -57,7 +57,7 @@ function BookItem({book,view}) {
 
     }
 
-    // const stock = selectedBook[book._id].stock;
+
     const isButtonDisabled = book.stock === 0 || (book.stock - quantityInCart) <= 0;
 
 
@@ -75,7 +75,7 @@ function BookItem({book,view}) {
 
             {view !== "pageView" && (
 
-                <div>111
+                <div>
                     <Link to={`/books/${book._id}`} style={{textDecoration: 'none'}}>
                         <div className={`wrapper${view}`}>
                             <Status loading={loadingBooks} error={errorBooks}>

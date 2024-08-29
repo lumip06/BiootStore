@@ -83,7 +83,7 @@ function BookPageView({book,  view, inCart = false,stock, quantityInCart, setQua
                 )}
             </div>
  </Status>
-    // )}
+
     );
 }
 export default BookPageView;

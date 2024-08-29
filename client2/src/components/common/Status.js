@@ -43,19 +43,6 @@ function Status({loading, error, children}) {
             <div style={{ opacity: showError ? 0.5 : 1 }}>{children}</div>
         </div>
     );
-    // if (loading) {
-    //     return (
-    //         <div className="loading-container">
-    //             <Spinner animation="border" role="status">
-    //                 <span className="visually-hidden">Loading...</span>
-    //             </Spinner>
-    //         </div>
-    //     );
-    // }
-    // if (error) {
-    //     return <Alert variant="danger">{error}</Alert>;
-    // }
-    // return <>{children}</>;
 
 }
 

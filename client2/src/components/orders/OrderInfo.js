@@ -4,48 +4,19 @@ import "../../styles/OrderInfo.css"
 import 'reactjs-popup/dist/index.css';
 import OrderTableRow from "./OrderTableRow";
 import OrderPlacement from "./OrderPlacement";
-import {useFetchRequest} from "../../api/CustomHook";
-
-import {processBooksData} from "./CartUtils";
-const serverUrl = process.env.REACT_APP_SERVER_URL;
+import { useFetchBookInfos} from "./CartUtils";
 
 
 function OrderInfo() {
-    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
 
-    const {cartBooks, getCartBookIds} = useBoundStore();
-    const {apiCall, loading, error} = useFetchRequest();
+    const {cartBooks} = useBoundStore();
+
     const [bookInfos, setBookInfos] = useState({});
     let heading = ["Produs", "Disponibilitate", "Buc.", "Pret", "Total"];
-
+    const fetchBookInfos = useFetchBookInfos();
     useEffect(() => {
-        const fetchBookInfos = () => {
-            setLoadingOrders(true);setErrorOrders(null);
-            const cartBookIds = getCartBookIds();
 
-            if (cartBookIds.length > 0) {
-
-                const requestBody = {ids: cartBookIds};
-
-                apiCall(
-                    `${serverUrl}books/infos`,
-                    'POST',
-                    requestBody,
-                    [
-                        (booksData) => {
-                            processBooksData(booksData, setBookInfos);
-                        }
-                    ],
-                    [setErrorOrders],
-                    [setLoadingOrders],
-                );
-            } else {
-                setBookInfos({});
-                setLoadingOrders(false);
-            }
-        };
-
-        fetchBookInfos();
+        fetchBookInfos(setBookInfos);
     }, [cartBooks]);
 
 

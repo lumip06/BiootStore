@@ -2,51 +2,20 @@ import React, {useEffect, useState} from 'react';
 import "../../styles/CartModal.css"
 import {useBoundStore} from "../../stores/BoundStore";
 import {Link} from "react-router-dom";
-import {calculateTotalPrice, processBooksData} from "./CartUtils";
-import {useFetchRequest} from "../../api/CustomHook";
+import {calculateTotalPrice,  useFetchBookInfos} from "./CartUtils";
 import Status from "../common/Status";
-
-const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 
 function CartModal({onCloseModal}) {
-    const { loadingOrders,errorOrders,setLoadingOrders,setErrorOrders } = useBoundStore();
-    const {cartBooks, removeBookFromCart, getCartBookIds, getToken} = useBoundStore();
+    const { loadingOrders,errorOrders } = useBoundStore();
+    const {cartBooks, removeBookFromCart} = useBoundStore();
     const [bookInfos, setBookInfos] = useState({});
     const totalPrice = calculateTotalPrice(cartBooks, bookInfos);
-    const {apiCall, loading, error} = useFetchRequest();
-
+    const fetchBookInfos = useFetchBookInfos();
 
     useEffect(() => {
 
-
-        const fetchBookInfos = () => {
-            setLoadingOrders(true);setErrorOrders(null);
-            const cartBookIds = getCartBookIds();
-
-            if (cartBookIds.length > 0) {
-
-                const requestBody = { ids: cartBookIds };
-
-                apiCall(
-                    `${serverUrl}books/infos`,
-                    'POST',
-                    requestBody,
-                    [
-                        (booksData) => {
-                            processBooksData(booksData, setBookInfos);
-                        }
-                    ],
-                    [setErrorOrders],
-                    [setLoadingOrders],
-                );
-            } else {
-                setBookInfos({});
-                setLoadingOrders(false);
-            }
-        };
-
-        fetchBookInfos();
+        fetchBookInfos(setBookInfos);
     }, [cartBooks]);
 
 

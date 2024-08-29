@@ -1,3 +1,6 @@
+import {useFetchRequest} from "../../api/CustomHook";
+import {useBoundStore} from "../../stores/BoundStore";
+
 export const calculateTotalPrice = (cartBooks, bookInfos) => {
     return Object.entries(cartBooks).reduce((total, [bookId, quantity]) => {
         const bookInfo = bookInfos[bookId];
@@ -37,4 +40,37 @@ export const processBooksData = (booksData, setBookInfos) => {
     }
         setBookInfos(booksObject);
 
+};
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+
+export const useFetchBookInfos = () => {
+    const { apiCall } = useFetchRequest();
+    const { setLoadingOrders, setErrorOrders, getCartBookIds } = useBoundStore();
+
+    return (setBookInfos) => {
+        setLoadingOrders(true);
+        setErrorOrders(null);
+        const cartBookIds = getCartBookIds();
+
+        if (cartBookIds.length > 0) {
+            const requestBody = {ids: cartBookIds};
+
+            apiCall(
+                `${serverUrl}books/infos`,
+                'POST',
+                requestBody,
+                [
+                    (booksData) => {
+                        processBooksData(booksData, setBookInfos);
+                    }
+                ],
+                [setErrorOrders],
+                [setLoadingOrders],
+            );
+        } else {
+            setBookInfos({});
+            setLoadingOrders(false);
+        }
+    };
 };

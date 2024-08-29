@@ -83,7 +83,7 @@ function NewBookForm() {
             return;
         }
         try {
-            // const response = await addNewBook(formData);
+
             await addNewBook(formData);
             onOpenBookSuccessModal();
         } catch (error) {
